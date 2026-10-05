@@ -2,35 +2,25 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="theme-color" content="#02050a">
-<title>نصر ٦ أكتوبر | فيلم تفاعلي</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>نصر ٦ أكتوبر — الفيلم التفاعلي</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
 html,body{
   width:100%;
   height:100%;
   overflow:hidden;
-  background:#02050a;
+  background:#020305;
   font-family:Tahoma,Arial,sans-serif;
 }
 
-body{
-  color:#fff;
-  user-select:none;
-}
-
-#film{
+#app{
   position:fixed;
   inset:0;
-  background:#02050a;
   overflow:hidden;
+  background:#020305;
 }
 
 canvas{
@@ -40,45 +30,42 @@ canvas{
   height:100%;
 }
 
-#world{
-  z-index:1;
-}
+#scene{z-index:1}
+#effects{z-index:2;pointer-events:none}
 
-#fx{
-  z-index:2;
+.overlay{
+  position:absolute;
+  inset:0;
+  z-index:5;
   pointer-events:none;
 }
 
 .vignette{
   position:absolute;
   inset:0;
-  z-index:5;
-  pointer-events:none;
   background:
     radial-gradient(
       ellipse at center,
-      transparent 35%,
-      rgba(0,0,0,.12) 58%,
-      rgba(0,0,0,.78) 100%
+      transparent 30%,
+      rgba(0,0,0,.25) 65%,
+      rgba(0,0,0,.9) 100%
     );
 }
 
-.grain{
+.noise{
   position:absolute;
-  inset:-50%;
-  z-index:6;
-  pointer-events:none;
-  opacity:.11;
+  inset:-100%;
+  opacity:.08;
   background-image:
     repeating-radial-gradient(
-      circle at 0 0,
-      rgba(255,255,255,.7) 0 1px,
+      circle,
+      #fff 0 1px,
       transparent 1px 4px
     );
-  animation:grain .15s steps(2) infinite;
+  animation:noise .12s steps(2) infinite;
 }
 
-@keyframes grain{
+@keyframes noise{
   0%{transform:translate(0,0)}
   25%{transform:translate(2%,-1%)}
   50%{transform:translate(-1%,2%)}
@@ -86,181 +73,169 @@ canvas{
   100%{transform:translate(-2%,-1%)}
 }
 
-.letterbox{
+.bar{
   position:absolute;
   left:0;
   width:100%;
-  height:9vh;
+  height:8vh;
   background:#000;
-  z-index:10;
+  z-index:20;
 }
-
-.letterbox.top{top:0}
-.letterbox.bottom{bottom:0}
+.bar.top{top:0}
+.bar.bottom{bottom:0}
 
 #intro{
   position:absolute;
   inset:0;
-  z-index:20;
+  z-index:50;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   text-align:center;
-  background:
-    radial-gradient(circle at center,rgba(35,50,65,.35),#010204 70%);
-  transition:opacity 1.5s ease;
+  background:#010204;
+  transition:opacity 1.8s ease;
 }
 
-.intro-inner{
-  transform:translateY(10px);
-  animation:introIn 2.2s ease forwards;
+.introBox{
+  animation:intro 2s ease forwards;
 }
 
-@keyframes introIn{
+@keyframes intro{
   from{
     opacity:0;
-    transform:translateY(25px) scale(.96);
+    transform:scale(.94) translateY(25px)
   }
   to{
     opacity:1;
-    transform:translateY(0) scale(1);
+    transform:scale(1) translateY(0)
   }
 }
 
-.small{
-  color:#b6b9b3;
+.eyebrow{
+  color:#b9a064;
+  font-size:12px;
   letter-spacing:7px;
-  font-size:clamp(11px,2vw,18px);
-  margin-bottom:20px;
+  margin-bottom:22px;
 }
 
-.intro-title{
-  font-size:clamp(55px,13vw,150px);
-  line-height:.85;
+.introDate{
+  font-size:clamp(55px,14vw,150px);
   font-weight:900;
-  background:linear-gradient(
-    180deg,
-    #fff,
-    #ddd5b2 45%,
-    #a99052
-  );
-  -webkit-background-clip:text;
-  color:transparent;
-  text-shadow:0 0 50px rgba(255,205,100,.12);
+  line-height:.8;
+  color:#eee7d0;
+  text-shadow:
+    0 0 40px rgba(255,210,120,.12);
 }
 
-.intro-sub{
-  margin-top:28px;
-  font-size:clamp(15px,3vw,27px);
-  color:#ddd;
-  letter-spacing:3px;
+.introText{
+  margin-top:30px;
+  font-size:clamp(16px,3vw,27px);
+  color:#bbb;
 }
 
 #start{
   margin-top:45px;
   padding:15px 42px;
-  border:1px solid rgba(255,255,255,.3);
-  border-radius:100px;
-  background:rgba(255,255,255,.05);
-  color:white;
-  font-size:17px;
+  border-radius:50px;
+  border:1px solid rgba(255,255,255,.25);
+  color:#fff;
+  background:rgba(255,255,255,.04);
+  font-size:16px;
   cursor:pointer;
-  backdrop-filter:blur(10px);
   transition:.3s;
+  backdrop-filter:blur(10px);
 }
 
 #start:hover{
   background:rgba(255,255,255,.12);
-  transform:scale(1.04);
+  transform:scale(1.05);
 }
 
-#hud{
+#title{
   position:absolute;
-  inset:0;
-  z-index:12;
-  pointer-events:none;
-}
-
-.scene-title{
-  position:absolute;
+  z-index:10;
+  top:21%;
   left:50%;
-  top:19%;
-  transform:translateX(-50%);
-  width:90%;
+  width:92%;
   text-align:center;
+  transform:translate(-50%,20px);
   opacity:0;
-  transition:opacity 1s,transform 1s;
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
 }
 
-.scene-title.show{
+#title.show{
   opacity:1;
-  transform:translateX(-50%) translateY(0);
+  transform:translate(-50%,0);
 }
 
-.scene-kicker{
-  font-size:clamp(11px,1.8vw,16px);
+.kicker{
+  color:#d3b86b;
+  font-size:clamp(10px,1.8vw,15px);
   letter-spacing:5px;
-  color:#d2bd7a;
-  margin-bottom:13px;
+  margin-bottom:14px;
 }
 
-.scene-main{
-  font-size:clamp(30px,6vw,75px);
+.mainTitle{
+  font-size:clamp(32px,7vw,85px);
   font-weight:900;
-  text-shadow:0 4px 30px #000;
+  text-shadow:0 5px 30px #000;
 }
 
-.scene-description{
+.description{
   margin-top:15px;
-  color:#d8d8d8;
-  font-size:clamp(13px,2.2vw,20px);
-}
-
-#date{
-  position:absolute;
-  right:5%;
-  bottom:13%;
-  font-size:12px;
-  color:rgba(255,255,255,.6);
-  letter-spacing:3px;
+  color:#d1d1d1;
+  font-size:clamp(12px,2vw,19px);
 }
 
 #progress{
   position:absolute;
+  z-index:15;
   left:50%;
   bottom:11%;
   transform:translateX(-50%);
-  width:min(500px,70%);
+  width:min(520px,65%);
   height:2px;
-  background:rgba(255,255,255,.18);
+  background:rgba(255,255,255,.16);
 }
 
-#progress i{
+#progress span{
   display:block;
-  width:0%;
+  width:0;
   height:100%;
-  background:#d6b765;
-  box-shadow:0 0 12px #d6b765;
+  background:#d7b867;
+  box-shadow:0 0 12px #d7b867;
+}
+
+#counter{
+  position:absolute;
+  z-index:15;
+  right:5%;
+  bottom:11%;
+  color:rgba(255,255,255,.5);
+  font-size:11px;
+  letter-spacing:3px;
 }
 
 #controls{
   position:absolute;
-  left:5%;
-  bottom:12%;
   z-index:30;
+  left:5%;
+  bottom:10%;
   display:flex;
   gap:8px;
   opacity:0;
-  transition:opacity .7s;
+  transition:.8s;
 }
 
-.control{
+.ctrl{
   width:40px;
   height:40px;
   border-radius:50%;
-  border:1px solid rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.22);
   background:rgba(0,0,0,.35);
-  color:white;
+  color:#fff;
   cursor:pointer;
   backdrop-filter:blur(8px);
 }
@@ -268,16 +243,16 @@ canvas{
 #flash{
   position:absolute;
   inset:0;
-  z-index:25;
-  background:white;
+  z-index:40;
+  background:#fff;
   opacity:0;
   pointer-events:none;
 }
 
-#finale{
+#ending{
   position:absolute;
   inset:0;
-  z-index:22;
+  z-index:45;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -285,103 +260,87 @@ canvas{
   opacity:0;
   pointer-events:none;
   background:
-    radial-gradient(circle at center,
-      rgba(200,170,90,.16),
-      rgba(0,0,0,.92) 70%);
-  transition:opacity 2s;
+    radial-gradient(
+      circle,
+      rgba(195,158,76,.15),
+      rgba(0,0,0,.94) 72%
+    );
+  transition:opacity 2.5s;
 }
 
-.final-content{
-  transform:scale(.9);
-  transition:transform 2s;
-}
-
-#finale.show{
+#ending.show{
   opacity:1;
 }
 
-#finale.show .final-content{
+.endBox{
+  transform:scale(.85);
+  transition:transform 2.5s;
+}
+
+#ending.show .endBox{
   transform:scale(1);
 }
 
-.final-arabic{
-  font-size:clamp(45px,11vw,130px);
+.endTitle{
+  font-size:clamp(48px,11vw,130px);
   font-weight:900;
-  line-height:.95;
-  background:linear-gradient(
-    180deg,
-    #fff,
-    #e0c36b
-  );
+  background:linear-gradient(#fff,#d8b85e);
   -webkit-background-clip:text;
   color:transparent;
 }
 
-.final-line{
+.endLine{
   width:80px;
   height:2px;
-  background:#d8bb69;
+  background:#d8b85e;
   margin:30px auto;
 }
 
-.final-date{
-  font-size:clamp(14px,2.5vw,23px);
-  letter-spacing:5px;
+.endDate{
   color:#ddd;
+  letter-spacing:5px;
+  font-size:clamp(13px,2.5vw,22px);
 }
 
-.final-credit{
+.endSmall{
+  color:#777;
+  font-size:11px;
   margin-top:45px;
-  color:#999;
-  font-size:12px;
 }
 
 @media(max-width:600px){
-  .letterbox{
-    height:6vh;
-  }
-
-  #progress{
-    bottom:9%;
-  }
-
-  #date{
-    bottom:15%;
-  }
-}
-
-@media(prefers-reduced-motion:reduce){
-  .grain{
-    animation:none;
-  }
+  .bar{height:6vh}
 }
 </style>
 </head>
 
 <body>
 
-<div id="film">
+<div id="app">
 
-<canvas id="world"></canvas>
-<canvas id="fx"></canvas>
+<canvas id="scene"></canvas>
+<canvas id="effects"></canvas>
 
-<div class="vignette"></div>
-<div class="grain"></div>
+<div class="overlay">
+  <div class="vignette"></div>
+  <div class="noise"></div>
+</div>
 
-<div class="letterbox top"></div>
-<div class="letterbox bottom"></div>
+<div class="bar top"></div>
+<div class="bar bottom"></div>
+
+<!-- INTRO -->
 
 <div id="intro">
-  <div class="intro-inner">
 
-    <div class="small">EGYPT • 1973</div>
+  <div class="introBox">
 
-    <div class="intro-title">
-      ٦ أكتوبر
-    </div>
+    <div class="eyebrow">EGYPT • 1973</div>
 
-    <div class="intro-sub">
-      يومٌ عبرت فيه الإرادة
+    <div class="introDate">٦ أكتوبر</div>
+
+    <div class="introText">
+      حين عبرت الإرادة
     </div>
 
     <button id="start">
@@ -389,58 +348,53 @@ canvas{
     </button>
 
   </div>
+
 </div>
 
-<div id="hud">
+<!-- TITLES -->
 
-  <div class="scene-title" id="sceneTitle">
+<div id="title">
 
-    <div class="scene-kicker" id="sceneKicker">
-      السادس من أكتوبر
-    </div>
+  <div class="kicker" id="kicker"></div>
 
-    <div class="scene-main" id="sceneMain">
-      يومٌ من التاريخ
-    </div>
+  <div class="mainTitle" id="mainTitle"></div>
 
-    <div class="scene-description" id="sceneDescription">
-      ذكرى نعتز بها
-    </div>
+  <div class="description" id="description"></div>
 
-  </div>
+</div>
 
-  <div id="date">
-    06 • 10 • 1973
-  </div>
+<div id="progress">
+  <span></span>
+</div>
 
-  <div id="progress">
-    <i></i>
-  </div>
-
+<div id="counter">
+  00:00
 </div>
 
 <div id="controls">
-  <button class="control" id="mute">🔊</button>
-  <button class="control" id="replay">↻</button>
+  <button class="ctrl" id="sound">🔊</button>
+  <button class="ctrl" id="again">↻</button>
 </div>
 
 <div id="flash"></div>
 
-<div id="finale">
+<!-- END -->
 
-  <div class="final-content">
+<div id="ending">
 
-    <div class="final-arabic">
+  <div class="endBox">
+
+    <div class="endTitle">
       نصر أكتوبر
     </div>
 
-    <div class="final-line"></div>
+    <div class="endLine"></div>
 
-    <div class="final-date">
+    <div class="endDate">
       السادس من أكتوبر ١٩٧٣
     </div>
 
-    <div class="final-credit">
+    <div class="endSmall">
       ذكرى وطنية خالدة
     </div>
 
@@ -451,78 +405,64 @@ canvas{
 </div>
 
 <script>
-/* =========================================================
-   OCTOBER 6 — CINEMATIC EXPERIENCE
-   Self contained / GitHub Pages ready
-========================================================= */
 
-const world = document.getElementById("world");
-const fx = document.getElementById("fx");
+/* =====================================================
+   OCTOBER 6 — CINEMATIC ENGINE
+===================================================== */
 
-const ctx = world.getContext("2d");
-const fctx = fx.getContext("2d");
+const canvas=document.getElementById("scene");
+const fx=document.getElementById("effects");
 
-let W = 0;
-let H = 0;
-let DPR = Math.min(devicePixelRatio || 1,2);
+const c=canvas.getContext("2d");
+const f=fx.getContext("2d");
 
-let playing = false;
-let muted = false;
+let W=innerWidth;
+let H=innerHeight;
+let DPR=Math.min(devicePixelRatio||1,2);
 
-let startedAt = 0;
-let elapsed = 0;
+let running=false;
+let muted=false;
+let startTime=0;
+let time=0;
 
-const TOTAL = 58;
+const LENGTH=62;
 
-let audio = null;
+let audio=null;
 
-const particles = [];
-const smoke = [];
-const rockets = [];
-const planes = [];
-const tanks = [];
+let smoke=[];
+let sparks=[];
+let rockets=[];
 
 
-/* =========================================================
+/* =====================================================
    RESIZE
-========================================================= */
+===================================================== */
 
 function resize(){
 
-  W = innerWidth;
-  H = innerHeight;
+  W=innerWidth;
+  H=innerHeight;
 
-  world.width = W * DPR;
-  world.height = H * DPR;
+  canvas.width=W*DPR;
+  canvas.height=H*DPR;
 
-  fx.width = W * DPR;
-  fx.height = H * DPR;
+  fx.width=W*DPR;
+  fx.height=H*DPR;
 
-  world.style.width = W+"px";
-  world.style.height = H+"px";
-
-  fx.style.width = W+"px";
-  fx.style.height = H+"px";
-
-  ctx.setTransform(DPR,0,0,DPR,0,0);
-  fctx.setTransform(DPR,0,0,DPR,0,0);
+  c.setTransform(DPR,0,0,DPR,0,0);
+  f.setTransform(DPR,0,0,DPR,0,0);
 }
 
 addEventListener("resize",resize);
 resize();
 
 
-/* =========================================================
-   HELPERS
-========================================================= */
+/* =====================================================
+   MATH
+===================================================== */
 
-function clamp(v,a,b){
-  return Math.max(a,Math.min(b,v));
-}
-
-function lerp(a,b,t){
-  return a+(b-a)*t;
-}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
 
 function ease(t){
   return t*t*(3-2*t);
@@ -532,704 +472,772 @@ function rand(a,b){
   return a+Math.random()*(b-a);
 }
 
-function rgba(r,g,b,a){
-  return `rgba(${r},${g},${b},${a})`;
-}
 
-
-/* =========================================================
-   PARTICLES
-========================================================= */
-
-function makeParticles(){
-
-  particles.length = 0;
-
-  for(let i=0;i<260;i++){
-
-    particles.push({
-      x:Math.random()*W,
-      y:Math.random()*H,
-      s:Math.random()*2+.2,
-      a:Math.random()*.7,
-      v:Math.random()*.15+.03,
-      drift:rand(-.15,.15)
-    });
-  }
-}
-
-makeParticles();
-
-
-/* =========================================================
+/* =====================================================
    AUDIO
-========================================================= */
+===================================================== */
 
 function initAudio(){
 
-  if(audio) return;
+  if(audio)return;
 
   try{
-
-    const AC =
-      window.AudioContext ||
+    const AC=
+      window.AudioContext||
       window.webkitAudioContext;
 
-    if(!AC) return;
-
-    audio = new AC();
+    if(AC)audio=new AC();
 
   }catch(e){}
 }
 
-function tone(freq,duration,volume,type="sine"){
+function sound(freq,duration,volume,type="sine"){
 
-  if(!audio || muted) return;
+  if(!audio||muted)return;
 
-  const osc = audio.createOscillator();
-  const gain = audio.createGain();
+  const o=audio.createOscillator();
+  const g=audio.createGain();
 
-  osc.type = type;
-  osc.frequency.value = freq;
+  o.type=type;
+  o.frequency.value=freq;
 
-  gain.gain.setValueAtTime(0,audio.currentTime);
-
-  gain.gain.linearRampToValueAtTime(
-    volume,
-    audio.currentTime+.03
+  g.gain.setValueAtTime(
+    0,
+    audio.currentTime
   );
 
-  gain.gain.exponentialRampToValueAtTime(
+  g.gain.linearRampToValueAtTime(
+    volume,
+    audio.currentTime+.04
+  );
+
+  g.gain.exponentialRampToValueAtTime(
     .001,
     audio.currentTime+duration
   );
 
-  osc.connect(gain);
-  gain.connect(audio.destination);
+  o.connect(g);
+  g.connect(audio.destination);
 
-  osc.start();
-  osc.stop(audio.currentTime+duration);
+  o.start();
+  o.stop(audio.currentTime+duration);
 }
 
-function cinematicHit(){
+function impact(){
 
-  if(muted) return;
+  if(muted)return;
 
-  tone(65,.9,.16,"sine");
+  sound(55,.9,.15,"sine");
 
   setTimeout(()=>{
-    tone(110,.35,.08,"triangle");
-  },90);
+    sound(90,.4,.07,"triangle");
+  },80);
 }
 
 
-/* =========================================================
-   SKY
-========================================================= */
+/* =====================================================
+   TITLE SYSTEM
+===================================================== */
 
-function drawSky(t){
+const scenes=[
 
-  let sky;
+  {
+    a:0,b:7,
+    k:"السادس من أكتوبر",
+    t:"حين بدأ التاريخ",
+    d:"لحظة بقيت حاضرة في الذاكرة المصرية"
+  },
 
-  if(t<12){
+  {
+    a:7,b:17,
+    k:"اللحظة الأولى",
+    t:"سماءٌ تستعد",
+    d:"هدوء يسبق لحظة تاريخية"
+  },
 
-    sky=ctx.createLinearGradient(0,0,0,H);
+  {
+    a:17,b:28,
+    k:"قناة السويس",
+    t:"إلى الضفة الأخرى",
+    d:"حين تحولت الإرادة إلى فعل"
+  },
 
-    sky.addColorStop(0,"#01030a");
-    sky.addColorStop(.55,"#07101b");
-    sky.addColorStop(1,"#101720");
+  {
+    a:28,b:42,
+    k:"أكتوبر ١٩٧٣",
+    t:"الإرادة تتقدم",
+    d:"مشهد من واحدة من أشهر صفحات التاريخ المصري"
+  },
 
-  }else if(t<30){
+  {
+    a:42,b:51,
+    k:"مصر",
+    t:"رايةٌ في السماء",
+    d:"فخرٌ وذكرى لا تُنسى"
+  },
 
-    const p=ease(clamp((t-12)/18,0,1));
-
-    sky=ctx.createLinearGradient(0,0,0,H);
-
-    sky.addColorStop(0,
-      `rgb(${Math.floor(5+25*p)},
-          ${Math.floor(10+28*p)},
-          ${Math.floor(18+30*p)})`
-    );
-
-    sky.addColorStop(.6,
-      `rgb(${Math.floor(18+70*p)},
-          ${Math.floor(25+42*p)},
-          ${Math.floor(30+18*p)})`
-    );
-
-    sky.addColorStop(1,
-      `rgb(${Math.floor(28+45*p)},
-          ${Math.floor(30+32*p)},
-          ${Math.floor(30+12*p)})`
-    );
-
-  }else{
-
-    sky=ctx.createLinearGradient(0,0,0,H);
-
-    sky.addColorStop(0,"#273e4b");
-    sky.addColorStop(.5,"#91795d");
-    sky.addColorStop(1,"#c49c63");
-
+  {
+    a:51,b:62,
+    k:"النهاية",
+    t:"نصر أكتوبر",
+    d:"السادس من أكتوبر ١٩٧٣"
   }
 
-  ctx.fillStyle=sky;
-  ctx.fillRect(0,0,W,H);
+];
+
+let sceneIndex=-1;
+
+function updateTitle(t){
+
+  let index=scenes.findIndex(
+    s=>t>=s.a&&t<s.b
+  );
+
+  if(index<0)index=scenes.length-1;
+
+  if(index===sceneIndex)return;
+
+  sceneIndex=index;
+
+  const s=scenes[index];
+  const title=document.getElementById("title");
+
+  title.classList.remove("show");
+
+  setTimeout(()=>{
+
+    document.getElementById("kicker").textContent=s.k;
+    document.getElementById("mainTitle").textContent=s.t;
+    document.getElementById("description").textContent=s.d;
+
+    title.classList.add("show");
+
+  },150);
 }
 
 
-/* =========================================================
+/* =====================================================
+   SKY
+===================================================== */
+
+function sky(t){
+
+  let p=clamp(t/24,0,1);
+
+  const r=Math.floor(3+38*p);
+  const g=Math.floor(7+43*p);
+  const b=Math.floor(15+35*p);
+
+  const grad=c.createLinearGradient(0,0,0,H);
+
+  grad.addColorStop(
+    0,
+    `rgb(${r},${g},${b})`
+  );
+
+  grad.addColorStop(
+    .55,
+    `rgb(${r+8},${g+9},${b+8})`
+  );
+
+  grad.addColorStop(
+    1,
+    `rgb(${r+18},${g+14},${b+8})`
+  );
+
+  c.fillStyle=grad;
+  c.fillRect(0,0,W,H);
+}
+
+
+/* =====================================================
+   STARS
+===================================================== */
+
+function stars(t){
+
+  if(t>23)return;
+
+  const alpha=1-clamp((t-16)/7,0,1);
+
+  for(let i=0;i<130;i++){
+
+    const x=(i*173)%W;
+    const y=(i*67)%(H*.55);
+
+    const pulse=
+      .5+
+      Math.sin(t*2+i)*.5;
+
+    c.fillStyle=
+      `rgba(255,255,255,${alpha*.15*pulse})`;
+
+    c.fillRect(
+      x,
+      y,
+      1.5,
+      1.5
+    );
+  }
+}
+
+
+/* =====================================================
    MOON
-========================================================= */
+===================================================== */
 
-function drawMoon(t){
+function moon(t){
 
-  if(t>20) return;
+  if(t>20)return;
 
-  const x=W*.78;
+  const x=W*.77;
   const y=H*.22;
   const r=Math.min(W,H)*.045;
 
-  const glow=ctx.createRadialGradient(
+  const g=c.createRadialGradient(
     x,y,0,
-    x,y,r*4
+    x,y,r*5
   );
 
-  glow.addColorStop(0,"rgba(255,245,205,.28)");
-  glow.addColorStop(1,"rgba(255,245,205,0)");
+  g.addColorStop(
+    0,
+    "rgba(255,245,205,.25)"
+  );
 
-  ctx.fillStyle=glow;
-  ctx.beginPath();
-  ctx.arc(x,y,r*4,0,Math.PI*2);
-  ctx.fill();
+  g.addColorStop(
+    1,
+    "rgba(255,245,205,0)"
+  );
 
-  ctx.fillStyle="#f4edcf";
-  ctx.beginPath();
-  ctx.arc(x,y,r,0,Math.PI*2);
-  ctx.fill();
+  c.fillStyle=g;
+
+  c.beginPath();
+  c.arc(x,y,r*5,0,Math.PI*2);
+  c.fill();
+
+  c.fillStyle="#eee6c9";
+
+  c.beginPath();
+  c.arc(x,y,r,0,Math.PI*2);
+  c.fill();
 }
 
 
-/* =========================================================
-   STARS
-========================================================= */
+/* =====================================================
+   SUN
+===================================================== */
 
-function drawStars(t){
+function sun(t){
 
-  if(t>24) return;
+  if(t<13||t>50)return;
 
-  const fade =
-    t<18 ? 1 :
-    1-clamp((t-18)/6,0,1);
+  const p=clamp((t-13)/9,0,1);
 
-  for(const p of particles){
+  const x=W*.17;
+  const y=H*.36;
 
-    if(p.y>H*.62) continue;
+  const g=c.createRadialGradient(
+    x,y,0,
+    x,y,W*.35
+  );
 
-    ctx.fillStyle=
-      `rgba(255,255,255,${p.a*fade})`;
+  g.addColorStop(
+    0,
+    `rgba(255,206,112,${.25*p})`
+  );
 
-    ctx.fillRect(
-      p.x,
-      p.y,
-      p.s,
-      p.s
-    );
-  }
+  g.addColorStop(
+    1,
+    "rgba(255,140,50,0)"
+  );
+
+  c.fillStyle=g;
+  c.fillRect(0,0,W,H);
+
+  c.fillStyle=`rgba(255,222,142,${.65*p})`;
+
+  c.beginPath();
+  c.arc(x,y,Math.min(W,H)*.035,0,Math.PI*2);
+  c.fill();
 }
 
 
-/* =========================================================
+/* =====================================================
    HORIZON
-========================================================= */
+===================================================== */
 
-function drawHorizon(t){
+function horizon(){
 
-  const horizon=H*.57;
+  const y=H*.59;
 
-  ctx.fillStyle="#0b1114";
+  c.fillStyle="#0a1012";
 
-  ctx.beginPath();
-  ctx.moveTo(0,H);
+  c.beginPath();
 
-  ctx.lineTo(0,horizon+rand(-2,2));
+  c.moveTo(0,H);
+  c.lineTo(0,y);
 
-  for(let x=0;x<=W;x+=40){
-
-    const y =
-      horizon
-      - Math.sin(x*.008)*8
-      - Math.sin(x*.025)*4;
-
-    ctx.lineTo(x,y);
-  }
-
-  ctx.lineTo(W,H);
-  ctx.closePath();
-  ctx.fill();
-}
-
-
-/* =========================================================
-   CANAL
-========================================================= */
-
-function drawCanal(t){
-
-  if(t<17 || t>42) return;
-
-  const horizon=H*.59;
-
-  const waterTop=W*.18;
-  const waterBottom=W*.95;
-
-  const g=ctx.createLinearGradient(
-    0,horizon,
-    0,H
-  );
-
-  g.addColorStop(0,"#354d53");
-  g.addColorStop(.45,"#172f38");
-  g.addColorStop(1,"#07151c");
-
-  ctx.fillStyle=g;
-
-  ctx.beginPath();
-
-  ctx.moveTo(W/2-waterTop/2,horizon);
-  ctx.lineTo(W/2+waterTop/2,horizon);
-  ctx.lineTo(W/2+waterBottom/2,H);
-  ctx.lineTo(W/2-waterBottom/2,H);
-
-  ctx.closePath();
-  ctx.fill();
-
-  /* reflections */
-
-  for(let i=0;i<35;i++){
+  for(let x=0;x<=W;x+=30){
 
     const yy=
-      horizon+
-      Math.pow(i/35,1.8)*(H-horizon);
+      y-
+      Math.sin(x*.009)*7-
+      Math.sin(x*.031)*4;
 
-    const spread=
-      lerp(waterTop,waterBottom,i/35)*.42;
-
-    const xx=W/2+Math.sin(i*2.7+t)*20;
-
-    ctx.strokeStyle=
-      `rgba(210,190,140,${.035+i/900})`;
-
-    ctx.lineWidth=1;
-
-    ctx.beginPath();
-
-    ctx.moveTo(xx-spread,yy);
-    ctx.lineTo(xx+spread,yy);
-
-    ctx.stroke();
+    c.lineTo(x,yy);
   }
+
+  c.lineTo(W,H);
+  c.closePath();
+
+  c.fill();
 }
 
 
-/* =========================================================
-   DESERT
-========================================================= */
+/* =====================================================
+   CANAL
+===================================================== */
 
-function drawDesert(t){
+function canal(t){
 
-  const horizon=H*.57;
+  if(t<14)return;
 
-  const g=ctx.createLinearGradient(
-    0,horizon,0,H
+  const y=H*.59;
+
+  const top=W*.14;
+  const bottom=W*.98;
+
+  const grad=c.createLinearGradient(
+    0,y,0,H
   );
 
-  g.addColorStop(0,"#5e4c38");
-  g.addColorStop(.45,"#493c2e");
-  g.addColorStop(1,"#171513");
+  grad.addColorStop(0,"#42616a");
+  grad.addColorStop(.45,"#1b3b45");
+  grad.addColorStop(1,"#07151b");
 
-  ctx.fillStyle=g;
+  c.fillStyle=grad;
 
-  ctx.fillRect(0,horizon,W,H-horizon);
+  c.beginPath();
 
-  for(let i=0;i<12;i++){
+  c.moveTo(W/2-top/2,y);
+  c.lineTo(W/2+top/2,y);
 
-    const y=
-      horizon+
-      i*i*2.8;
+  c.lineTo(W/2+bottom/2,H);
+  c.lineTo(W/2-bottom/2,H);
 
-    ctx.strokeStyle=
-      `rgba(220,185,125,${.025})`;
+  c.closePath();
+  c.fill();
 
-    ctx.beginPath();
+  /* water movement */
 
-    ctx.moveTo(0,y);
-    ctx.quadraticCurveTo(
-      W*.5,
-      y-rand(10,35),
-      W,
-      y+rand(-8,8)
-    );
+  for(let i=0;i<50;i++){
 
-    ctx.stroke();
+    const p=i/50;
+
+    const yy=
+      y+
+      Math.pow(p,1.7)*(H-y);
+
+    const width=
+      lerp(top,bottom,p)*.42;
+
+    const x=
+      W/2+
+      Math.sin(time*1.2+i)*12;
+
+    c.strokeStyle=
+      `rgba(220,205,165,${.025+p*.025})`;
+
+    c.lineWidth=1;
+
+    c.beginPath();
+
+    c.moveTo(x-width,yy);
+    c.lineTo(x+width,yy);
+
+    c.stroke();
   }
 }
 
 
-/* =========================================================
+/* =====================================================
    PLANE
-========================================================= */
+===================================================== */
 
-function drawPlane(x,y,s,rot=0,alpha=1){
+function plane(x,y,s,rotation=0){
 
-  ctx.save();
+  c.save();
 
-  ctx.translate(x,y);
-  ctx.rotate(rot);
-  ctx.scale(s,s);
+  c.translate(x,y);
+  c.rotate(rotation);
+  c.scale(s,s);
 
-  ctx.globalAlpha=alpha;
+  /* exhaust glow */
 
-  /* glow */
-
-  const glow=ctx.createRadialGradient(
-    -45,8,0,
-    -45,8,60
+  const glow=c.createRadialGradient(
+    -55,0,0,
+    -55,0,65
   );
 
   glow.addColorStop(
     0,
-    "rgba(255,170,70,.35)"
+    "rgba(255,180,80,.3)"
   );
 
   glow.addColorStop(
     1,
-    "rgba(255,100,30,0)"
+    "rgba(255,100,20,0)"
   );
 
-  ctx.fillStyle=glow;
-  ctx.beginPath();
-  ctx.arc(-45,8,60,0,Math.PI*2);
-  ctx.fill();
+  c.fillStyle=glow;
+
+  c.beginPath();
+  c.arc(-55,0,65,0,Math.PI*2);
+  c.fill();
 
   /* body */
 
-  const metal=ctx.createLinearGradient(
-    0,-12,
-    0,15
+  const metal=c.createLinearGradient(
+    0,-12,0,12
   );
 
-  metal.addColorStop(0,"#d2d5d1");
-  metal.addColorStop(.45,"#59636a");
-  metal.addColorStop(1,"#161c20");
+  metal.addColorStop(0,"#cbd0cf");
+  metal.addColorStop(.5,"#626d72");
+  metal.addColorStop(1,"#182025");
 
-  ctx.fillStyle=metal;
+  c.fillStyle=metal;
 
-  ctx.beginPath();
+  c.beginPath();
 
-  ctx.moveTo(-72,3);
-  ctx.lineTo(-20,-7);
-  ctx.lineTo(52,-3);
-  ctx.lineTo(72,0);
-  ctx.lineTo(52,4);
-  ctx.lineTo(-18,7);
-  ctx.closePath();
+  c.moveTo(-72,2);
+  c.lineTo(-20,-7);
+  c.lineTo(52,-4);
+  c.lineTo(72,0);
+  c.lineTo(52,4);
+  c.lineTo(-20,7);
+  c.closePath();
 
-  ctx.fill();
+  c.fill();
 
   /* wings */
 
-  ctx.fillStyle="#303a40";
+  c.fillStyle="#323d43";
 
-  ctx.beginPath();
+  c.beginPath();
 
-  ctx.moveTo(-8,0);
-  ctx.lineTo(-42,-31);
-  ctx.lineTo(-8,-17);
-  ctx.lineTo(23,0);
-  ctx.closePath();
+  c.moveTo(-3,0);
+  c.lineTo(-42,-32);
+  c.lineTo(-7,-16);
+  c.lineTo(25,0);
+  c.closePath();
 
-  ctx.fill();
+  c.fill();
 
-  ctx.beginPath();
+  c.beginPath();
 
-  ctx.moveTo(-8,2);
-  ctx.lineTo(-38,26);
-  ctx.lineTo(-6,15);
-  ctx.lineTo(23,2);
-  ctx.closePath();
+  c.moveTo(-3,2);
+  c.lineTo(-40,27);
+  c.lineTo(-8,15);
+  c.lineTo(25,2);
+  c.closePath();
 
-  ctx.fill();
+  c.fill();
 
   /* tail */
 
-  ctx.fillStyle="#20282d";
+  c.fillStyle="#20292e";
 
-  ctx.beginPath();
-  ctx.moveTo(-48,0);
-  ctx.lineTo(-62,-22);
-  ctx.lineTo(-45,-10);
-  ctx.closePath();
-  ctx.fill();
+  c.beginPath();
+
+  c.moveTo(-48,0);
+  c.lineTo(-62,-22);
+  c.lineTo(-44,-10);
+  c.closePath();
+
+  c.fill();
 
   /* cockpit */
 
-  ctx.fillStyle="#07141d";
+  c.fillStyle="#08151c";
 
-  ctx.beginPath();
-  ctx.ellipse(
-    27,-3,
+  c.beginPath();
+
+  c.ellipse(
+    28,-3,
     13,5,
-    -.1,
+    0,
     0,
     Math.PI*2
   );
 
-  ctx.fill();
+  c.fill();
 
   /* engine */
 
-  ctx.fillStyle="#ffbc58";
+  c.fillStyle="#ffbf65";
 
-  ctx.beginPath();
-  ctx.arc(-66,3,3,0,Math.PI*2);
-  ctx.fill();
+  c.beginPath();
+  c.arc(-69,2,3.5,0,Math.PI*2);
+  c.fill();
 
-  ctx.restore();
+  c.restore();
 }
 
 
-/* =========================================================
-   PLANE FORMATION
-========================================================= */
+/* =====================================================
+   AIR FORMATION
+===================================================== */
 
-function drawPlanes(t){
+function planes(t){
 
-  if(t<4 || t>34) return;
+  if(t<4||t>31)return;
 
   const local=t-4;
 
-  const speed=W/13;
+  for(let i=0;i<4;i++){
 
-  for(let i=0;i<3;i++){
+    const speed=W/14;
 
     const x=
-      -180+
+      -250+
       local*speed+
-      i*220;
+      i*250;
 
     const y=
-      H*.25+
-      i*H*.07+
-      Math.sin(t*.7+i)*18;
+      H*.22+
+      i*H*.055+
+      Math.sin(t*.8+i)*14;
 
-    const sc=
-      .7+i*.1;
+    const s=.55+i*.07;
 
-    drawPlane(
+    plane(
       x,
       y,
-      sc,
-      -.04,
-      clamp((x+150)/180,0,1)
+      s,
+      -.035
     );
 
-    /* contrail */
+    if(x>-100&&x<W+100){
 
-    if(x>-100 && x<W+100){
+      c.strokeStyle=
+        "rgba(225,230,225,.14)";
 
-      ctx.strokeStyle=
-        "rgba(220,230,225,.15)";
+      c.lineWidth=2;
 
-      ctx.lineWidth=2;
+      c.beginPath();
 
-      ctx.beginPath();
+      c.moveTo(
+        x-80*s,
+        y+3
+      );
 
-      ctx.moveTo(x-80*sc,y+4);
-      ctx.lineTo(x-230*sc,y+18);
+      c.lineTo(
+        x-240*s,
+        y+15
+      );
 
-      ctx.stroke();
+      c.stroke();
     }
   }
 }
 
 
-/* =========================================================
+/* =====================================================
    TANK
-========================================================= */
+===================================================== */
 
-function drawTank(x,y,s,alpha=1){
+function tank(x,y,s){
 
-  ctx.save();
+  c.save();
 
-  ctx.translate(x,y);
-  ctx.scale(s,s);
-
-  ctx.globalAlpha=alpha;
+  c.translate(x,y);
+  c.scale(s,s);
 
   /* shadow */
 
-  ctx.fillStyle="rgba(0,0,0,.45)";
+  c.fillStyle="rgba(0,0,0,.45)";
 
-  ctx.beginPath();
-  ctx.ellipse(0,32,80,15,0,0,Math.PI*2);
-  ctx.fill();
+  c.beginPath();
+  c.ellipse(0,35,85,15,0,0,Math.PI*2);
+  c.fill();
 
   /* tracks */
 
-  ctx.fillStyle="#171a19";
+  c.fillStyle="#171b19";
 
-  roundRect(-75,5,150,35,9);
-
-  ctx.fill();
+  roundRect(-78,4,156,38,10);
+  c.fill();
 
   /* wheels */
 
-  for(let i=-55;i<=55;i+=27){
+  for(let i=-58;i<=58;i+=29){
 
-    ctx.fillStyle="#343735";
+    c.fillStyle="#3a3d39";
 
-    ctx.beginPath();
-    ctx.arc(i,22,11,0,Math.PI*2);
-    ctx.fill();
+    c.beginPath();
+    c.arc(i,23,12,0,Math.PI*2);
+    c.fill();
 
-    ctx.fillStyle="#121514";
+    c.fillStyle="#111412";
 
-    ctx.beginPath();
-    ctx.arc(i,22,5,0,Math.PI*2);
-    ctx.fill();
+    c.beginPath();
+    c.arc(i,23,5,0,Math.PI*2);
+    c.fill();
   }
 
-  /* body */
+  /* hull */
 
-  ctx.fillStyle="#42483e";
+  c.fillStyle="#4b5147";
 
-  ctx.beginPath();
+  c.beginPath();
 
-  ctx.moveTo(-60,-7);
-  ctx.lineTo(-42,-29);
-  ctx.lineTo(35,-29);
-  ctx.lineTo(61,-7);
-  ctx.lineTo(54,12);
-  ctx.lineTo(-58,12);
+  c.moveTo(-62,-7);
+  c.lineTo(-43,-31);
+  c.lineTo(35,-31);
+  c.lineTo(62,-7);
+  c.lineTo(53,13);
+  c.lineTo(-60,13);
+  c.closePath();
 
-  ctx.closePath();
-
-  ctx.fill();
+  c.fill();
 
   /* turret */
 
-  ctx.fillStyle="#343a34";
+  c.fillStyle="#363c35";
 
-  ctx.beginPath();
-  ctx.ellipse(
-    5,-29,
-    35,18,
+  c.beginPath();
+
+  c.ellipse(
+    5,-31,
+    36,18,
     0,
     0,
     Math.PI*2
   );
 
-  ctx.fill();
+  c.fill();
 
   /* barrel */
 
-  ctx.fillStyle="#252b27";
+  c.fillStyle="#252a26";
 
   roundRect(
-    18,-37,
-    90,
+    20,-38,
+    95,
     9,
     4
   );
 
-  ctx.fill();
+  c.fill();
 
-  /* highlights */
-
-  ctx.strokeStyle="rgba(210,205,165,.18)";
-  ctx.lineWidth=2;
-
-  ctx.beginPath();
-  ctx.moveTo(-39,-22);
-  ctx.lineTo(27,-22);
-  ctx.stroke();
-
-  ctx.restore();
+  c.restore();
 }
 
 function roundRect(x,y,w,h,r){
 
-  ctx.beginPath();
+  c.beginPath();
 
-  ctx.moveTo(x+r,y);
-  ctx.lineTo(x+w-r,y);
-  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-  ctx.lineTo(x+w,y+h-r);
-  ctx.quadraticCurveTo(
+  c.moveTo(x+r,y);
+  c.lineTo(x+w-r,y);
+
+  c.quadraticCurveTo(
+    x+w,y,
+    x+w,y+r
+  );
+
+  c.lineTo(x+w,y+h-r);
+
+  c.quadraticCurveTo(
     x+w,y+h,
     x+w-r,y+h
   );
-  ctx.lineTo(x+r,y+h);
-  ctx.quadraticCurveTo(
+
+  c.lineTo(x+r,y+h);
+
+  c.quadraticCurveTo(
     x,y+h,
     x,y+h-r
   );
-  ctx.lineTo(x,y+r);
-  ctx.quadraticCurveTo(x,y,x+r,y);
 
-  ctx.closePath();
+  c.lineTo(x,y+r);
+
+  c.quadraticCurveTo(
+    x,y,
+    x+r,y
+  );
+
+  c.closePath();
 }
 
 
-/* =========================================================
-   TANK COLUMN
-========================================================= */
+/* =====================================================
+   TANK MOVEMENT
+===================================================== */
 
-function drawTanks(t){
+function tanks(t){
 
-  if(t<24 || t>48) return;
+  if(t<24||t>48)return;
 
-  const p=
-    clamp((t-24)/10,0,1);
+  const p=clamp((t-24)/10,0,1);
 
-  const baseY=H*.73;
+  for(let i=0;i<7;i++){
 
-  for(let i=0;i<5;i++){
+    const depth=i/7;
 
     const x=
-      W*.1+
-      i*W*.21+
-      Math.sin(t*.4+i)*8;
+      -150+
+      ((t*90)+(i*190))%(W+350);
 
     const y=
-      baseY+
-      Math.sin(i)*12;
+      H*.69+
+      depth*H*.17;
 
-    drawTank(
+    const scale=
+      .28+
+      depth*.5;
+
+    tank(
       x,
       y,
-      .5+i*.035,
-      .35+p*.65
+      scale*(.7+p*.3)
     );
+  }
+
+  /* dust */
+
+  for(let i=0;i<45;i++){
+
+    const x=
+      ((i*120+t*80)%(W+100))-50;
+
+    const y=
+      H*.72+
+      Math.sin(i*2)*18;
+
+    c.fillStyle=
+      "rgba(195,160,105,.035)";
+
+    c.beginPath();
+    c.arc(x,y,rand(4,14),0,Math.PI*2);
+    c.fill();
   }
 }
 
 
-/* =========================================================
+/* =====================================================
    SMOKE
-========================================================= */
+===================================================== */
 
-function addSmoke(x,y){
+function addSmoke(x,y,count=15){
 
-  for(let i=0;i<12;i++){
+  for(let i=0;i<count;i++){
 
     smoke.push({
       x:x+rand(-10,10),
-      y:y+rand(-5,5),
-      r:rand(5,15),
-      vx:rand(-.4,.4),
-      vy:rand(-1.2,-.4),
+      y:y+rand(-6,6),
+      r:rand(4,12),
+      vx:rand(-.45,.45),
+      vy:rand(-1.2,-.35),
       life:1
     });
   }
@@ -1243,12 +1251,12 @@ function updateSmoke(){
 
     s.x+=s.vx;
     s.y+=s.vy;
-    s.r+=.35;
-    s.life-=.012;
 
-    if(s.life<=0){
+    s.r+=.3;
+    s.life-=.009;
+
+    if(s.life<=0)
       smoke.splice(i,1);
-    }
   }
 }
 
@@ -1256,35 +1264,41 @@ function drawSmoke(){
 
   for(const s of smoke){
 
-    ctx.fillStyle=
-      `rgba(45,48,45,${s.life*.12})`;
-
-    ctx.beginPath();
-
-    ctx.arc(
-      s.x,
-      s.y,
-      s.r,
-      0,
-      Math.PI*2
+    const g=c.createRadialGradient(
+      s.x,s.y,0,
+      s.x,s.y,s.r
     );
 
-    ctx.fill();
+    g.addColorStop(
+      0,
+      `rgba(60,60,55,${s.life*.15})`
+    );
+
+    g.addColorStop(
+      1,
+      "rgba(30,30,28,0)"
+    );
+
+    c.fillStyle=g;
+
+    c.beginPath();
+    c.arc(s.x,s.y,s.r,0,Math.PI*2);
+    c.fill();
   }
 }
 
 
-/* =========================================================
-   ROCKET / LIGHT TRAILS
-========================================================= */
+/* =====================================================
+   LIGHT TRAILS
+===================================================== */
 
-function launchRocket(){
+function launch(){
 
   rockets.push({
     x:rand(W*.15,W*.85),
-    y:H*.72,
+    y:H*.76,
     tx:rand(W*.25,W*.75),
-    ty:rand(H*.22,H*.45),
+    ty:rand(H*.25,H*.48),
     p:0
   });
 }
@@ -1295,18 +1309,17 @@ function updateRockets(){
 
     const r=rockets[i];
 
-    r.p+=.025;
+    r.p+=.028;
 
     if(r.p>=1){
 
-      flash();
-      cinematicHit();
+      addSmoke(r.tx,r.ty,22);
 
-      addSmoke(r.tx,r.ty);
+      flash();
+
+      impact();
 
       rockets.splice(i,1);
-
-      continue;
     }
   }
 }
@@ -1315,313 +1328,231 @@ function drawRockets(){
 
   for(const r of rockets){
 
-    const x=lerp(r.x,r.tx,ease(r.p));
-    const y=lerp(r.y,r.ty,ease(r.p));
+    const p=ease(r.p);
 
-    const px=lerp(r.x,r.tx,ease(Math.max(0,r.p-.1)));
-    const py=lerp(r.y,r.ty,ease(Math.max(0,r.p-.1)));
+    const x=lerp(r.x,r.tx,p);
+    const y=lerp(r.y,r.ty,p);
 
-    ctx.strokeStyle=
-      "rgba(255,190,80,.45)";
+    const pp=ease(clamp(r.p-.12,0,1));
 
-    ctx.lineWidth=3;
+    const px=lerp(r.x,r.tx,pp);
+    const py=lerp(r.y,r.ty,pp);
 
-    ctx.beginPath();
+    c.strokeStyle="rgba(255,196,92,.6)";
+    c.lineWidth=3;
 
-    ctx.moveTo(px,py);
-    ctx.lineTo(x,y);
+    c.beginPath();
+    c.moveTo(px,py);
+    c.lineTo(x,y);
+    c.stroke();
 
-    ctx.stroke();
+    c.fillStyle="#ffd77e";
 
-    ctx.fillStyle="#ffd47b";
-
-    ctx.beginPath();
-    ctx.arc(x,y,4,0,Math.PI*2);
-    ctx.fill();
+    c.beginPath();
+    c.arc(x,y,4,0,Math.PI*2);
+    c.fill();
   }
 }
 
 
-/* =========================================================
-   LIGHT FLASH
-========================================================= */
+/* =====================================================
+   FLASH
+===================================================== */
 
 function flash(){
 
   const el=document.getElementById("flash");
 
   el.style.transition="none";
-  el.style.opacity=".8";
-
-  requestAnimationFrame(()=>{
-
-    el.style.transition=
-      "opacity .65s ease";
-
-    el.style.opacity="0";
-  });
-}
-
-
-/* =========================================================
-   FLAG
-========================================================= */
-
-function drawFlag(t){
-
-  if(t<43) return;
-
-  const p=
-    clamp((t-43)/8,0,1);
-
-  const alpha=ease(p);
-
-  ctx.save();
-
-  ctx.globalAlpha=alpha;
-
-  const fw=Math.min(W*.48,520);
-  const fh=fw*.63;
-
-  const x=W/2-fw/2;
-  const y=H*.22;
-
-  ctx.shadowBlur=60;
-  ctx.shadowColor="rgba(255,220,130,.25)";
-
-  ctx.fillStyle="#c9272c";
-  ctx.fillRect(x,y,fw,fh/3);
-
-  ctx.fillStyle="#f2f2ed";
-  ctx.fillRect(x,y+fh/3,fw,fh/3);
-
-  ctx.fillStyle="#17191a";
-  ctx.fillRect(x,y+fh*2/3,fw,fh/3);
-
-  /* symbolic golden eagle */
-
-  ctx.fillStyle="#c99b36";
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    x+fw*.5,
-    y+fh*.47
-  );
-
-  ctx.lineTo(
-    x+fw*.44,
-    y+fh*.38
-  );
-
-  ctx.lineTo(
-    x+fw*.39,
-    y+fh*.46
-  );
-
-  ctx.lineTo(
-    x+fw*.44,
-    y+fh*.51
-  );
-
-  ctx.lineTo(
-    x+fw*.5,
-    y+fh*.57
-  );
-
-  ctx.lineTo(
-    x+fw*.56,
-    y+fh*.51
-  );
-
-  ctx.lineTo(
-    x+fw*.61,
-    y+fh*.46
-  );
-
-  ctx.lineTo(
-    x+fw*.56,
-    y+fh*.38
-  );
-
-  ctx.closePath();
-
-  ctx.fill();
-
-  ctx.restore();
-}
-
-
-/* =========================================================
-   PARTICLE DUST
-========================================================= */
-
-function drawDust(t){
-
-  if(t<20) return;
-
-  const amount=
-    clamp((t-20)/20,0,1);
-
-  for(let i=0;i<70;i++){
-
-    const x=
-      (i*137+t*15)%W;
-
-    const y=
-      H*.55+
-      ((i*71)%Math.floor(H*.45));
-
-    ctx.fillStyle=
-      `rgba(220,195,150,${.025*amount})`;
-
-    ctx.fillRect(x,y,2,2);
-  }
-}
-
-
-/* =========================================================
-   SCENE TEXT
-========================================================= */
-
-const scenes=[
-
-  {
-    from:0,
-    to:8,
-    kicker:"السادس من أكتوبر",
-    main:"يومٌ من التاريخ",
-    desc:"حين اجتمعت الإرادة والعزيمة"
-  },
-
-  {
-    from:8,
-    to:18,
-    kicker:"اللحظة",
-    main:"حين عبرت الإرادة",
-    desc:"سماءٌ تتغير... وأرضٌ تستعد للحظة تاريخية"
-  },
-
-  {
-    from:18,
-    to:30,
-    kicker:"قناة السويس",
-    main:"عبورٌ إلى التاريخ",
-    desc:"ذكرى خالدة في الوجدان المصري"
-  },
-
-  {
-    from:30,
-    to:43,
-    kicker:"أكتوبر ١٩٧٣",
-    main:"الإرادة لا تعرف المستحيل",
-    desc:"لحظات صنعت واحدة من أشهر صفحات التاريخ المصري"
-  },
-
-  {
-    from:43,
-    to:52,
-    kicker:"مصر",
-    main:"رايةٌ لا تنحني",
-    desc:"وطنٌ... وذكرى... وفخر"
-  },
-
-  {
-    from:52,
-    to:58,
-    kicker:"النهاية",
-    main:"نصر أكتوبر",
-    desc:"السادس من أكتوبر ١٩٧٣"
-  }
-
-];
-
-let currentScene=-1;
-
-function updateSceneText(t){
-
-  let index=
-    scenes.findIndex(
-      s=>t>=s.from && t<s.to
-    );
-
-  if(index<0) index=scenes.length-1;
-
-  if(index===currentScene) return;
-
-  currentScene=index;
-
-  const s=scenes[index];
-
-  const title=
-    document.getElementById("sceneTitle");
-
-  title.classList.remove("show");
+  el.style.opacity=".72";
 
   setTimeout(()=>{
-
-    document.getElementById("sceneKicker").textContent=s.kicker;
-    document.getElementById("sceneMain").textContent=s.main;
-    document.getElementById("sceneDescription").textContent=s.desc;
-
-    title.classList.add("show");
-
-  },100);
+    el.style.transition="opacity .7s";
+    el.style.opacity="0";
+  },30);
 }
 
 
-/* =========================================================
-   SCENE EFFECTS
-========================================================= */
+/* =====================================================
+   FLAG
+===================================================== */
 
-let lastRocket=0;
+function flag(t){
 
-function sceneEffects(t){
+  if(t<42)return;
 
-  if(t>29 && t<42){
+  const p=ease(clamp((t-42)/7,0,1));
 
-    if(t-lastRocket>2.8){
+  const w=Math.min(W*.48,560);
+  const h=w*.63;
 
-      launchRocket();
-      lastRocket=t;
+  const x=W/2-w/2;
+  const y=H*.22;
+
+  c.save();
+
+  c.globalAlpha=p;
+
+  c.shadowBlur=70;
+  c.shadowColor="rgba(255,210,120,.25)";
+
+  c.fillStyle="#c72c31";
+  c.fillRect(x,y,w,h/3);
+
+  c.fillStyle="#eee";
+  c.fillRect(x,y+h/3,w,h/3);
+
+  c.fillStyle="#171919";
+  c.fillRect(x,y+h*2/3,w,h/3);
+
+  /* golden symbolic eagle */
+
+  c.fillStyle="#c99b38";
+
+  c.beginPath();
+
+  c.moveTo(x+w*.50,y+h*.39);
+
+  c.lineTo(x+w*.43,y+h*.32);
+  c.lineTo(x+w*.36,y+h*.43);
+
+  c.lineTo(x+w*.44,y+h*.48);
+
+  c.lineTo(x+w*.50,y+h*.57);
+
+  c.lineTo(x+w*.56,y+h*.48);
+
+  c.lineTo(x+w*.64,y+h*.43);
+
+  c.lineTo(x+w*.57,y+h*.32);
+
+  c.closePath();
+
+  c.fill();
+
+  c.restore();
+}
+
+
+/* =====================================================
+   CINEMATIC LIGHT
+===================================================== */
+
+function cinematicLight(t){
+
+  if(t<10||t>45)return;
+
+  const p=
+    Math.sin(t*.35)*.5+.5;
+
+  const g=c.createLinearGradient(
+    0,0,W,H
+  );
+
+  g.addColorStop(
+    0,
+    `rgba(255,190,100,${.025*p})`
+  );
+
+  g.addColorStop(
+    .5,
+    "rgba(0,0,0,0)"
+  );
+
+  g.addColorStop(
+    1,
+    `rgba(20,30,50,${.06*(1-p)})`
+  );
+
+  c.fillStyle=g;
+  c.fillRect(0,0,W,H);
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+let lastLaunch=0;
+
+function events(t){
+
+  if(t>29&&t<42){
+
+    if(t-lastLaunch>2.4){
+
+      launch();
+      lastLaunch=t;
     }
   }
 
-  if(t>18 && t<25){
+  if(t>18&&t<30){
 
     if(Math.random()<.008){
 
       addSmoke(
-        W*.5+rand(-W*.3,W*.3),
-        H*.62
+        W/2+rand(-W*.3,W*.3),
+        H*.61,
+        10
       );
     }
   }
 }
 
 
-/* =========================================================
-   DRAW FRAME
-========================================================= */
+/* =====================================================
+   CAMERA
+===================================================== */
 
-function render(t){
+function camera(t){
 
-  ctx.clearRect(0,0,W,H);
-  fctx.clearRect(0,0,W,H);
+  let zoom=1;
 
-  drawSky(t);
-  drawStars(t);
-  drawMoon(t);
+  if(t>17&&t<28){
 
-  drawHorizon(t);
+    zoom=
+      1+
+      Math.sin((t-17)*.3)*.018;
+  }
 
-  drawDesert(t);
-  drawCanal(t);
+  if(t>29&&t<42){
 
-  drawPlanes(t);
-  drawTanks(t);
+    zoom=
+      1+
+      Math.sin(t*1.7)*.025;
+  }
 
-  drawDust(t);
+  const shake=
+    t>29&&t<42
+      ? Math.sin(t*19)*1.7
+      : 0;
+
+  canvas.style.transform=
+    `translate(${shake}px,${shake*.4}px) scale(${zoom})`;
+
+  fx.style.transform=
+    `translate(${shake*.5}px,${shake*.2}px) scale(${zoom})`;
+}
+
+
+/* =====================================================
+   FRAME
+===================================================== */
+
+function draw(t){
+
+  c.clearRect(0,0,W,H);
+
+  sky(t);
+  stars(t);
+  moon(t);
+  sun(t);
+
+  horizon();
+  canal(t);
+
+  planes(t);
+  tanks(t);
 
   updateSmoke();
   drawSmoke();
@@ -1629,94 +1560,50 @@ function render(t){
   updateRockets();
   drawRockets();
 
-  drawFlag(t);
+  flag(t);
 
-  /* atmospheric sun */
+  cinematicLight(t);
+  events(t);
 
-  if(t>17 && t<42){
+  camera(t);
+  updateTitle(t);
 
-    const p=
-      clamp((t-17)/10,0,1);
+  document
+    .querySelector("#progress span")
+    .style.width=
+      clamp(t/LENGTH,0,1)*100+"%";
 
-    const x=W*.18;
-    const y=H*.32;
+  const sec=Math.floor(t);
 
-    const g=ctx.createRadialGradient(
-      x,y,0,
-      x,y,W*.3
-    );
-
-    g.addColorStop(
-      0,
-      `rgba(255,192,100,${.18*p})`
-    );
-
-    g.addColorStop(
-      1,
-      "rgba(255,120,50,0)"
-    );
-
-    ctx.fillStyle=g;
-    ctx.fillRect(0,0,W,H);
-  }
-
-  sceneEffects(t);
-
-  updateSceneText(t);
-
-  const progress=
-    clamp(t/TOTAL,0,1)*100;
-
-  document.querySelector("#progress i")
-    .style.width=progress+"%";
+  document.getElementById("counter").textContent=
+    String(Math.floor(sec/60)).padStart(2,"0")
+    +":"+
+    String(sec%60).padStart(2,"0");
 }
 
 
-/* =========================================================
-   CAMERA
-========================================================= */
+/* =====================================================
+   MAIN LOOP
+===================================================== */
 
-function camera(){
+function loop(){
 
-  if(!playing) return;
+  if(running){
 
-  const shake=
-    elapsed>28 && elapsed<42
-      ? Math.sin(elapsed*20)*1.2
-      : 0;
+    time=
+      (performance.now()-startTime)/1000;
 
-  world.style.transform=
-    `translate(${shake}px,${shake*.5}px)`;
+    if(time>=LENGTH){
 
-  fx.style.transform=
-    `translate(${shake*.5}px,${shake*.3}px)`;
-}
-
-
-/* =========================================================
-   LOOP
-========================================================= */
-
-function loop(now){
-
-  if(playing){
-
-    elapsed=
-      (performance.now()-startedAt)/1000;
-
-    if(elapsed>=TOTAL){
-
-      elapsed=TOTAL;
-      playing=false;
+      time=LENGTH;
+      running=false;
 
       document
-        .getElementById("finale")
+        .getElementById("ending")
         .classList.add("show");
-
     }
 
-    render(elapsed);
-    camera();
+    draw(time);
   }
 
   requestAnimationFrame(loop);
@@ -1725,121 +1612,81 @@ function loop(now){
 requestAnimationFrame(loop);
 
 
-/* =========================================================
+/* =====================================================
    START
-========================================================= */
+===================================================== */
 
-document.getElementById("start")
-.addEventListener("click",()=>{
+document
+  .getElementById("start")
+  .onclick=()=>{
 
-  initAudio();
+    initAudio();
 
-  if(audio && audio.state==="suspended"){
-    audio.resume();
-  }
+    if(audio&&audio.state==="suspended")
+      audio.resume();
 
-  playing=true;
-  startedAt=performance.now();
+    running=true;
+    time=0;
+    startTime=performance.now();
 
-  document.getElementById("intro").style.opacity="0";
+    document
+      .getElementById("intro")
+      .style.opacity="0";
 
-  setTimeout(()=>{
+    document
+      .getElementById("controls")
+      .style.opacity="1";
 
-    document.getElementById("intro").style.display="none";
-
-    document.getElementById("controls").style.opacity="1";
-
-  },1500);
-
-  tone(180,.7,.05,"sine");
-});
-
-
-/* =========================================================
-   MUTE
-========================================================= */
-
-document.getElementById("mute")
-.addEventListener("click",()=>{
-
-  muted=!muted;
-
-  document.getElementById("mute").textContent=
-    muted ? "🔇" : "🔊";
-});
+    sound(150,.8,.05);
+  };
 
 
-/* =========================================================
+/* =====================================================
    REPLAY
-========================================================= */
+===================================================== */
 
-document.getElementById("replay")
-.addEventListener("click",()=>{
+document
+  .getElementById("again")
+  .onclick=()=>{
 
-  document
-    .getElementById("finale")
-    .classList.remove("show");
+    document
+      .getElementById("ending")
+      .classList.remove("show");
 
-  currentScene=-1;
+    smoke=[];
+    rockets=[];
 
-  smoke.length=0;
-  rockets.length=0;
+    sceneIndex=-1;
 
-  elapsed=0;
+    time=0;
+    startTime=performance.now();
+    running=true;
 
-  startedAt=performance.now();
-
-  playing=true;
-
-  if(audio && audio.state==="suspended"){
-    audio.resume();
-  }
-
-  flash();
-});
+    flash();
+  };
 
 
-/* =========================================================
-   KEYBOARD
-========================================================= */
+/* =====================================================
+   SOUND
+===================================================== */
 
-addEventListener("keydown",e=>{
-
-  if(e.code==="Space"){
-
-    e.preventDefault();
-
-    if(!playing){
-
-      if(elapsed>=TOTAL){
-
-        document
-          .getElementById("finale")
-          .classList.remove("show");
-
-        elapsed=0;
-        startedAt=performance.now();
-      }
-
-      playing=true;
-    }
-  }
-
-  if(e.key==="m"){
+document
+  .getElementById("sound")
+  .onclick=()=>{
 
     muted=!muted;
 
-    document.getElementById("mute").textContent=
-      muted ? "🔇" : "🔊";
-  }
-});
+    document.getElementById("sound")
+      .textContent=
+        muted?"🔇":"🔊";
+  };
 
 
-/* =========================================================
-   INITIAL DRAW
-========================================================= */
+/* =====================================================
+   INITIAL
+===================================================== */
 
-render(0);
+draw(0);
 
 </script>
 
