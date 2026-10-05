@@ -2,11 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-
-<title>فيلم العبور | ٦ أكتوبر ١٩٧٣</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>٦ أكتوبر | حكاية العبور</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -17,8 +18,13 @@ html,body{
     width:100%;
     height:100%;
     overflow:hidden;
-    background:#000;
-    font-family:Tahoma,Arial,sans-serif;
+    background:#020303;
+    color:#fff;
+    font-family:"Cairo",Tahoma,Arial,sans-serif;
+}
+
+body{
+    user-select:none;
 }
 
 #app{
@@ -28,40 +34,698 @@ html,body{
     background:#000;
 }
 
-canvas{
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+#scene{
     position:absolute;
     inset:0;
-    width:100%;
-    height:100%;
+    overflow:hidden;
+    background:#000;
 }
+
+.layer{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+}
+
+#sky{
+    background:
+        radial-gradient(
+            circle at 70% 35%,
+            rgba(255,177,91,.45),
+            transparent 18%
+        ),
+        linear-gradient(
+            180deg,
+            #090d10 0%,
+            #171d1d 52%,
+            #29251e 100%
+        );
+    transition:background 1s;
+}
+
+#stars{
+    opacity:.7;
+}
+
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 0 8px rgba(255,255,255,.7);
+    animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:.15}
+    to{opacity:.9}
+}
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+#camera{
+    position:absolute;
+    inset:-5%;
+    transform:scale(1);
+    transition:transform 1.2s cubic-bezier(.2,.8,.2,1);
+}
+
+/* =========================================================
+   DESERT
+========================================================= */
+
+#desert{
+    position:absolute;
+    left:-10%;
+    right:-10%;
+    bottom:-10%;
+    height:48%;
+    background:
+        linear-gradient(
+            165deg,
+            transparent 0 8%,
+            rgba(84,70,46,.7) 8% 10%,
+            transparent 10% 14%,
+            rgba(67,57,41,.8) 14% 17%,
+            transparent 17%
+        ),
+        linear-gradient(
+            180deg,
+            #6f6047,
+            #28251e
+        );
+    clip-path:polygon(
+        0 25%,
+        18% 10%,
+        40% 18%,
+        62% 5%,
+        80% 16%,
+        100% 8%,
+        100% 100%,
+        0 100%
+    );
+}
+
+/* =========================================================
+   SUN
+========================================================= */
+
+#sun{
+    position:absolute;
+    width:28vw;
+    height:28vw;
+    max-width:300px;
+    max-height:300px;
+    min-width:130px;
+    min-height:130px;
+    border-radius:50%;
+    left:68%;
+    top:23%;
+    transform:translate(-50%,-50%);
+    background:
+        radial-gradient(
+            circle,
+            #ffe4a2 0%,
+            #ef9a4a 18%,
+            rgba(219,105,54,.25) 50%,
+            transparent 70%
+        );
+    filter:blur(2px);
+    opacity:.7;
+}
+
+/* =========================================================
+   CANAL
+========================================================= */
+
+#canal{
+    position:absolute;
+    left:50%;
+    top:46%;
+    width:15%;
+    height:80%;
+    transform:translateX(-50%) perspective(500px) rotateX(5deg);
+    background:
+        linear-gradient(
+            90deg,
+            #182f34,
+            #426a6b 48%,
+            #193238
+        );
+    box-shadow:
+        0 0 70px rgba(45,101,107,.3);
+    transition:
+        width 1s,
+        transform 1s;
+}
+
+.waterLine{
+    position:absolute;
+    width:180%;
+    left:-40%;
+    height:1px;
+    background:rgba(210,220,194,.25);
+    animation:water 3s linear infinite;
+}
+
+@keyframes water{
+    from{transform:translateX(-30%)}
+    to{transform:translateX(30%)}
+}
+
+/* =========================================================
+   SHORE
+========================================================= */
+
+.shore{
+    position:absolute;
+    top:45%;
+    height:55%;
+    width:38%;
+    background:
+        linear-gradient(
+            180deg,
+            #756548,
+            #40372a
+        );
+}
+
+#shoreLeft{
+    left:0;
+    clip-path:polygon(
+        0 0,
+        100% 0,
+        78% 12%,
+        62% 27%,
+        42% 46%,
+        20% 68%,
+        0 100%
+    );
+}
+
+#shoreRight{
+    right:0;
+    clip-path:polygon(
+        0 12%,
+        25% 0,
+        100% 0,
+        100% 100%,
+        80% 68%,
+        59% 46%,
+        37% 27%
+    );
+}
+
+/* =========================================================
+   BRIDGE
+========================================================= */
+
+#bridge{
+    position:absolute;
+    width:65%;
+    height:8px;
+    left:50%;
+    top:55%;
+    transform:translate(-50%,-50%);
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #39352c 0 30px,
+            #716247 30px 42px
+        );
+    box-shadow:0 8px 15px #0008;
+    opacity:0;
+    transition:opacity 1s;
+}
+
+/* =========================================================
+   LIGHT BEAMS
+========================================================= */
+
+.beam{
+    position:absolute;
+    width:2px;
+    height:150%;
+    top:-25%;
+    background:
+        linear-gradient(
+            transparent,
+            rgba(255,215,145,.16),
+            transparent
+        );
+    transform-origin:center;
+    opacity:0;
+}
+
+#beam1{
+    left:40%;
+    transform:rotate(24deg);
+}
+
+#beam2{
+    left:62%;
+    transform:rotate(-18deg);
+}
+
+/* =========================================================
+   PLANES
+========================================================= */
+
+.plane{
+    position:absolute;
+    width:90px;
+    height:25px;
+    opacity:0;
+    filter:drop-shadow(0 5px 6px #000);
+}
+
+.plane:before{
+    content:"";
+    position:absolute;
+    width:85px;
+    height:8px;
+    top:9px;
+    left:0;
+    background:#161c1c;
+    clip-path:polygon(
+        0 50%,
+        80% 0,
+        100% 50%,
+        80% 100%
+    );
+}
+
+.plane:after{
+    content:"";
+    position:absolute;
+    width:35px;
+    height:5px;
+    left:15px;
+    top:-1px;
+    background:#161c1c;
+    transform:skewX(-35deg);
+}
+
+#plane1{
+    top:25%;
+    left:-15%;
+}
+
+#plane2{
+    top:34%;
+    right:-15%;
+    transform:scale(.65);
+}
+
+.fly1{
+    animation:fly1 5s linear forwards;
+}
+
+.fly2{
+    animation:fly2 5s linear forwards;
+}
+
+@keyframes fly1{
+    0%{left:-15%;opacity:0}
+    10%{opacity:.85}
+    90%{opacity:.85}
+    100%{left:115%;opacity:0}
+}
+
+@keyframes fly2{
+    0%{right:-15%;opacity:0}
+    10%{opacity:.7}
+    90%{opacity:.7}
+    100%{right:115%;opacity:0}
+}
+
+/* =========================================================
+   EXPLOSIONS / FLASHES
+========================================================= */
+
+.flash{
+    position:absolute;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle,
+            #fff8cf,
+            #ffb23e 25%,
+            rgba(210,76,33,.3) 55%,
+            transparent 72%
+        );
+    opacity:0;
+}
+
+.flash.go{
+    animation:flash .7s ease-out;
+}
+
+@keyframes flash{
+    0%{opacity:0;transform:scale(.3)}
+    12%{opacity:1;transform:scale(1.2)}
+    100%{opacity:0;transform:scale(3.5)}
+}
+
+/* =========================================================
+   SMOKE
+========================================================= */
+
+.smoke{
+    position:absolute;
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle,
+            rgba(55,56,52,.75),
+            rgba(38,39,36,.35) 45%,
+            transparent 70%
+        );
+    filter:blur(7px);
+    opacity:0;
+}
+
+.smoke.go{
+    animation:smoke 5s ease-out forwards;
+}
+
+@keyframes smoke{
+    0%{
+        opacity:0;
+        transform:translate(0,0) scale(.4);
+    }
+    20%{opacity:.7}
+    100%{
+        opacity:0;
+        transform:translate(30px,-180px) scale(3);
+    }
+}
+
+/* =========================================================
+   SOLDIERS / SILHOUETTES
+========================================================= */
+
+.soldier{
+    position:absolute;
+    width:9px;
+    height:34px;
+    background:#121615;
+    border-radius:5px 5px 1px 1px;
+    opacity:0;
+}
+
+.soldier:before{
+    content:"";
+    position:absolute;
+    width:11px;
+    height:11px;
+    border-radius:50%;
+    background:#111514;
+    top:-9px;
+    left:-1px;
+}
+
+.soldier:after{
+    content:"";
+    position:absolute;
+    width:25px;
+    height:3px;
+    background:#111514;
+    top:11px;
+    left:4px;
+    transform:rotate(-18deg);
+}
+
+/* =========================================================
+   TANKS
+========================================================= */
+
+.tank{
+    position:absolute;
+    width:70px;
+    height:30px;
+    background:#202722;
+    border-radius:7px 7px 4px 4px;
+    opacity:0;
+}
+
+.tank:before{
+    content:"";
+    position:absolute;
+    width:40px;
+    height:20px;
+    background:#252d27;
+    border-radius:12px 12px 3px 3px;
+    left:15px;
+    top:-13px;
+}
+
+.tank:after{
+    content:"";
+    position:absolute;
+    width:65px;
+    height:5px;
+    background:#141917;
+    left:25px;
+    top:-8px;
+    transform:rotate(-4deg);
+    transform-origin:left;
+}
+
+.tank.go{
+    animation:tankMove 7s linear forwards;
+}
+
+@keyframes tankMove{
+    0%{
+        transform:translateX(-130px);
+        opacity:0;
+    }
+    10%{opacity:1}
+    90%{opacity:1}
+    100%{
+        transform:translateX(130vw);
+        opacity:0;
+    }
+}
+
+/* =========================================================
+   MAP
+========================================================= */
+
+#map{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    transform:scale(.94);
+    transition:
+        opacity 1.2s,
+        transform 1.5s;
+}
+
+.mapEgypt{
+    position:absolute;
+    width:42%;
+    height:55%;
+    left:15%;
+    top:23%;
+    background:#75664a;
+    clip-path:polygon(
+        5% 0,
+        52% 4%,
+        71% 18%,
+        65% 37%,
+        76% 56%,
+        52% 77%,
+        28% 70%,
+        0 92%,
+        3% 50%
+    );
+    box-shadow:0 0 50px rgba(0,0,0,.5);
+}
+
+.mapSinai{
+    position:absolute;
+    width:40%;
+    height:43%;
+    right:9%;
+    top:29%;
+    background:#8a7650;
+    clip-path:polygon(
+        0 17%,
+        94% 0,
+        100% 79%,
+        12% 100%
+    );
+}
+
+.mapCanal{
+    position:absolute;
+    width:4px;
+    height:42%;
+    background:#5f8d91;
+    left:56%;
+    top:31%;
+    box-shadow:0 0 18px #5f8d9166;
+}
+
+.mapArrow{
+    position:absolute;
+    width:24%;
+    height:3px;
+    background:#c93e3e;
+    left:57%;
+    top:45%;
+    transform-origin:left;
+    transform:rotate(8deg) scaleX(0);
+    transition:transform 1.5s;
+}
+
+.mapArrow:after{
+    content:"";
+    position:absolute;
+    right:-3px;
+    top:-5px;
+    border-left:12px solid #c93e3e;
+    border-top:6px solid transparent;
+    border-bottom:6px solid transparent;
+}
+
+/* =========================================================
+   FLAG
+========================================================= */
+
+#flag{
+    position:absolute;
+    left:50%;
+    top:44%;
+    transform:translate(-50%,-50%) scale(.6);
+    width:min(420px,60vw);
+    height:min(270px,38vw);
+    opacity:0;
+    transition:
+        opacity 2s,
+        transform 2s;
+    filter:drop-shadow(0 20px 30px #000);
+}
+
+.flagPole{
+    position:absolute;
+    left:4%;
+    top:-20%;
+    width:5px;
+    height:150%;
+    background:linear-gradient(#e7ddbd,#716b58);
+}
+
+.flagCloth{
+    position:absolute;
+    left:5%;
+    top:0;
+    width:92%;
+    height:100%;
+    overflow:hidden;
+    box-shadow:0 15px 30px #0008;
+}
+
+.flagRed,
+.flagWhite,
+.flagBlack{
+    position:absolute;
+    left:0;
+    width:100%;
+    height:33.33%;
+}
+
+.flagRed{
+    top:0;
+    background:#b92732;
+}
+
+.flagWhite{
+    top:33.33%;
+    background:#eee9df;
+}
+
+.flagBlack{
+    bottom:0;
+    background:#111;
+}
+
+.eagle{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:48px;
+    height:48px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:#d4ad4d;
+    opacity:.95;
+}
+
+.eagle:before,
+.eagle:after{
+    content:"";
+    position:absolute;
+    width:55px;
+    height:18px;
+    background:#d4ad4d;
+    top:16px;
+}
+
+.eagle:before{
+    right:28px;
+    transform:rotate(18deg);
+}
+
+.eagle:after{
+    left:28px;
+    transform:rotate(-18deg);
+}
+
+/* =========================================================
+   OVERLAY
+========================================================= */
 
 #vignette{
     position:absolute;
     inset:0;
+    z-index:50;
     pointer-events:none;
-    z-index:4;
     background:
         radial-gradient(
-            ellipse at center,
+            ellipse,
             transparent 35%,
-            rgba(0,0,0,.25) 65%,
-            rgba(0,0,0,.9) 130%
+            rgba(0,0,0,.2) 60%,
+            rgba(0,0,0,.9) 120%
         );
 }
 
 #grain{
     position:absolute;
     inset:-50%;
-    z-index:5;
+    z-index:51;
     pointer-events:none;
     opacity:.045;
     background-image:
         radial-gradient(
-            rgba(255,255,255,.7) .6px,
+            rgba(255,255,255,.8) .7px,
             transparent .8px
         );
     background-size:4px 4px;
-    animation:grain .15s steps(2) infinite;
+    animation:grain .12s steps(2) infinite;
 }
 
 @keyframes grain{
@@ -72,216 +736,273 @@ canvas{
     100%{transform:translate(-2%,-1%)}
 }
 
-/* ================= INTRO ================= */
+/* =========================================================
+   INTRO
+========================================================= */
 
 #intro{
     position:absolute;
     inset:0;
-    z-index:20;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    flex-direction:column;
     background:
         radial-gradient(
-            circle at 50% 45%,
-            #172027 0,
-            #050708 48%,
-            #000 100%
+            circle at center,
+            #182022,
+            #060808 55%,
+            #000
         );
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    transition:opacity 1.4s ease;
+    transition:opacity 1.5s;
 }
 
-.date{
-    font-size:clamp(55px,13vw,145px);
-    font-weight:900;
+.introSmall{
+    color:#c5aa6b;
+    font-size:12px;
     letter-spacing:7px;
+    margin-bottom:22px;
+}
+
+.introDate{
+    font-size:
+        clamp(60px,15vw,160px);
+    font-weight:900;
+    line-height:.95;
+    letter-spacing:4px;
     text-shadow:
-        0 0 40px rgba(255,210,120,.1),
-        0 20px 60px #000;
+        0 0 60px rgba(255,210,120,.08),
+        0 25px 60px #000;
 }
 
-.title{
-    margin-top:22px;
-    color:#d9bd76;
-    font-size:clamp(18px,4vw,34px);
-    letter-spacing:6px;
+.introTitle{
+    margin-top:25px;
+    font-size:
+        clamp(20px,4vw,40px);
+    font-weight:700;
+    letter-spacing:5px;
 }
 
-.line{
-    width:110px;
+.introLine{
+    width:120px;
     height:1px;
-    background:#c8a75c;
-    margin:35px 0;
+    background:#c6a861;
+    margin:32px 0;
 }
 
 #start{
-    border:1px solid rgba(255,255,255,.4);
-    background:rgba(255,255,255,.04);
-    color:white;
-    padding:16px 45px;
-    border-radius:50px;
+    border:1px solid rgba(224,200,143,.55);
+    color:#fff;
+    background:rgba(255,255,255,.045);
+    padding:15px 46px;
+    border-radius:100px;
+    font-family:inherit;
     font-size:16px;
     cursor:pointer;
-    transition:.3s;
-    backdrop-filter:blur(10px);
+    backdrop-filter:blur(12px);
+    transition:.35s;
 }
 
 #start:hover{
-    background:rgba(255,255,255,.13);
-    transform:scale(1.04);
+    background:rgba(220,190,120,.12);
+    border-color:#e4ca89;
+    transform:translateY(-3px);
+    box-shadow:0 15px 45px rgba(0,0,0,.35);
 }
 
-#start:active{
-    transform:scale(.97);
+.introHint{
+    margin-top:17px;
+    color:#ffffff55;
+    font-size:10px;
 }
 
-.tip{
-    margin-top:18px;
-    color:rgba(255,255,255,.4);
+/* =========================================================
+   STORY UI
+========================================================= */
+
+#story{
+    position:absolute;
+    z-index:60;
+    left:0;
+    right:0;
+    bottom:8%;
+    text-align:center;
+    padding:0 7%;
+    pointer-events:none;
+    transition:opacity .8s;
+}
+
+.storyDate{
+    color:#d9bd76;
     font-size:11px;
+    letter-spacing:4px;
+    margin-bottom:12px;
 }
 
-/* ================= HUD ================= */
+.storyTitle{
+    font-size:
+        clamp(27px,6vw,70px);
+    font-weight:900;
+    line-height:1.1;
+    text-shadow:0 6px 35px #000;
+}
+
+.storyText{
+    max-width:850px;
+    margin:15px auto 0;
+    color:#fff;
+    font-size:
+        clamp(12px,2vw,17px);
+    line-height:2;
+    text-shadow:0 4px 20px #000;
+}
+
+/* =========================================================
+   TOP HUD
+========================================================= */
 
 #hud{
     position:absolute;
-    z-index:8;
+    z-index:70;
     top:18px;
     left:20px;
     right:20px;
     display:flex;
     justify-content:space-between;
-    color:rgba(255,255,255,.5);
-    font-size:10px;
+    font-size:9px;
     letter-spacing:3px;
+    color:#ffffff66;
     pointer-events:none;
 }
 
-#sound{
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+#controls{
     position:absolute;
-    z-index:8;
-    top:45px;
+    z-index:80;
     left:20px;
-    font-size:10px;
-    color:rgba(255,255,255,.4);
-    opacity:0;
+    bottom:20px;
+    display:flex;
+    gap:8px;
 }
 
-/* ================= CAPTION ================= */
-
-#caption{
-    position:absolute;
-    z-index:10;
-    left:50%;
-    bottom:9%;
-    transform:translateX(-50%);
-    width:min(900px,90%);
-    text-align:center;
-    opacity:0;
-    transition:opacity .7s;
-    pointer-events:none;
-    text-shadow:0 4px 25px #000;
+.ctrl{
+    width:38px;
+    height:38px;
+    border:1px solid #ffffff25;
+    background:#0005;
+    color:#fff;
+    border-radius:50%;
+    cursor:pointer;
+    backdrop-filter:blur(8px);
 }
 
-#captionDate{
-    color:#d7bd78;
-    font-size:11px;
-    letter-spacing:4px;
-    margin-bottom:10px;
+.ctrl:hover{
+    background:#ffffff15;
 }
-
-#captionTitle{
-    font-size:clamp(25px,5vw,58px);
-    font-weight:900;
-}
-
-#captionText{
-    margin:13px auto 0;
-    max-width:760px;
-    color:rgba(255,255,255,.86);
-    font-size:clamp(12px,2vw,17px);
-    line-height:1.9;
-}
-
-/* ================= PROGRESS ================= */
 
 #progress{
     position:absolute;
-    z-index:12;
+    z-index:80;
+    bottom:0;
     left:0;
     right:0;
-    bottom:0;
     height:3px;
-    background:rgba(255,255,255,.1);
+    background:#ffffff18;
 }
 
 #progressBar{
     height:100%;
     width:0%;
-    background:linear-gradient(
-        90deg,
-        #8d7135,
-        #f1db91,
-        #8d7135
-    );
-    box-shadow:0 0 12px rgba(230,190,90,.7);
+    background:#d2b56d;
+    box-shadow:0 0 12px #d2b56d;
 }
 
-/* ================= END ================= */
+/* =========================================================
+   END
+========================================================= */
 
-#end{
+#ending{
     position:absolute;
     inset:0;
-    z-index:30;
-    background:#000;
+    z-index:200;
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
+    flex-direction:column;
     text-align:center;
+    background:#000;
     opacity:0;
     pointer-events:none;
     transition:opacity 2s;
 }
 
-#end h1{
-    font-size:clamp(50px,11vw,140px);
+.endTitle{
+    font-size:
+        clamp(48px,12vw,145px);
     font-weight:900;
 }
 
-#end .gold{
-    color:#d5bb75;
-    font-size:clamp(16px,3vw,28px);
-    letter-spacing:5px;
+.endGold{
     margin-top:20px;
+    color:#d4b66c;
+    font-size:
+        clamp(16px,3vw,28px);
+    letter-spacing:5px;
 }
 
-#end hr{
-    width:120px;
-    border:0;
+.endLine{
+    width:130px;
     height:1px;
-    background:#a98b4d;
-    margin:32px;
+    background:#a98d51;
+    margin:35px;
 }
 
-#end p{
-    color:rgba(255,255,255,.45);
+.endText{
+    color:#ffffff65;
     font-size:12px;
 }
 
-@media(max-width:600px){
+#restart{
+    margin-top:35px;
+    border:1px solid #ffffff40;
+    background:#ffffff08;
+    color:#fff;
+    border-radius:40px;
+    padding:12px 35px;
+    font-family:inherit;
+    cursor:pointer;
+}
+
+/* MOBILE */
+
+@media(max-width:650px){
+
+    #story{
+        bottom:11%;
+    }
+
+    #canal{
+        width:22%;
+    }
+
+    .storyText{
+        line-height:1.7;
+    }
+
+    #controls{
+        bottom:12px;
+        left:12px;
+    }
 
     #hud{
         top:12px;
         left:12px;
         right:12px;
-    }
-
-    #sound{
-        left:12px;
-        top:38px;
     }
 }
 </style>
@@ -291,1648 +1012,249 @@ canvas{
 
 <div id="app">
 
-<canvas id="canvas"></canvas>
+<div id="scene">
+
+<div id="camera">
+
+<div id="sky" class="layer"></div>
+
+<div id="stars" class="layer"></div>
+
+<div id="sun"></div>
+
+<div id="desert"></div>
+
+<div class="shore" id="shoreLeft"></div>
+<div class="shore" id="shoreRight"></div>
+
+<div id="canal">
+
+    <div class="waterLine" style="top:15%"></div>
+    <div class="waterLine" style="top:29%"></div>
+    <div class="waterLine" style="top:43%"></div>
+    <div class="waterLine" style="top:57%"></div>
+    <div class="waterLine" style="top:71%"></div>
+    <div class="waterLine" style="top:85%"></div>
+
+</div>
+
+<div id="bridge"></div>
+
+<div class="beam" id="beam1"></div>
+<div class="beam" id="beam2"></div>
+
+<div class="plane" id="plane1"></div>
+<div class="plane" id="plane2"></div>
+
+<div class="flash" id="flash1"></div>
+<div class="flash" id="flash2"></div>
+<div class="flash" id="flash3"></div>
+
+<div class="smoke" id="smoke1"></div>
+<div class="smoke" id="smoke2"></div>
+<div class="smoke" id="smoke3"></div>
+
+<div class="tank" id="tank1"></div>
+<div class="tank" id="tank2"></div>
+
+<div id="map">
+
+    <div class="mapEgypt"></div>
+    <div class="mapSinai"></div>
+    <div class="mapCanal"></div>
+    <div class="mapArrow"></div>
+
+</div>
+
+<div id="flag">
+
+    <div class="flagPole"></div>
+
+    <div class="flagCloth">
+        <div class="flagRed"></div>
+        <div class="flagWhite"></div>
+        <div class="flagBlack"></div>
+        <div class="eagle"></div>
+    </div>
+
+</div>
+
+</div>
+
+</div>
 
 <div id="vignette"></div>
 <div id="grain"></div>
 
-<div id="hud">
-    <span>٦ أكتوبر ١٩٧٣</span>
-    <span>فيلم العبور</span>
-</div>
-
-<div id="sound">● المؤثرات الصوتية تعمل</div>
-
-<div id="caption">
-
-    <div id="captionDate"></div>
-
-    <div id="captionTitle"></div>
-
-    <div id="captionText"></div>
-
-</div>
-
-<div id="progress">
-    <div id="progressBar"></div>
-</div>
 
 <!-- INTRO -->
 
 <div id="intro">
 
-    <div class="date">06.10.1973</div>
-
-    <div class="title">
-        فيلم العبور
+    <div class="introSmall">
+        مصر • ١٩٧٣
     </div>
 
-    <div class="line"></div>
+    <div class="introDate">
+        ٦ أكتوبر
+    </div>
+
+    <div class="introTitle">
+        حكاية العبور
+    </div>
+
+    <div class="introLine"></div>
 
     <button id="start">
-        ابدأ الفيلم
+        ابدأ التجربة
     </button>
 
-    <div class="tip">
-        شغّل الصوت للحصول على التجربة الكاملة
+    <div class="introHint">
+        يفضل تشغيل الصوت
     </div>
 
 </div>
+
+
+<!-- HUD -->
+
+<div id="hud">
+    <span>فيلم تفاعلي</span>
+    <span>06 • 10 • 1973</span>
+</div>
+
+
+<!-- STORY -->
+
+<div id="story">
+
+    <div class="storyDate" id="storyDate"></div>
+
+    <div class="storyTitle" id="storyTitle"></div>
+
+    <div class="storyText" id="storyText"></div>
+
+</div>
+
+
+<!-- CONTROLS -->
+
+<div id="controls">
+
+    <button class="ctrl" id="mute">🔊</button>
+
+    <button class="ctrl" id="pause">Ⅱ</button>
+
+</div>
+
+
+<div id="progress">
+    <div id="progressBar"></div>
+</div>
+
 
 <!-- END -->
 
-<div id="end">
+<div id="ending">
 
-    <h1>نصر أكتوبر</h1>
+    <div class="endTitle">
+        نصر أكتوبر
+    </div>
 
-    <div class="gold">
+    <div class="endGold">
         السادس من أكتوبر ١٩٧٣
     </div>
 
-    <hr>
+    <div class="endLine"></div>
 
-    <p>
+    <div class="endText">
         ذكرى العبور والنصر
-    </p>
+    </div>
+
+    <button id="restart">
+        إعادة التجربة
+    </button>
 
 </div>
 
 </div>
+
 
 <script>
 
-/* =====================================================
-   إعداد الفيلم
-===================================================== */
-
-const canvas = document.getElementById("canvas");
-
-const ctx = canvas.getContext("2d");
-
-let W = 0;
-let H = 0;
-let DPR = 1;
-
-function resize(){
-
-    W = window.innerWidth;
-
-    H = window.innerHeight;
-
-    DPR = Math.min(
-        window.devicePixelRatio || 1,
-        1.5
-    );
-
-    canvas.width = W * DPR;
-
-    canvas.height = H * DPR;
-
-    canvas.style.width = W + "px";
-
-    canvas.style.height = H + "px";
-
-    ctx.setTransform(
-        DPR,
-        0,
-        0,
-        DPR,
-        0,
-        0
-    );
-}
-
-window.addEventListener(
-    "resize",
-    resize
-);
-
-resize();
-
-
-/* =====================================================
-   أدوات
-===================================================== */
-
-function clamp(v,min,max){
-
-    return Math.max(
-        min,
-        Math.min(max,v)
-    );
-}
-
-function lerp(a,b,t){
-
-    return a + (b-a)*t;
-}
-
-function ease(t){
-
-    t = clamp(t,0,1);
-
-    return t*t*(3-2*t);
-}
-
-function between(t,a,b){
-
-    return ease(
-        (t-a)/(b-a)
-    );
-}
-
-
-/* =====================================================
-   AUDIO
-===================================================== */
-
-let audio = null;
-
-function createAudio(){
-
-    if(audio) return;
-
-    const AudioContext =
-        window.AudioContext ||
-        window.webkitAudioContext;
-
-    if(!AudioContext) return;
-
-    const ac =
-        new AudioContext();
-
-    const master =
-        ac.createGain();
-
-    master.gain.value = .20;
-
-    master.connect(
-        ac.destination
-    );
-
-    audio = {
-        ac: ac,
-        master: master
-    };
-
-    /* صوت خلفية منخفض */
-
-    const osc =
-        ac.createOscillator();
-
-    const gain =
-        ac.createGain();
-
-    osc.type = "sine";
-
-    osc.frequency.value = 38;
-
-    gain.gain.value = .018;
-
-    osc.connect(gain);
-
-    gain.connect(master);
-
-    osc.start();
-
-    audio.drone = gain;
-}
-
-
-function playTone(
-    frequency,
-    duration,
-    volume,
-    type
-){
-
-    if(!audio) return;
-
-    const ac =
-        audio.ac;
-
-    const osc =
-        ac.createOscillator();
-
-    const gain =
-        ac.createGain();
-
-    osc.type =
-        type || "sine";
-
-    osc.frequency.setValueAtTime(
-        frequency,
-        ac.currentTime
-    );
-
-    gain.gain.setValueAtTime(
-        .0001,
-        ac.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        volume || .05,
-        ac.currentTime + .04
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        ac.currentTime + duration
-    );
-
-    osc.connect(gain);
-
-    gain.connect(
-        audio.master
-    );
-
-    osc.start();
-
-    osc.stop(
-        ac.currentTime +
-        duration +
-        .05
-    );
-}
-
-
-function whoosh(){
-
-    if(!audio) return;
-
-    const ac =
-        audio.ac;
-
-    const osc =
-        ac.createOscillator();
-
-    const gain =
-        ac.createGain();
-
-    osc.type = "sawtooth";
-
-    osc.frequency.setValueAtTime(
-        80,
-        ac.currentTime
-    );
-
-    osc.frequency.exponentialRampToValueAtTime(
-        700,
-        ac.currentTime + .8
-    );
-
-    osc.frequency.exponentialRampToValueAtTime(
-        70,
-        ac.currentTime + 1.7
-    );
-
-    gain.gain.setValueAtTime(
-        .0001,
-        ac.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .09,
-        ac.currentTime + .55
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        ac.currentTime + 1.8
-    );
-
-    osc.connect(gain);
-
-    gain.connect(
-        audio.master
-    );
-
-    osc.start();
-
-    osc.stop(
-        ac.currentTime + 1.9
-    );
-}
-
-
-function boom(){
-
-    playTone(
-        45,
-        .8,
-        .13,
-        "sawtooth"
-    );
-
-    setTimeout(
-        function(){
-
-            playTone(
-                70,
-                .45,
-                .07,
-                "triangle"
-            );
-
-        },
-        100
-    );
-}
-
-
-function waterSound(){
-
-    playTone(
-        110,
-        1.1,
-        .025,
-        "sine"
-    );
-
-    setTimeout(
-        function(){
-
-            playTone(
-                150,
-                .8,
-                .018,
-                "sine"
-            );
-
-        },
-        200
-    );
-}
-
-
-/* =====================================================
-   PARTICLES
-===================================================== */
-
-const starParticles = [];
-
-for(let i=0;i<170;i++){
-
-    starParticles.push({
-
-        x:Math.random(),
-
-        y:Math.random()*.7,
-
-        r:.4+Math.random()*1.5,
-
-        a:.2+Math.random()*.7,
-
-        phase:Math.random()*6.28
-
-    });
-}
-
-
-const dustParticles = [];
-
-for(let i=0;i<140;i++){
-
-    dustParticles.push({
-
-        x:Math.random(),
-
-        y:Math.random(),
-
-        size:3+Math.random()*20,
-
-        speed:.2+Math.random()*1.3,
-
-        phase:Math.random()*6.28
-
-    });
-}
-
-
-/* =====================================================
-   السماء
-===================================================== */
-
-function drawSky(
-    top,
-    bottom
-){
-
-    const gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            H
-        );
-
-    gradient.addColorStop(
-        0,
-        top
-    );
-
-    gradient.addColorStop(
-        1,
-        bottom
-    );
-
-    ctx.fillStyle =
-        gradient;
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-}
-
-
-/* =====================================================
-   النجوم
-===================================================== */
-
-function drawStars(t){
-
-    for(
-        const s of starParticles
-    ){
-
-        const alpha =
-            s.a +
-            Math.sin(
-                t*.004+
-                s.phase
-            )*.18;
-
-        ctx.fillStyle =
-            `rgba(255,255,255,${alpha})`;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            s.x*W,
-            s.y*H,
-            s.r,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-    }
-}
-
-
-/* =====================================================
-   الشمس
-===================================================== */
-
-function drawSun(
-    x,
-    y,
-    radius,
-    alpha
-){
-
-    const g =
-        ctx.createRadialGradient(
-            x,
-            y,
-            0,
-            x,
-            y,
-            radius
-        );
-
-    g.addColorStop(
-        0,
-        `rgba(255,238,180,${alpha})`
-    );
-
-    g.addColorStop(
-        .25,
-        `rgba(255,180,75,${alpha*.4})`
-    );
-
-    g.addColorStop(
-        1,
-        "rgba(255,120,30,0)"
-    );
-
-    ctx.fillStyle = g;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        x,
-        y,
-        radius,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-}
-
-
-/* =====================================================
-   خريطة سينمائية
-===================================================== */
-
-function drawMap(t,p){
-
-    ctx.fillStyle =
-        "#10191b";
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-    /* مصر */
-
-    ctx.fillStyle =
-        "#77694b";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        W*.08,
-        H*.18
-    );
-
-    ctx.lineTo(
-        W*.46,
-        H*.15
-    );
-
-    ctx.lineTo(
-        W*.51,
-        H*.38
-    );
-
-    ctx.lineTo(
-        W*.43,
-        H*.61
-    );
-
-    ctx.lineTo(
-        W*.22,
-        H*.68
-    );
-
-    ctx.lineTo(
-        W*.07,
-        H*.52
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-
-    /* سيناء */
-
-    ctx.fillStyle =
-        "#8b7953";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        W*.51,
-        H*.36
-    );
-
-    ctx.lineTo(
-        W*.92,
-        H*.17
-    );
-
-    ctx.lineTo(
-        W*.97,
-        H*.56
-    );
-
-    ctx.lineTo(
-        W*.52,
-        H*.64
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-
-    /* قناة السويس */
-
-    ctx.strokeStyle =
-        "#4d7378";
-
-    ctx.lineWidth = 10;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        W*.51,
-        H*.35
-    );
-
-    ctx.lineTo(
-        W*.51,
-        H*.64
-    );
-
-    ctx.stroke();
-
-
-    /* النيل */
-
-    ctx.strokeStyle =
-        "#42666c";
-
-    ctx.lineWidth = 14;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        W*.18,
-        H*.16
-    );
-
-    ctx.bezierCurveTo(
-        W*.28,
-        H*.27,
-        W*.36,
-        H*.39,
-        W*.48,
-        H*.5
-    );
-
-    ctx.stroke();
-
-
-    /* الكتابة */
-
-    ctx.fillStyle =
-        "rgba(255,255,255,.75)";
-
-    ctx.font =
-        "bold 15px Tahoma";
-
-    ctx.fillText(
-        "مصر",
-        W*.27,
-        H*.3
-    );
-
-    ctx.fillText(
-        "سيناء",
-        W*.71,
-        H*.3
-    );
-
-    ctx.fillStyle =
-        "#e0c17a";
-
-    ctx.fillText(
-        "قناة السويس",
-        W*.53,
-        H*.5
-    );
-
-
-    /* أسهم العبور */
-
-    const visible =
-        ease(
-            clamp(p,0,1)
-        );
-
-    ctx.strokeStyle =
-        `rgba(185,50,45,${visible})`;
-
-    ctx.lineWidth = 4;
-
-    for(let i=0;i<5;i++){
-
-        const y =
-            H*.37 +
-            i*H*.045;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            W*.52,
-            y
-        );
-
-        ctx.lineTo(
-            W*.74,
-            y+H*.025
-        );
-
-        ctx.stroke();
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            W*.74,
-            y+H*.025
-        );
-
-        ctx.lineTo(
-            W*.71,
-            y+H*.005
-        );
-
-        ctx.moveTo(
-            W*.74,
-            y+H*.025
-        );
-
-        ctx.lineTo(
-            W*.71,
-            y+H*.045
-        );
-
-        ctx.stroke();
-    }
-}
-
-
-/* =====================================================
-   القناة
-===================================================== */
-
-function drawCanal(t){
-
-    const horizon =
-        H*.45;
-
-    drawSky(
-        "#a96847",
-        "#d6ad72"
-    );
-
-    drawSun(
-        W*.72,
-        H*.28,
-        H*.33,
-        .7
-    );
-
-
-    /* الصحراء */
-
-    ctx.fillStyle =
-        "#786a4c";
-
-    ctx.fillRect(
-        0,
-        horizon,
-        W,
-        H-horizon
-    );
-
-
-    /* الماء */
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        W*.47,
-        horizon
-    );
-
-    ctx.lineTo(
-        W*.53,
-        horizon
-    );
-
-    ctx.lineTo(
-        W*.94,
-        H
-    );
-
-    ctx.lineTo(
-        W*.06,
-        H
-    );
-
-    ctx.closePath();
-
-    const water =
-        ctx.createLinearGradient(
-            0,
-            horizon,
-            0,
-            H
-        );
-
-    water.addColorStop(
-        0,
-        "#3d6268"
-    );
-
-    water.addColorStop(
-        .5,
-        "#23474f"
-    );
-
-    water.addColorStop(
-        1,
-        "#071a20"
-    );
-
-    ctx.fillStyle =
-        water;
-
-    ctx.fill();
-
-
-    /* انعكاسات الماء */
-
-    for(let i=0;i<100;i++){
-
-        const p =
-            i/100;
-
-        const y =
-            horizon +
-            Math.pow(p,1.6)*
-            (H-horizon);
-
-        const width =
-            lerp(
-                8,
-                220,
-                p
-            );
-
-        const drift =
-            Math.sin(
-                t*.003+i
-            )*12;
-
-        ctx.strokeStyle =
-            i%3===0
-            ? "rgba(220,205,160,.17)"
-            : "rgba(150,180,175,.11)";
-
-        ctx.lineWidth = 1;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            W/2-width+drift,
-            y
-        );
-
-        ctx.lineTo(
-            W/2+width+drift,
-            y
-        );
-
-        ctx.stroke();
-    }
-
-
-    /* الشواطئ */
-
-    ctx.strokeStyle =
-        "rgba(230,195,125,.45)";
-
-    ctx.lineWidth = 2;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        W*.47,
-        horizon
-    );
-
-    ctx.lineTo(
-        W*.06,
-        H
-    );
-
-    ctx.moveTo(
-        W*.53,
-        horizon
-    );
-
-    ctx.lineTo(
-        W*.94,
-        H
-    );
-
-    ctx.stroke();
-}
-
-
-/* =====================================================
-   القوارب
-===================================================== */
-
-function drawBoat(
-    x,
-    y,
-    scale,
-    direction
-){
-
-    ctx.save();
-
-    ctx.translate(
-        x,
-        y
-    );
-
-    ctx.scale(
-        scale*direction,
-        scale
-    );
-
-    ctx.fillStyle =
-        "#101515";
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        -55,
-        0
-    );
-
-    ctx.lineTo(
-        42,
-        0
-    );
-
-    ctx.lineTo(
-        55,
-        -10
-    );
-
-    ctx.lineTo(
-        35,
-        11
-    );
-
-    ctx.lineTo(
-        -45,
-        11
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-
-    ctx.fillRect(
-        -18,
-        -23,
-        37,
-        23
-    );
-
-
-    ctx.fillRect(
-        -7,
-        -38,
-        14,
-        16
-    );
-
-
-    ctx.strokeStyle =
-        "#111";
-
-    ctx.lineWidth = 3;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        -37
-    );
-
-    ctx.lineTo(
-        0,
-        -64
-    );
-
-    ctx.stroke();
-
-    ctx.restore();
-}
-
-
-/* =====================================================
-   تحصينات
-===================================================== */
-
-function drawFortification(){
-
-    const y =
-        H*.57;
-
-    ctx.fillStyle =
-        "#594a35";
-
-    ctx.fillRect(
-        0,
-        y,
-        W,
-        H*.2
-    );
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        y
-    );
-
-    for(
-        let x=0;
-        x<=W;
-        x+=40
-    ){
-
-        ctx.lineTo(
-            x,
-            y-25-
-            Math.sin(x*.025)*9
-        );
-    }
-
-    ctx.lineTo(
-        W,
-        y+70
-    );
-
-    ctx.lineTo(
-        0,
-        y+70
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-
-    for(
-        let x=50;
-        x<W;
-        x+=110
-    ){
-
-        ctx.strokeStyle =
-            "#29291f";
-
-        ctx.lineWidth = 4;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            x,
-            y-58
-        );
-
-        ctx.lineTo(
-            x,
-            y-8
-        );
-
-        ctx.stroke();
-    }
-}
-
-
-/* =====================================================
-   دخان
-===================================================== */
-
-function drawSmoke(t,intensity){
-
-    for(let i=0;i<40;i++){
-
-        const p =
-            i/40;
-
-        const x =
-            W*.48 +
-            Math.sin(
-                i*2.4+t*.001
-            )*85+
-            p*120;
-
-        const y =
-            H*.6-
-            p*H*.35+
-            Math.sin(
-                t*.001+i
-            )*10;
-
-        const r =
-            12+p*70;
-
-        const g =
-            ctx.createRadialGradient(
-                x,
-                y,
-                0,
-                x,
-                y,
-                r
-            );
-
-        g.addColorStop(
-            0,
-            `rgba(55,57,52,${.14*intensity*(1-p)})`
-        );
-
-        g.addColorStop(
-            1,
-            "rgba(20,20,18,0)"
-        );
-
-        ctx.fillStyle = g;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            r,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-    }
-}
-
-
-/* =====================================================
-   غبار
-===================================================== */
-
-function drawDust(t,intensity){
-
-    for(
-        const d of dustParticles
-    ){
-
-        const x =
-            ((d.x*W+
-            t*d.speed*35)
-            %(W+250))-125;
-
-        const y =
-            H*.64+
-            Math.sin(
-                t*.002+d.phase
-            )*H*.12+
-            d.y*H*.15;
-
-        ctx.fillStyle =
-            `rgba(190,163,112,${.025*intensity})`;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            d.size*intensity,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-    }
-}
-
-
-/* =====================================================
-   الضوء
-===================================================== */
-
-function flash(alpha){
-
-    if(alpha<=0)return;
-
-    ctx.fillStyle =
-        `rgba(255,220,160,${alpha})`;
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-}
-
-
-/* =====================================================
-   الطائرة السينمائية
-===================================================== */
-
-function plane(
-    x,
-    y,
-    scale,
-    angle
-){
-
-    ctx.save();
-
-    ctx.translate(
-        x,
-        y
-    );
-
-    ctx.rotate(
-        angle
-    );
-
-    ctx.scale(
-        scale,
-        scale
-    );
-
-    ctx.fillStyle =
-        "#151c1e";
-
-    /* الجسم */
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        80,
-        0
-    );
-
-    ctx.lineTo(
-        10,
-        -7
-    );
-
-    ctx.lineTo(
-        -60,
-        -5
-    );
-
-    ctx.lineTo(
-        -82,
-        0
-    );
-
-    ctx.lineTo(
-        -60,
-        5
-    );
-
-    ctx.lineTo(
-        10,
-        7
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
-
-
-    /* الجناح */
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        25,
-        -3
-    );
-
-    ctx.lineTo(
-        -20,
-        -55
-    );
-
-    ctx.lineTo(
-        -5,
-        -58
-    );
-
-    ctx.lineTo(
-        45,
-        -4
-    );
-
-    ctx.fill();
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        25,
-        3
-    );
-
-    ctx.lineTo(
-        -20,
-        55
-    );
-
-    ctx.lineTo(
-        -5,
-        58
-    );
-
-    ctx.lineTo(
-        45,
-        4
-    );
-
-    ctx.fill();
-
-
-    /* المحرك */
-
-    ctx.shadowColor =
-        "rgba(255,140,60,.8)";
-
-    ctx.shadowBlur = 18;
-
-    ctx.fillStyle =
-        "rgba(255,145,60,.75)";
-
-    ctx.beginPath();
-
-    ctx.ellipse(
-        -78,
-        0,
-        10,
-        3,
-        0,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    ctx.restore();
-}
-
-
-/* =====================================================
-   العلم
-===================================================== */
-
-function drawFlag(t,alpha){
-
-    ctx.save();
-
-    ctx.globalAlpha =
-        alpha;
-
-    const width =
-        Math.min(
-            W*.43,
-            400
-        );
-
-    const height =
-        width*.66;
-
-    const x =
-        W/2-width/2;
-
-    const y =
-        H*.28;
-
-
-    /* العمود */
-
-    ctx.strokeStyle =
-        "#c8b990";
-
-    ctx.lineWidth = 4;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        x-12,
-        y-45
-    );
-
-    ctx.lineTo(
-        x-12,
-        y+height+70
-    );
-
-    ctx.stroke();
-
-
-    const rows=45;
-
-    for(
-        let i=0;
-        i<rows;
-        i++
-    ){
-
-        let color;
-
-        if(
-            i<rows/3
-        ){
-
-            color="#b62e34";
-
-        }else if(
-            i<rows*2/3
-        ){
-
-            color="#eeeae0";
-
-        }else{
-
-            color="#111";
-        }
-
-        const yy =
-            i/rows*height;
-
-        ctx.fillStyle =
-            color;
-
-        ctx.beginPath();
-
-        for(
-            let j=0;
-            j<=70;
-            j++
-        ){
-
-            const xx =
-                j/70*width;
-
-            const wave =
-                Math.sin(
-                    t*.006+
-                    j*.25+
-                    i*.08
-                )*8;
-
-            if(j===0){
-
-                ctx.moveTo(
-                    x+xx,
-                    y+yy+wave
-                );
-
-            }else{
-
-                ctx.lineTo(
-                    x+xx,
-                    y+yy+wave
-                );
-            }
-        }
-
-        for(
-            let j=70;
-            j>=0;
-            j--
-        ){
-
-            const xx =
-                j/70*width;
-
-            const wave =
-                Math.sin(
-                    t*.006+
-                    j*.25+
-                    (i+1)*.08
-                )*8;
-
-            ctx.lineTo(
-                x+xx,
-                y+yy+
-                height/rows+
-                wave
-            );
-        }
-
-        ctx.closePath();
-
-        ctx.fill();
-    }
-
-
-    /* النسر بشكل رمزي */
-
-    ctx.fillStyle =
-        "#d4b85e";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        W/2,
-        y+height/2,
-        height*.08,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-    ctx.restore();
-}
-
-
-/* =====================================================
-   المشاهد
-===================================================== */
+/* =========================================================
+   DATA
+========================================================= */
 
 const scenes = [
 
 {
-    start:0,
-    end:7,
+    from:0,
+    to:7,
     date:"",
     title:"",
     text:""
 },
 
 {
-    start:7,
-    end:21,
-    date:"قبل العبور",
-    title:"سنوات من الاستعداد",
-    text:
-    "بعد عام ١٩٦٧ بدأت مصر إعادة بناء قواتها والاستعداد لاستعادة الأرض."
+    from:7,
+    to:20,
+    date:"قبل الحرب",
+    title:"سنوات من الانتظار",
+    text:"بعد حرب ١٩٦٧ أصبحت قناة السويس خط المواجهة. بدأت مصر إعادة بناء قواتها والاستعداد لاستعادة الأرض."
 },
 
 {
-    start:21,
-    end:34,
+    from:20,
+    to:34,
     date:"٦ أكتوبر ١٩٧٣",
-    title:"بداية المعركة",
-    text:
-    "في السادس من أكتوبر بدأت العمليات المصرية والسورية ضد القوات الإسرائيلية."
+    title:"الساعة التي تغيّر فيها كل شيء",
+    text:"بدأت العمليات المصرية والسورية في السادس من أكتوبر، في هجوم منسق فاجأ إسرائيل."
 },
 
 {
-    start:34,
-    end:51,
-    date:"الساعة الأولى",
-    title:"العبور",
-    text:
-    "عبرت القوات المصرية قناة السويس في قطاعات متعددة، وبدأت إقامة رؤوس جسور على الضفة الشرقية."
+    from:34,
+    to:51,
+    date:"بداية العبور",
+    title:"قناة السويس",
+    text:"بدأت القوات المصرية عبور القناة وإنشاء رؤوس جسور على الضفة الشرقية."
 },
 
 {
-    start:51,
-    end:67,
-    date:"الجبهة الشرقية",
-    title:"خط بارليف",
-    text:
-    "تقدمت القوات المصرية نحو التحصينات الإسرائيلية على الضفة الشرقية للقناة."
+    from:51,
+    to:67,
+    date:"الضفة الشرقية",
+    title:"الاقتراب من التحصينات",
+    text:"تقدمت القوات المصرية على الضفة الشرقية وبدأت المعارك حول التحصينات وخط بارليف."
 },
 
 {
-    start:67,
-    end:82,
+    from:67,
+    to:84,
     date:"الأيام الأولى",
-    title:"تثبيت رؤوس الكباري",
-    text:
-    "استمر تدفق القوات والمعدات عبر القناة، واستمرت المعارك على الجبهة."
+    title:"رؤوس الجسور",
+    text:"استمر نقل القوات والمعدات عبر القناة وتثبيت المواقع الجديدة شرقها."
 },
 
 {
-    start:82,
-    end:101,
-    date:"أيام الحرب",
-    title:"معركة تتغير كل ساعة",
-    text:
-    "استمرت العمليات العسكرية على الجبهتين المصرية والسورية خلال الأيام التالية."
+    from:84,
+    to:101,
+    date:"الحرب",
+    title:"الجبهة تشتعل",
+    text:"استمرت العمليات العسكرية وتبدلت موازين القتال خلال الأيام التالية."
 },
 
 {
-    start:101,
-    end:113,
-    date:"من الحرب إلى السلام",
-    title:"طريق طويل بعد المعركة",
-    text:
-    "فتحت نتائج الحرب طريقًا سياسيًا انتهى لاحقًا باتفاقية السلام وانسحاب إسرائيل من سيناء."
+    from:101,
+    to:113,
+    date:"ما بعد المعركة",
+    title:"من الحرب إلى الطريق السياسي",
+    text:"كان للحرب أثر كبير على المشهد السياسي، ومهدت نتائجها لمسار المفاوضات التي أعقبتها."
 },
 
 {
-    start:113,
-    end:120,
+    from:113,
+    to:120,
     date:"",
     title:"",
     text:""
@@ -1943,739 +1265,527 @@ const scenes = [
 const TOTAL=120;
 
 
-/* =====================================================
-   رسم كل مشهد
-===================================================== */
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
-function renderScene(t){
+const intro =
+document.getElementById("intro");
 
-    const sceneIndex =
-        scenes.findIndex(
-            s =>
-            t>=s.start &&
-            t<s.end
-        );
+const story =
+document.getElementById("story");
 
-    const index =
-        sceneIndex<0
-        ? scenes.length-1
-        : sceneIndex;
+const storyDate =
+document.getElementById("storyDate");
+
+const storyTitle =
+document.getElementById("storyTitle");
+
+const storyText =
+document.getElementById("storyText");
+
+const progress =
+document.getElementById("progressBar");
+
+const pauseBtn =
+document.getElementById("pause");
+
+const muteBtn =
+document.getElementById("mute");
+
+const ending =
+document.getElementById("ending");
+
+
+/* =========================================================
+   STARS
+========================================================= */
+
+const stars =
+document.getElementById("stars");
+
+for(let i=0;i<130;i++){
 
     const s =
-        scenes[index];
+    document.createElement("div");
 
-    const p =
-        clamp(
-            (t-s.start)/
-            (s.end-s.start),
-            0,
-            1
-        );
+    s.className="star";
 
+    s.style.left=
+        Math.random()*100+"%";
 
-    /* خلفية */
+    s.style.top=
+        Math.random()*65+"%";
 
-    ctx.clearRect(
-        0,
-        0,
-        W,
-        H
-    );
+    s.style.animationDelay=
+        Math.random()*3+"s";
 
+    s.style.opacity=
+        .1+
+        Math.random()*.8;
 
-    /* =========================================
-       المشهد 0
-    ========================================= */
-
-    if(index===0){
-
-        drawSky(
-            "#020304",
-            "#020304"
-        );
-
-    }
-
-
-    /* =========================================
-       المشهد 1
-    ========================================= */
-
-    if(index===1){
-
-        drawSky(
-            "#071018",
-            "#172329"
-        );
-
-        drawStars(t);
-
-        drawMap(
-            t,
-            p
-        );
-
-        /* نبض زمني */
-
-        const glow =
-            .035+
-            Math.sin(t*.8)*.015;
-
-        ctx.fillStyle =
-            `rgba(220,190,110,${glow})`;
-
-        ctx.fillRect(
-            0,
-            0,
-            W,
-            H
-        );
-    }
-
-
-    /* =========================================
-       المشهد 2
-    ========================================= */
-
-    if(index===2){
-
-        drawSky(
-            "#b66b4b",
-            "#2b2722"
-        );
-
-        drawSun(
-            W*.72,
-            H*.3,
-            H*.32,
-            .65
-        );
-
-        /* الأرض */
-
-        ctx.fillStyle =
-            "#26261f";
-
-        ctx.fillRect(
-            0,
-            H*.58,
-            W,
-            H*.42
-        );
-
-        /* طائرات بعيدة */
-
-        for(let i=0;i<7;i++){
-
-            const x =
-                W*.05+
-                i*W*.15+
-                Math.sin(
-                    t*.003+i
-                )*15;
-
-            const y =
-                H*.27+
-                Math.sin(
-                    t*.004+i
-                )*18;
-
-            plane(
-                x,
-                y,
-                .12+
-                i*.008,
-                -.04
-            );
-        }
-
-        /* لحظة ضوء */
-
-        const pulse =
-            Math.max(
-                0,
-                Math.sin(t*.018)
-            )*.16;
-
-        flash(pulse);
-    }
-
-
-    /* =========================================
-       المشهد 3
-    ========================================= */
-
-    if(index===3){
-
-        drawCanal(t);
-
-        /* قارب 1 */
-
-        drawBoat(
-            W*.44+
-            Math.sin(t*.002)*15,
-            H*.57,
-            .62,
-            1
-        );
-
-        /* قارب 2 */
-
-        drawBoat(
-            W*.56-
-            Math.sin(t*.0017)*20,
-            H*.65,
-            .95,
-            -1
-        );
-
-        /* قارب 3 */
-
-        drawBoat(
-            W*.49+
-            Math.sin(t*.001)*30,
-            H*.76,
-            1.35,
-            1
-        );
-
-        /* silhouettes */
-
-        for(let i=0;i<12;i++){
-
-            const q=i/11;
-
-            const x =
-                W*.43+
-                q*W*.14;
-
-            const y =
-                H*.49+
-                q*H*.04;
-
-            ctx.fillStyle =
-                "rgba(12,17,16,.8)";
-
-            ctx.beginPath();
-
-            ctx.arc(
-                x,
-                y,
-                3+q*3,
-                0,
-                Math.PI*2
-            );
-
-            ctx.fill();
-
-            ctx.fillRect(
-                x-2,
-                y,
-                4,
-                10+q*6
-            );
-        }
-
-        /* حركة كاميرا وهمية */
-
-        ctx.save();
-
-        ctx.globalAlpha =
-            between(p,.15,.75)*.13;
-
-        ctx.strokeStyle =
-            "#fff1c4";
-
-        ctx.lineWidth=2;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            W*.5,
-            H*.45
-        );
-
-        ctx.lineTo(
-            W*.5,
-            H*.82
-        );
-
-        ctx.stroke();
-
-        ctx.restore();
-    }
-
-
-    /* =========================================
-       المشهد 4
-    ========================================= */
-
-    if(index===4){
-
-        drawSky(
-            "#704b3d",
-            "#20221e"
-        );
-
-        drawSun(
-            W*.57,
-            H*.31,
-            H*.28,
-            .25
-        );
-
-        drawFortification();
-
-        /* مواقع دفاعية بعيدة */
-
-        for(let i=0;i<6;i++){
-
-            const x =
-                W*.1+
-                i*W*.16;
-
-            const y =
-                H*.48+
-                Math.sin(i)*5;
-
-            ctx.fillStyle =
-                "#34362b";
-
-            ctx.fillRect(
-                x,
-                y,
-                60,
-                32
-            );
-
-            ctx.fillStyle =
-                "#24251f";
-
-            ctx.fillRect(
-                x+10,
-                y-18,
-                40,
-                20
-            );
-        }
-
-        drawSmoke(
-            t,
-            1
-        );
-
-        drawDust(
-            t,
-            1.3
-        );
-
-        const light =
-            Math.max(
-                0,
-                Math.sin(
-                    t*.014
-                )
-            )*.12;
-
-        flash(light);
-    }
-
-
-    /* =========================================
-       المشهد 5
-    ========================================= */
-
-    if(index===5){
-
-        drawSky(
-            "#7b5442",
-            "#29271f"
-        );
-
-        drawSun(
-            W*.6,
-            H*.3,
-            H*.3,
-            .3
-        );
-
-        /* قناة في الأفق */
-
-        ctx.fillStyle =
-            "#3a5b5e";
-
-        ctx.fillRect(
-            0,
-            H*.43,
-            W,
-            25
-        );
-
-        /* الكباري */
-
-        for(let i=0;i<3;i++){
-
-            const y =
-                H*.47+
-                i*H*.1;
-
-            ctx.strokeStyle =
-                "rgba(80,80,68,.9)";
-
-            ctx.lineWidth=8;
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                W*.12,
-                y
-            );
-
-            ctx.lineTo(
-                W*.88,
-                y
-            );
-
-            ctx.stroke();
-        }
-
-        /* تدفق القوات بشكل رمزي */
-
-        for(let i=0;i<15;i++){
-
-            const q=i/14;
-
-            const x =
-                W*.06+
-                q*W*.88;
-
-            const y =
-                H*.58+
-                q*H*.27;
-
-            const size =
-                .08+
-                q*.55;
-
-            ctx.fillStyle =
-                "rgba(25,28,23,.9)";
-
-            ctx.beginPath();
-
-            ctx.ellipse(
-                x,
-                y,
-                34*size,
-                11*size,
-                0,
-                0,
-                Math.PI*2
-            );
-
-            ctx.fill();
-
-            ctx.fillRect(
-                x-20*size,
-                y-10*size,
-                40*size,
-                10*size
-            );
-        }
-
-        drawDust(
-            t,
-            1.6
-        );
-
-        drawSmoke(
-            t,
-            1.2
-        );
-    }
-
-
-    /* =========================================
-       المشهد 6
-    ========================================= */
-
-    if(index===6){
-
-        const phase =
-            Math.floor(p*4);
-
-        if(phase%2===0){
-
-            drawSky(
-                "#526067",
-                "#252b2b"
-            );
-
-            drawSun(
-                W*.67,
-                H*.27,
-                H*.27,
-                .2
-            );
-
-            ctx.fillStyle =
-                "#3c3d34";
-
-            ctx.fillRect(
-                0,
-                H*.56,
-                W,
-                H*.44
-            );
-
-            drawSmoke(
-                t,
-                1.3
-            );
-
-            drawDust(
-                t,
-                1.1
-            );
-
-        }else{
-
-            drawMap(
-                t,
-                (p*4)%1
-            );
-        }
-    }
-
-
-    /* =========================================
-       المشهد 7
-    ========================================= */
-
-    if(index===7){
-
-        drawSky(
-            "#b26f4e",
-            "#151a1a"
-        );
-
-        drawSun(
-            W*.5,
-            H*.4,
-            H*.32,
-            .55
-        );
-
-        /* مياه هادئة */
-
-        ctx.fillStyle =
-            "#1d3a40";
-
-        ctx.fillRect(
-            0,
-            H*.56,
-            W,
-            H*.44
-        );
-
-        for(let i=0;i<80;i++){
-
-            const y =
-                H*.58+
-                i*H*.005;
-
-            const width =
-                30+i*4;
-
-            ctx.strokeStyle =
-                "rgba(220,200,150,.08)";
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                W/2-width,
-                y
-            );
-
-            ctx.lineTo(
-                W/2+width,
-                y
-            );
-
-            ctx.stroke();
-        }
-
-        drawFlag(
-            t,
-            between(
-                p,
-                .1,
-                .65
-            )
-        );
-    }
-
-
-    /* =========================================
-       المشهد 8
-    ========================================= */
-
-    if(index===8){
-
-        ctx.fillStyle="#000";
-
-        ctx.fillRect(
-            0,
-            0,
-            W,
-            H
-        );
-    }
-
-
-    /* =========================================
-       الانتقالات
-    ========================================= */
-
-    if(p<.12){
-
-        const alpha =
-            1-p/.12;
-
-        ctx.fillStyle =
-            `rgba(0,0,0,${alpha})`;
-
-        ctx.fillRect(
-            0,
-            0,
-            W,
-            H
-        );
-    }
-
-    if(p>.9){
-
-        const alpha =
-            (p-.9)/.1;
-
-        ctx.fillStyle =
-            `rgba(0,0,0,${alpha*.65})`;
-
-        ctx.fillRect(
-            0,
-            0,
-            W,
-            H
-        );
-    }
-
-
-    /* =========================================
-       النص
-    ========================================= */
-
-    const caption =
-        document.getElementById(
-            "caption"
-        );
-
-    if(
-        s.title &&
-        index!==8
-    ){
-
-        caption.style.opacity="1";
-
-        document.getElementById(
-            "captionDate"
-        ).textContent =
-            s.date;
-
-        document.getElementById(
-            "captionTitle"
-        ).textContent =
-            s.title;
-
-        document.getElementById(
-            "captionText"
-        ).textContent =
-            s.text;
-
-    }else{
-
-        caption.style.opacity="0";
-    }
-
-
-    /* =========================================
-       الشريط
-    ========================================= */
-
-    document.getElementById(
-        "progressBar"
-    ).style.width =
-        (
-            clamp(
-                t/TOTAL,
-                0,
-                1
-            )*100
-        )+"%";
+    stars.appendChild(s);
 }
 
 
-/* =====================================================
-   الأحداث الصوتية
-===================================================== */
+/* =========================================================
+   AUDIO
+========================================================= */
 
-let lastScene=-1;
+let audioCtx=null;
+let master=null;
+let muted=false;
 
-function checkSound(t){
+function initAudio(){
 
-    const index =
-        scenes.findIndex(
-            s =>
-            t>=s.start &&
-            t<s.end
-        );
+    if(audioCtx)return;
 
-    if(index===lastScene)
+    const AC=
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+    if(!AC)return;
+
+    audioCtx=new AC();
+
+    master=
+        audioCtx.createGain();
+
+    master.gain.value=.18;
+
+    master.connect(
+        audioCtx.destination
+    );
+}
+
+function tone(
+    freq,
+    duration,
+    volume=.04,
+    type="sine"
+){
+
+    if(!audioCtx || muted)return;
+
+    const osc=
+        audioCtx.createOscillator();
+
+    const gain=
+        audioCtx.createGain();
+
+    osc.type=type;
+
+    osc.frequency.setValueAtTime(
+        freq,
+        audioCtx.currentTime
+    );
+
+    gain.gain.setValueAtTime(
+        .0001,
+        audioCtx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        volume,
+        audioCtx.currentTime+.05
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        audioCtx.currentTime+duration
+    );
+
+    osc.connect(gain);
+
+    gain.connect(master);
+
+    osc.start();
+
+    osc.stop(
+        audioCtx.currentTime+
+        duration+
+        .05
+    );
+}
+
+function boom(){
+
+    if(!audioCtx || muted)return;
+
+    tone(
+        42,
+        .8,
+        .11,
+        "sawtooth"
+    );
+
+    setTimeout(
+        ()=>{
+            tone(
+                67,
+                .5,
+                .055,
+                "triangle"
+            );
+        },
+        90
+    );
+}
+
+function whoosh(){
+
+    if(!audioCtx || muted)return;
+
+    const osc=
+        audioCtx.createOscillator();
+
+    const gain=
+        audioCtx.createGain();
+
+    osc.type="sawtooth";
+
+    osc.frequency.setValueAtTime(
+        90,
+        audioCtx.currentTime
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        600,
+        audioCtx.currentTime+1
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        80,
+        audioCtx.currentTime+2
+    );
+
+    gain.gain.setValueAtTime(
+        .0001,
+        audioCtx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .05,
+        audioCtx.currentTime+.7
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        audioCtx.currentTime+2
+    );
+
+    osc.connect(gain);
+    gain.connect(master);
+
+    osc.start();
+
+    osc.stop(
+        audioCtx.currentTime+2.1
+    );
+}
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let playing=false;
+let paused=false;
+let currentTime=0;
+let previousScene=-1;
+let lastFrame=0;
+
+
+/* =========================================================
+   SCENE HELPERS
+========================================================= */
+
+function getScene(t){
+
+    for(
+        let i=0;
+        i<scenes.length;
+        i++
+    ){
+
+        if(
+            t>=scenes[i].from &&
+            t<scenes[i].to
+        ){
+
+            return i;
+        }
+    }
+
+    return scenes.length-1;
+}
+
+function setStory(index){
+
+    const s=
+        scenes[index];
+
+    if(
+        !s.title
+    ){
+
+        story.style.opacity="0";
+
         return;
+    }
 
-    lastScene=index;
+    story.style.opacity="0";
+
+    setTimeout(
+        ()=>{
+
+            storyDate.textContent=
+                s.date;
+
+            storyTitle.textContent=
+                s.title;
+
+            storyText.textContent=
+                s.text;
+
+            story.style.opacity="1";
+
+        },
+        150
+    );
+}
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+function camera(t){
+
+    const scene=
+        getScene(t);
+
+    let scale=1;
+
+    if(scene===1)
+        scale=1.04;
+
+    if(scene===2)
+        scale=1.10;
+
+    if(scene===3)
+        scale=1.18;
+
+    if(scene===4)
+        scale=1.07;
+
+    if(scene===5)
+        scale=1.13;
+
+    if(scene===6)
+        scale=1.04;
+
+    if(scene===7)
+        scale=1.08;
+
+    document.getElementById(
+        "camera"
+    ).style.transform=
+        `scale(${scale})`;
+}
+
+
+/* =========================================================
+   SCENE VISUALS
+========================================================= */
+
+function resetVisuals(){
+
+    document.getElementById("map")
+        .style.opacity="0";
+
+    document.getElementById("flag")
+        .style.opacity="0";
+
+    document.getElementById("bridge")
+        .style.opacity="0";
+
+    document.getElementById("beam1")
+        .style.opacity="0";
+
+    document.getElementById("beam2")
+        .style.opacity="0";
+
+    document.getElementById("canal")
+        .style.width="15%";
+
+    document.getElementById("shoreLeft")
+        .style.opacity="1";
+
+    document.getElementById("shoreRight")
+        .style.opacity="1";
+
+    document.getElementById("sun")
+        .style.opacity=".7";
+
+    document.getElementById("desert")
+        .style.opacity="1";
+
+    document.getElementById("stars")
+        .style.opacity=".7";
+}
+
+
+/* =========================================================
+   EFFECT
+========================================================= */
+
+function flashAt(id){
+
+    const el=
+        document.getElementById(id);
+
+    el.classList.remove("go");
+
+    void el.offsetWidth;
+
+    el.classList.add("go");
+}
+
+function smokeAt(id){
+
+    const el=
+        document.getElementById(id);
+
+    el.classList.remove("go");
+
+    void el.offsetWidth;
+
+    el.classList.add("go");
+}
+
+
+/* =========================================================
+   ANIMATION EVENT
+========================================================= */
+
+function sceneEnter(index){
+
+    resetVisuals();
+
+    setStory(index);
 
     if(index===2){
 
         whoosh();
 
         setTimeout(
-            boom,
-            900
+            ()=>boom(),
+            800
         );
+
+        document.getElementById(
+            "plane1"
+        ).classList.add("fly1");
+
+        document.getElementById(
+            "plane2"
+        ).classList.add("fly2");
     }
 
     if(index===3){
 
-        waterSound();
-    }
+        document.getElementById(
+            "canal"
+        ).style.width="22%";
 
-    if(index===4){
+        document.getElementById(
+            "beam1"
+        ).style.opacity=".8";
 
-        boom();
-    }
-
-    if(index===5){
+        document.getElementById(
+            "beam2"
+        ).style.opacity=".7";
 
         whoosh();
 
         setTimeout(
-            boom,
-            800
+            ()=>boom(),
+            1200
+        );
+    }
+
+    if(index===4){
+
+        document.getElementById(
+            "bridge"
+        ).style.opacity="1";
+
+        flashAt("flash1");
+
+        smokeAt("smoke1");
+
+        setTimeout(
+            ()=>boom(),
+            400
+        );
+    }
+
+    if(index===5){
+
+        document.getElementById(
+            "bridge"
+        ).style.opacity="1";
+
+        document.getElementById(
+            "tank1"
+        ).classList.add("go");
+
+        document.getElementById(
+            "tank2"
+        ).classList.add("go");
+
+        smokeAt("smoke2");
+
+        whoosh();
+    }
+
+    if(index===6){
+
+        document.getElementById(
+            "map"
+        ).style.opacity="1";
+
+        setTimeout(
+            ()=>{
+                document.querySelector(
+                    ".mapArrow"
+                ).style.transform=
+                    "rotate(8deg) scaleX(1)";
+            },
+            300
+        );
+
+        tone(
+            130,
+            1.5,
+            .035,
+            "triangle"
         );
     }
 
     if(index===7){
 
-        playTone(
+        document.getElementById(
+            "flag"
+        ).style.opacity="1";
+
+        document.getElementById(
+            "flag"
+        ).style.transform=
+            "translate(-50%,-50%) scale(1)";
+
+        tone(
             65,
             3,
             .04,
@@ -2685,120 +1795,234 @@ function checkSound(t){
 }
 
 
-/* =====================================================
-   التشغيل
-===================================================== */
+/* =========================================================
+   FRAME
+========================================================= */
 
-let playing=false;
-let startTime=0;
-
-function animate(now){
+function frame(now){
 
     if(!playing)
         return;
 
-    const elapsed =
-        (now-startTime)/1000;
+    if(paused){
 
-    renderScene(
-        elapsed
-    );
+        lastFrame=now;
 
-    checkSound(
-        elapsed
-    );
-
-    if(elapsed>=TOTAL){
-
-        playing=false;
-
-        document.getElementById(
-            "end"
-        ).style.opacity="1";
+        requestAnimationFrame(frame);
 
         return;
     }
 
-    requestAnimationFrame(
-        animate
-    );
+    const delta=
+        (now-lastFrame)/1000;
+
+    lastFrame=now;
+
+    currentTime+=delta;
+
+    if(
+        currentTime>=TOTAL
+    ){
+
+        currentTime=TOTAL;
+
+        finish();
+
+        return;
+    }
+
+    const scene=
+        getScene(currentTime);
+
+    if(scene!==previousScene){
+
+        previousScene=scene;
+
+        sceneEnter(scene);
+    }
+
+    camera(currentTime);
+
+    progress.style.width=
+        (
+            currentTime/TOTAL*100
+        )+"%";
+
+    requestAnimationFrame(frame);
 }
 
 
-/* =====================================================
-   زر البداية — الجزء المهم
-===================================================== */
+/* =========================================================
+   START
+========================================================= */
 
 document.getElementById(
     "start"
 ).addEventListener(
     "click",
-    async function(){
+    async ()=>{
 
-        console.log(
-            "FILM START"
-        );
+        initAudio();
 
-        createAudio();
-
-        if(audio){
+        if(audioCtx){
 
             try{
-
-                await audio.ac.resume();
-
-            }catch(error){
-
-                console.log(
-                    "Audio:",
-                    error
-                );
-            }
+                await audioCtx.resume();
+            }catch(e){}
         }
-
-        document.getElementById(
-            "sound"
-        ).style.opacity="1";
 
         playing=true;
 
-        lastScene=-1;
+        paused=false;
 
-        startTime =
-            performance.now();
+        currentTime=0;
 
-        document.getElementById(
-            "intro"
-        ).style.opacity="0";
+        previousScene=-1;
+
+        intro.style.opacity="0";
 
         setTimeout(
-            function(){
-
-                document.getElementById(
-                    "intro"
-                ).style.display="none";
-
+            ()=>{
+                intro.style.display="none";
             },
             1500
         );
 
-        requestAnimationFrame(
-            animate
-        );
+        lastFrame=
+            performance.now();
+
+        requestAnimationFrame(frame);
     }
 );
 
 
-/* =====================================================
-   تشغيل أول إطار
-===================================================== */
+/* =========================================================
+   PAUSE
+========================================================= */
 
-drawSky(
-    "#020304",
-    "#020304"
+pauseBtn.addEventListener(
+    "click",
+    ()=>{
+
+        if(!playing)return;
+
+        paused=!paused;
+
+        pauseBtn.textContent=
+            paused ? "▶" : "Ⅱ";
+    }
+);
+
+
+/* =========================================================
+   MUTE
+========================================================= */
+
+muteBtn.addEventListener(
+    "click",
+    ()=>{
+
+        muted=!muted;
+
+        muteBtn.textContent=
+            muted ? "🔇" : "🔊";
+
+        if(master){
+
+            master.gain.value=
+                muted ? 0 : .18;
+        }
+    }
+);
+
+
+/* =========================================================
+   FINISH
+========================================================= */
+
+function finish(){
+
+    playing=false;
+
+    story.style.opacity="0";
+
+    progress.style.width="100%";
+
+    ending.style.opacity="1";
+
+    ending.style.pointerEvents="auto";
+}
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+document.getElementById(
+    "restart"
+).addEventListener(
+    "click",
+    ()=>{
+
+        ending.style.opacity="0";
+
+        ending.style.pointerEvents="none";
+
+        document.getElementById(
+            "plane1"
+        ).classList.remove("fly1");
+
+        document.getElementById(
+            "plane2"
+        ).classList.remove("fly2");
+
+        document.getElementById(
+            "tank1"
+        ).classList.remove("go");
+
+        document.getElementById(
+            "tank2"
+        ).classList.remove("go");
+
+        document.querySelector(
+            ".mapArrow"
+        ).style.transform=
+            "rotate(8deg) scaleX(0)";
+
+        intro.style.display="flex";
+
+        intro.style.opacity="1";
+
+        resetVisuals();
+
+        progress.style.width="0%";
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    e=>{
+
+        if(e.code==="Space"){
+
+            e.preventDefault();
+
+            pauseBtn.click();
+        }
+
+        if(e.key==="m"){
+
+            muteBtn.click();
+        }
+    }
 );
 
 </script>
 
 </body>
-  </html>
+    </html> 
