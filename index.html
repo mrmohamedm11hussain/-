@@ -1,329 +1,192 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07111f">
-
-  <title>نصر ٦ أكتوبر 🇪🇬</title>
-  <meta name="description" content="تجربة رقمية احتفالية بذكرى نصر أكتوبر المجيد">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>نصر ٦ أكتوبر 🇪🇬</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- خلفية الجسيمات -->
-  <canvas id="particles"></canvas>
+<div id="flash"></div>
 
-  <!-- شاشة البداية -->
-  <section class="hero" id="home">
+<div class="cinema">
 
-    <div class="stars"></div>
+  <!-- السماء -->
+  <section class="scene scene-sky" id="opening">
 
-    <div class="hero-content">
+    <div class="moon"></div>
 
-      <div class="egypt-symbol">
-        🇪🇬
-      </div>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
 
-      <p class="eyebrow">ذكرى خالدة في تاريخ مصر</p>
+    <div class="sky-stars"></div>
 
-      <h1>
-        نصر
-        <span>٦ أكتوبر</span>
-      </h1>
+    <!-- طائرات -->
+    <div class="jet jet1">✈</div>
+    <div class="jet jet2">✈</div>
+    <div class="jet jet3">✈</div>
 
-      <div class="date-line">
-        <span></span>
-        <strong>١٩٧٣</strong>
-        <span></span>
-      </div>
+    <!-- مسارات الطائرات -->
+    <div class="trail trail1"></div>
+    <div class="trail trail2"></div>
 
-      <p class="hero-text">
-        يومٌ سطّر فيه المصريون صفحةً جديدةً من صفحات التاريخ.
-      </p>
-
-      <button class="start-btn" id="startBtn">
-        <span>ابدأ الرحلة</span>
-        <b>↓</b>
-      </button>
-
+    <div class="opening-text">
+      <div class="small-title">مصر · أكتوبر · ١٩٧٣</div>
+      <h1>حين تكلمت<br><span>مصر</span></h1>
+      <p>ذكرى نصر أكتوبر المجيد</p>
     </div>
 
-    <div class="scroll-hint">
-      اسحب للأسفل
-      <span>⌄</span>
+    <div class="scene-caption">
+      <span>٠٦</span>
+      <strong>أكتوبر</strong>
+      <span>١٩٧٣</span>
+    </div>
+
+    <div class="scroll-arrow">⌄</div>
+  </section>
+
+
+  <!-- الصحراء -->
+  <section class="scene desert-scene">
+
+    <div class="horizon"></div>
+    <div class="desert"></div>
+
+    <div class="sun-glow"></div>
+
+    <!-- طائرات -->
+    <div class="jet desert-jet">✈</div>
+
+    <!-- دخان -->
+    <div class="smoke smoke1"></div>
+    <div class="smoke smoke2"></div>
+
+    <!-- دبابات -->
+    <div class="tank tank1">
+      <div class="tank-body"></div>
+      <div class="tank-top"></div>
+      <div class="tank-barrel"></div>
+      <div class="wheel w1"></div>
+      <div class="wheel w2"></div>
+      <div class="wheel w3"></div>
+      <div class="wheel w4"></div>
+    </div>
+
+    <div class="tank tank2">
+      <div class="tank-body"></div>
+      <div class="tank-top"></div>
+      <div class="tank-barrel"></div>
+      <div class="wheel w1"></div>
+      <div class="wheel w2"></div>
+      <div class="wheel w3"></div>
+      <div class="wheel w4"></div>
+    </div>
+
+    <div class="battle-text">
+      <span>المشهد الأول</span>
+      <h2>إرادة<br><b>لا تنكسر</b></h2>
+      <p>بدأت صفحة جديدة من التاريخ.</p>
     </div>
 
   </section>
 
 
-  <!-- مقدمة -->
-  <section class="intro reveal">
+  <!-- القناة -->
+  <section class="scene canal-scene">
 
-    <div class="section-number">01</div>
+    <div class="night-sky"></div>
 
-    <div class="section-content">
+    <div class="canal">
+      <div class="water-light"></div>
+      <div class="water-light w2"></div>
+    </div>
 
-      <span class="label">البداية</span>
+    <div class="far-bank"></div>
+    <div class="near-bank"></div>
 
-      <h2>
-        يومٌ
-        <span>غيّر التاريخ</span>
-      </h2>
+    <!-- قوارب -->
+    <div class="boat boat1">▰</div>
+    <div class="boat boat2">▰</div>
+    <div class="boat boat3">▰</div>
 
-      <p>
-        في السادس من أكتوبر عام ١٩٧٣، بدأت مصر مرحلةً جديدة
-        في تاريخها، في ذكرى أصبحت رمزًا للإرادة والصمود
-        والعمل من أجل الوطن.
-      </p>
+    <!-- جنود بشكل رمزي -->
+    <div class="crossing-line line1"></div>
+    <div class="crossing-line line2"></div>
+    <div class="crossing-line line3"></div>
 
+    <div class="canal-text">
+      <span>المشهد الثاني</span>
+      <h2>عبور<br><b>قناة السويس</b></h2>
+      <p>لحظة صنعت علامة فارقة في التاريخ.</p>
     </div>
 
   </section>
 
 
-  <!-- التاريخ -->
-  <section class="timeline-section">
-
-    <div class="section-heading reveal">
-      <span class="label">محطات من التاريخ</span>
-
-      <h2>
-        رحلة
-        <span>النصر</span>
-      </h2>
-
-      <p>
-        محطات تاريخية بارزة من حرب أكتوبر المجيدة
-      </p>
-    </div>
-
-
-    <div class="timeline">
-
-      <article class="timeline-card reveal">
-
-        <div class="timeline-dot">
-          ٠١
-        </div>
-
-        <div class="timeline-year">
-          ٦ أكتوبر
-        </div>
-
-        <h3>بداية العبور</h3>
-
-        <p>
-          بدأت القوات المصرية عملية العبور لقناة السويس
-          في السادس من أكتوبر عام ١٩٧٣.
-        </p>
-
-      </article>
-
-
-      <article class="timeline-card reveal">
-
-        <div class="timeline-dot">
-          ٠٢
-        </div>
-
-        <div class="timeline-year">
-          العبور
-        </div>
-
-        <h3>عبور قناة السويس</h3>
-
-        <p>
-          تمكنت القوات المصرية من عبور قناة السويس
-          وبدأت مرحلة جديدة من العمليات العسكرية.
-        </p>
-
-      </article>
-
-
-      <article class="timeline-card reveal">
-
-        <div class="timeline-dot">
-          ٠٣
-        </div>
-
-        <div class="timeline-year">
-          الصمود
-        </div>
-
-        <h3>إرادة المصريين</h3>
-
-        <p>
-          جسّد الجنود المصريون مثالًا في الصمود والانضباط
-          والإصرار على تحقيق الهدف.
-        </p>
-
-      </article>
-
-
-      <article class="timeline-card reveal">
-
-        <div class="timeline-dot">
-          ٠٤
-        </div>
-
-        <div class="timeline-year">
-          التاريخ
-        </div>
-
-        <h3>ذكرى لا تُنسى</h3>
-
-        <p>
-          أصبح السادس من أكتوبر مناسبة وطنية راسخة
-          في الذاكرة المصرية.
-        </p>
-
-      </article>
-
-    </div>
-
-  </section>
-
-
-  <!-- قسم الخريطة -->
-  <section class="map-section reveal">
-
-    <div class="map-glow"></div>
-
-    <div class="map-content">
-
-      <span class="label">أرض مصر</span>
-
-      <h2>
-        من ضفاف النيل
-        <br>
-        إلى <span>قناة السويس</span>
-      </h2>
-
-      <p>
-        مصر التي صنعت التاريخ بإرادة أبنائها.
-      </p>
-
-      <div class="map-card">
-
-        <div class="map-icon">🇪🇬</div>
-
-        <div>
-          <strong>مصر</strong>
-          <small>أرض الحضارة والانتصار</small>
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- الأرقام -->
-  <section class="numbers-section">
-
-    <div class="section-heading reveal">
-
-      <span class="label">أكتوبر ١٩٧٣</span>
-
-      <h2>
-        أرقام من
-        <span>الذكرى</span>
-      </h2>
-
-    </div>
-
-
-    <div class="numbers-grid">
-
-      <div class="number-box reveal">
-        <strong data-count="6">٠</strong>
-        <span>أكتوبر</span>
-      </div>
-
-      <div class="number-box reveal">
-        <strong data-count="1973">٠</strong>
-        <span>عام النصر</span>
-      </div>
-
-      <div class="number-box reveal">
-        <strong data-count="50">٠</strong>
-        <span>عامًا وأكثر من الذكرى</span>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- الرسالة -->
-  <section class="message-section reveal">
-
-    <div class="message-card">
-
-      <div class="quote-mark">“</div>
-
-      <p>
-        هناك أيام تمر في التاريخ،
-        وهناك أيام يصنع فيها التاريخ.
-      </p>
-
-      <div class="message-line"></div>
-
-      <strong>
-        ٦ أكتوبر ١٩٧٣
-      </strong>
-
-      <span>
-        ذكرى نصر مصر 🇪🇬
-      </span>
-
+  <!-- مشهد الحركة -->
+  <section class="scene action-scene">
+
+    <div class="action-sky"></div>
+
+    <!-- صاروخ ضوئي -->
+    <div class="missile missile1"></div>
+    <div class="missile missile2"></div>
+    <div class="missile missile3"></div>
+
+    <!-- ومضات -->
+    <div class="explosion explosion1"></div>
+    <div class="explosion explosion2"></div>
+    <div class="explosion explosion3"></div>
+
+    <div class="action-title">
+      <span>المشهد الثالث</span>
+      <h2>ثبات<br><b>وإصرار</b></h2>
     </div>
 
   </section>
 
 
   <!-- النهاية -->
-  <section class="final-section">
+  <section class="scene finale">
 
-    <div class="final-content reveal">
-
-      <div class="final-flag">
-        🇪🇬
+    <div class="flag-bg">
+      <div class="flag-red"></div>
+      <div class="flag-white">
+        <div class="eagle">★</div>
       </div>
+      <div class="flag-black"></div>
+    </div>
+
+    <div class="final-content">
+
+      <div class="final-number">١٩٧٣</div>
 
       <h2>
-        تحية إلى
-        <span>مصر</span>
+        نصر
+        <span>٦ أكتوبر</span>
       </h2>
 
+      <div class="line"></div>
+
       <p>
-        إلى كل من ساهم في كتابة هذه الصفحة
-        من تاريخ وطننا.
+        ذكرى نصرٍ ستظل حاضرة<br>
+        في ذاكرة مصر.
       </p>
 
-      <button class="restart-btn" id="restartBtn">
-        ↻ إعادة التجربة
-      </button>
+      <button onclick="restart()">↻ إعادة التجربة</button>
 
     </div>
 
     <footer>
-      <span>نصر ٦ أكتوبر</span>
-      <small>تجربة رقمية احتفالية 🇪🇬</small>
+      🇪🇬 تحية إلى مصر 🇪🇬
     </footer>
 
   </section>
 
+</div>
 
-  <script src="script.js"></script>
-
+<script src="script.js"></script>
 </body>
-      </html>
+  </html>
