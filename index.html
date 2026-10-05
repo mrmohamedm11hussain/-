@@ -2,21 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>نصر أكتوبر — فيلم تفاعلي</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>٦ أكتوبر — فيلم العبور</title>
 
 <style>
 *{
-  box-sizing:border-box;
   margin:0;
   padding:0;
+  box-sizing:border-box;
 }
 
 html,body{
   width:100%;
   height:100%;
   overflow:hidden;
-  background:#020406;
+  background:#020304;
   font-family:"Tahoma","Arial",sans-serif;
 }
 
@@ -24,12 +24,11 @@ body{
   color:#fff;
 }
 
-#film{
+#app{
   position:fixed;
   inset:0;
-  width:100%;
-  height:100%;
-  background:#020406;
+  overflow:hidden;
+  background:#020304;
 }
 
 canvas{
@@ -37,27 +36,27 @@ canvas{
   inset:0;
   width:100%;
   height:100%;
-  display:block;
 }
 
 #grain{
   position:absolute;
-  inset:-50%;
+  inset:-30%;
   pointer-events:none;
-  opacity:.055;
+  opacity:.07;
+  mix-blend-mode:screen;
   background-image:
-    repeating-radial-gradient(
-      circle at 30% 20%,
-      rgba(255,255,255,.6) 0 1px,
-      transparent 1px 4px
+    radial-gradient(
+      rgba(255,255,255,.8) .6px,
+      transparent .8px
     );
-  animation:grain .18s steps(2) infinite;
+  background-size:4px 4px;
+  animation:noise .13s steps(2) infinite;
 }
 
-@keyframes grain{
+@keyframes noise{
   0%{transform:translate(0,0)}
-  25%{transform:translate(2%, -1%)}
-  50%{transform:translate(-1%, 2%)}
+  25%{transform:translate(2%,-1%)}
+  50%{transform:translate(-1%,2%)}
   75%{transform:translate(1%,1%)}
   100%{transform:translate(-2%,-1%)}
 }
@@ -69,158 +68,209 @@ canvas{
   background:
     radial-gradient(
       ellipse at center,
-      transparent 35%,
-      rgba(0,0,0,.28) 65%,
-      rgba(0,0,0,.88) 125%
+      transparent 38%,
+      rgba(0,0,0,.2) 65%,
+      rgba(0,0,0,.9) 125%
     );
-}
-
-#hud{
-  position:absolute;
-  top:22px;
-  left:22px;
-  right:22px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  pointer-events:none;
-  opacity:.8;
-  font-size:11px;
-  letter-spacing:2px;
-  color:rgba(255,255,255,.7);
-}
-
-#progress{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height:3px;
-  background:rgba(255,255,255,.08);
-}
-
-#bar{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#c7a44a,#fff,#c7a44a);
-  box-shadow:0 0 12px rgba(255,220,130,.7);
 }
 
 #intro{
   position:absolute;
   inset:0;
+  z-index:20;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
   text-align:center;
-  background:#020406;
-  z-index:10;
-  transition:opacity 1.5s ease;
+  background:
+    radial-gradient(
+      circle at center,
+      #101820 0,
+      #030506 55%,
+      #000 100%
+    );
+  transition:opacity 1.6s ease;
 }
 
-#intro .date{
-  font-size:clamp(48px,12vw,130px);
+.intro-date{
+  font-size:clamp(55px,13vw,150px);
   font-weight:900;
-  letter-spacing:8px;
-  text-shadow:0 0 40px rgba(255,220,130,.12);
+  letter-spacing:7px;
+  line-height:1;
+  text-shadow:
+    0 0 30px rgba(255,255,255,.08),
+    0 20px 70px #000;
 }
 
-#intro .sub{
-  margin-top:18px;
-  font-size:clamp(15px,3vw,24px);
+.intro-title{
+  margin-top:22px;
+  font-size:clamp(19px,4vw,34px);
   letter-spacing:5px;
-  color:#c7b98d;
+  color:#d6bd7c;
+}
+
+.intro-line{
+  width:100px;
+  height:1px;
+  margin:35px 0;
+  background:#c4a762;
 }
 
 #start{
-  margin-top:55px;
-  border:1px solid rgba(255,255,255,.35);
-  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.4);
+  background:rgba(255,255,255,.035);
   color:#fff;
-  padding:15px 42px;
   border-radius:50px;
+  padding:15px 42px;
   font-size:15px;
   cursor:pointer;
   backdrop-filter:blur(12px);
-  transition:.3s;
+  transition:.35s;
 }
 
 #start:hover{
   background:rgba(255,255,255,.12);
-  transform:scale(1.04);
+  transform:translateY(-3px);
+}
+
+#hint{
+  margin-top:16px;
+  font-size:10px;
+  color:rgba(255,255,255,.38);
 }
 
 #caption{
   position:absolute;
+  z-index:8;
   left:50%;
   bottom:9%;
   transform:translateX(-50%);
+  width:min(900px,90%);
   text-align:center;
-  width:90%;
   pointer-events:none;
   opacity:0;
-  transition:opacity 1s;
+  transition:opacity .7s;
+  text-shadow:0 4px 30px #000;
 }
 
-#caption .small{
-  font-size:12px;
+#caption .date{
+  font-size:11px;
   letter-spacing:4px;
-  color:#c8b98b;
+  color:#d5bd7b;
   margin-bottom:10px;
 }
 
-#caption .big{
-  font-size:clamp(25px,5vw,58px);
-  font-weight:800;
-  text-shadow:0 4px 25px #000;
+#caption .title{
+  font-size:clamp(24px,5vw,58px);
+  font-weight:900;
+}
+
+#caption .text{
+  max-width:760px;
+  margin:13px auto 0;
+  font-size:clamp(12px,2vw,17px);
+  line-height:1.9;
+  color:rgba(255,255,255,.84);
+}
+
+#timeline{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:3px;
+  z-index:12;
+  background:rgba(255,255,255,.08);
+}
+
+#timelineBar{
+  width:0;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    #9b7c36,
+    #f2df9b,
+    #9b7c36
+  );
+  box-shadow:0 0 15px rgba(220,190,100,.7);
+}
+
+#topInfo{
+  position:absolute;
+  z-index:8;
+  top:20px;
+  left:22px;
+  right:22px;
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  letter-spacing:3px;
+  color:rgba(255,255,255,.48);
+  pointer-events:none;
 }
 
 #end{
   position:absolute;
   inset:0;
+  z-index:30;
+  background:#000;
   display:flex;
   align-items:center;
   justify-content:center;
   flex-direction:column;
   text-align:center;
-  background:#000;
   opacity:0;
   pointer-events:none;
-  transition:opacity 2s;
-  z-index:8;
+  transition:opacity 2.5s ease;
 }
 
-#end .title{
-  font-size:clamp(42px,10vw,110px);
+.end-title{
+  font-size:clamp(50px,11vw,140px);
   font-weight:900;
 }
 
-#end .date{
-  margin-top:18px;
-  font-size:clamp(17px,3vw,28px);
-  color:#c9b887;
-  letter-spacing:4px;
+.end-date{
+  margin-top:20px;
+  color:#d3ba73;
+  font-size:clamp(15px,3vw,27px);
+  letter-spacing:5px;
 }
 
-#end .line{
+.end-line{
   width:120px;
   height:1px;
-  background:#b99a52;
+  background:#b08e48;
   margin:35px 0;
 }
 
-#end .credit{
+.end-small{
+  color:rgba(255,255,255,.48);
   font-size:12px;
-  color:rgba(255,255,255,.55);
   letter-spacing:2px;
 }
 
+#soundBadge{
+  position:absolute;
+  z-index:15;
+  top:52px;
+  left:22px;
+  opacity:0;
+  transition:.5s;
+  font-size:10px;
+  color:rgba(255,255,255,.45);
+}
+
 @media(max-width:600px){
-  #hud{
+  #topInfo{
     top:12px;
     left:12px;
     right:12px;
+  }
+
+  #soundBadge{
+    top:42px;
+    left:12px;
   }
 }
 </style>
@@ -228,38 +278,44 @@ canvas{
 
 <body>
 
-<div id="film">
+<div id="app">
 
-<canvas id="scene"></canvas>
+<canvas id="canvas"></canvas>
 
 <div id="grain"></div>
 <div id="vignette"></div>
 
-<div id="hud">
-  <span>06 · 10 · 1973</span>
-  <span>فيلم تفاعلي</span>
+<div id="topInfo">
+  <span>٦ أكتوبر ١٩٧٣</span>
+  <span>فيلم العبور</span>
 </div>
+
+<div id="soundBadge">● الصوت يعمل</div>
 
 <div id="caption">
-  <div class="small"></div>
-  <div class="big"></div>
+  <div class="date"></div>
+  <div class="title"></div>
+  <div class="text"></div>
 </div>
 
-<div id="progress">
-  <div id="bar"></div>
+<div id="timeline">
+  <div id="timelineBar"></div>
 </div>
 
 <div id="intro">
-  <div class="date">06.10.1973</div>
-  <div class="sub">حين عبرت الإرادة</div>
+  <div class="intro-date">06.10.1973</div>
+  <div class="intro-title">فيلم العبور</div>
+  <div class="intro-line"></div>
   <button id="start">ابدأ الفيلم</button>
+  <div id="hint">يفضل استخدام الصوت — التجربة مصممة للشاشة الكاملة</div>
 </div>
 
 <div id="end">
-  <div class="title">نصر أكتوبر</div>
-  <div class="line"></div>
-  <div class="date">السادس من أكتوبر ١٩٧٣</div>
-  <div class="credit">ذكرى العبور والنصر</div>
+  <div class="end-title">نصر أكتوبر</div>
+  <div class="end-line"></div>
+  <div class="end-date">السادس من أكتوبر ١٩٧٣</div>
+  <div class="end-line"></div>
+  <div class="end-small">ذكرى العبور والنصر</div>
 </div>
 
 </div>
@@ -268,115 +324,111 @@ canvas{
 "use strict";
 
 /* =========================================================
-   OCTOBER 1973 — CINEMATIC BROWSER FILM
-   Single file / GitHub Pages / No external assets
+   ٦ أكتوبر — فيلم العبور
+   تجربة تاريخية تفاعلية
 ========================================================= */
 
-const canvas = document.getElementById("scene");
-const ctx = canvas.getContext("2d");
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
 
-const intro = document.getElementById("intro");
-const startBtn = document.getElementById("start");
-const caption = document.getElementById("caption");
-const captionSmall = caption.querySelector(".small");
-const captionBig = caption.querySelector(".big");
-const endScreen = document.getElementById("end");
-const progressBar = document.getElementById("bar");
-
-let W = 0;
-let H = 0;
-let DPR = 1;
+let W=innerWidth;
+let H=innerHeight;
+let DPR=Math.min(devicePixelRatio||1,1.5);
 
 function resize(){
-  DPR = Math.min(window.devicePixelRatio || 1, 1.6);
 
-  W = window.innerWidth;
-  H = window.innerHeight;
+  W=innerWidth;
+  H=innerHeight;
 
-  canvas.width = W * DPR;
-  canvas.height = H * DPR;
+  DPR=Math.min(devicePixelRatio||1,1.5);
+
+  canvas.width=W*DPR;
+  canvas.height=H*DPR;
 
   ctx.setTransform(DPR,0,0,DPR,0,0);
 }
 
-window.addEventListener("resize",resize);
+addEventListener("resize",resize);
 resize();
 
 /* =========================================================
-   AUDIO ENGINE
+   AUDIO
 ========================================================= */
 
-let audio = null;
+let audio=null;
 
-function createAudio(){
+function initAudio(){
 
-  if(audio) return;
+  if(audio)return;
 
-  const AudioContext =
-    window.AudioContext ||
+  const AC=
+    window.AudioContext||
     window.webkitAudioContext;
 
-  if(!AudioContext) return;
+  if(!AC)return;
 
-  const ac = new AudioContext();
+  const ac=new AC();
 
-  const master = ac.createGain();
-  master.gain.value = .22;
+  const master=ac.createGain();
+
+  master.gain.value=.22;
+
   master.connect(ac.destination);
 
-  audio = {ac,master};
+  audio={
+    ac,
+    master
+  };
 
   /*
-    Deep cinematic drone
+    cinematic low ambience
   */
 
-  const osc = ac.createOscillator();
-  const gain = ac.createGain();
+  const drone=ac.createOscillator();
+  const dg=ac.createGain();
 
-  osc.type = "sine";
-  osc.frequency.value = 42;
-  gain.gain.value = .025;
+  drone.type="sine";
+  drone.frequency.value=39;
 
-  osc.connect(gain);
-  gain.connect(master);
+  dg.gain.value=.018;
 
-  osc.start();
+  drone.connect(dg);
+  dg.connect(master);
 
-  /*
-    Second low layer
-  */
+  drone.start();
 
-  const osc2 = ac.createOscillator();
-  const gain2 = ac.createGain();
-
-  osc2.type = "triangle";
-  osc2.frequency.value = 67;
-  gain2.gain.value = .008;
-
-  osc2.connect(gain2);
-  gain2.connect(master);
-  osc2.start();
-
-  audio.drone = gain;
+  audio.drone=dg;
 }
 
-function soundTone(freq,duration,type="sine",volume=.08){
+function tone(
+  frequency,
+  duration,
+  volume=.07,
+  type="sine"
+){
 
-  if(!audio) return;
+  if(!audio)return;
 
-  const ac = audio.ac;
+  const ac=audio.ac;
 
-  const osc = ac.createOscillator();
-  const gain = ac.createGain();
+  const osc=ac.createOscillator();
+  const gain=ac.createGain();
 
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq,ac.currentTime);
+  osc.type=type;
 
-  gain.gain.setValueAtTime(.0001,ac.currentTime);
+  osc.frequency.setValueAtTime(
+    frequency,
+    ac.currentTime
+  );
+
+  gain.gain.setValueAtTime(
+    .0001,
+    ac.currentTime
+  );
 
   gain.gain.exponentialRampToValueAtTime(
     volume,
-    ac.currentTime+.025
+    ac.currentTime+.04
   );
 
   gain.gain.exponentialRampToValueAtTime(
@@ -388,76 +440,48 @@ function soundTone(freq,duration,type="sine",volume=.08){
   gain.connect(audio.master);
 
   osc.start();
-  osc.stop(ac.currentTime+duration+.05);
+
+  osc.stop(
+    ac.currentTime+
+    duration+
+    .05
+  );
 }
 
-function engineSound(){
+function whoosh(){
 
-  if(!audio) return;
+  if(!audio)return;
 
-  const ac = audio.ac;
+  const ac=audio.ac;
 
-  const osc = ac.createOscillator();
-  const gain = ac.createGain();
-
-  osc.type="sawtooth";
-
-  osc.frequency.setValueAtTime(45,ac.currentTime);
-  osc.frequency.linearRampToValueAtTime(
-    72,
-    ac.currentTime+1.7
-  );
-
-  gain.gain.setValueAtTime(.0001,ac.currentTime);
-
-  gain.gain.exponentialRampToValueAtTime(
-    .045,
-    ac.currentTime+.15
-  );
-
-  gain.gain.exponentialRampToValueAtTime(
-    .0001,
-    ac.currentTime+1.9
-  );
-
-  osc.connect(gain);
-  gain.connect(audio.master);
-
-  osc.start();
-  osc.stop(ac.currentTime+2);
-}
-
-function flybySound(){
-
-  if(!audio) return;
-
-  const ac = audio.ac;
-
-  const osc = ac.createOscillator();
-  const gain = ac.createGain();
+  const osc=ac.createOscillator();
+  const gain=ac.createGain();
 
   osc.type="sawtooth";
 
   osc.frequency.setValueAtTime(
-    180,
+    90,
     ac.currentTime
   );
 
   osc.frequency.exponentialRampToValueAtTime(
-    900,
-    ac.currentTime+.8
+    650,
+    ac.currentTime+.9
   );
 
   osc.frequency.exponentialRampToValueAtTime(
-    110,
+    70,
     ac.currentTime+1.7
   );
 
-  gain.gain.setValueAtTime(.0001,ac.currentTime);
+  gain.gain.setValueAtTime(
+    .0001,
+    ac.currentTime
+  );
 
   gain.gain.exponentialRampToValueAtTime(
-    .13,
-    ac.currentTime+.75
+    .09,
+    ac.currentTime+.65
   );
 
   gain.gain.exponentialRampToValueAtTime(
@@ -469,97 +493,43 @@ function flybySound(){
   gain.connect(audio.master);
 
   osc.start();
-  osc.stop(ac.currentTime+2);
+
+  osc.stop(ac.currentTime+1.9);
 }
 
-function impactSound(){
+function boom(){
 
-  if(!audio) return;
+  if(!audio)return;
 
-  soundTone(55,.65,"sawtooth",.13);
-
-  setTimeout(()=>{
-    soundTone(90,.35,"triangle",.08);
-  },100);
+  tone(45,.8,.14,"sawtooth");
+  setTimeout(
+    ()=>tone(75,.5,.08,"triangle"),
+    90
+  );
 }
 
-function waterSound(){
+function water(){
 
-  if(!audio) return;
+  if(!audio)return;
 
-  soundTone(130,.8,"sine",.025);
+  tone(115,1.2,.025,"sine");
+  tone(160,.8,.018,"sine");
 }
 
-/* =========================================================
-   PARTICLES
-========================================================= */
+function radio(){
 
-const stars = [];
-const dust = [];
-const smoke = [];
-const sparks = [];
-const birds = [];
+  if(!audio)return;
 
-for(let i=0;i<170;i++){
+  tone(430,.18,.018,"square");
 
-  stars.push({
-    x:Math.random(),
-    y:Math.random()*.68,
-    a:.2+Math.random()*.8,
-    s:.4+Math.random()*1.8
-  });
-
-}
-
-for(let i=0;i<100;i++){
-
-  dust.push({
-    x:Math.random(),
-    y:Math.random(),
-    z:Math.random(),
-    vx:-.3-Math.random()*.7,
-    vy:(Math.random()-.5)*.15,
-    life:Math.random()
-  });
-
-}
-
-for(let i=0;i<45;i++){
-
-  smoke.push({
-    x:Math.random(),
-    y:Math.random(),
-    r:15+Math.random()*55,
-    a:.05+Math.random()*.12
-  });
-
-}
-
-for(let i=0;i<35;i++){
-
-  sparks.push({
-    x:Math.random(),
-    y:Math.random(),
-    vx:(Math.random()-.5)*3,
-    vy:-Math.random()*3,
-    life:Math.random()
-  });
-
-}
-
-for(let i=0;i<12;i++){
-
-  birds.push({
-    x:Math.random(),
-    y:.12+Math.random()*.35,
-    speed:.15+Math.random()*.25,
-    phase:Math.random()*Math.PI*2
-  });
-
+  setTimeout(
+    ()=>tone(510,.13,.014,"square"),
+    100
+  );
 }
 
 /* =========================================================
-   UTILS
+   HELPERS
 ========================================================= */
 
 function clamp(v,a,b){
@@ -574,65 +544,66 @@ function ease(t){
   return t*t*(3-2*t);
 }
 
-function smoothstep(a,b,t){
-
-  t=clamp((t-a)/(b-a),0,1);
-
-  return ease(t);
+function smooth(a,b,t){
+  return ease(
+    clamp((t-a)/(b-a),0,1)
+  );
 }
 
-function rand(min,max){
-  return min+Math.random()*(max-min);
+function fade(t,a,b){
+  return smooth(a,b,t);
 }
 
 /* =========================================================
-   CAMERA
+   PARTICLES
 ========================================================= */
 
-const camera = {
-  x:0,
-  y:0,
-  zoom:1,
-  shake:0
-};
+const stars=[];
 
-function beginCamera(){
+for(let i=0;i<190;i++){
 
-  ctx.save();
+  stars.push({
+    x:Math.random(),
+    y:Math.random()*.7,
+    r:.4+Math.random()*1.4,
+    a:.2+Math.random()*.7,
+    p:Math.random()*6
+  });
 
-  const sx =
-    (Math.random()-.5) *
-    camera.shake;
-
-  const sy =
-    (Math.random()-.5) *
-    camera.shake;
-
-  ctx.translate(
-    W/2+sx,
-    H/2+sy
-  );
-
-  ctx.scale(
-    camera.zoom,
-    camera.zoom
-  );
-
-  ctx.translate(
-    -W/2-camera.x,
-    -H/2-camera.y
-  );
 }
 
-function endCamera(){
-  ctx.restore();
+const dust=[];
+
+for(let i=0;i<180;i++){
+
+  dust.push({
+    x:Math.random(),
+    y:Math.random(),
+    r:3+Math.random()*25,
+    speed:.2+Math.random()*1.2,
+    p:Math.random()*6
+  });
+
+}
+
+const smoke=[];
+
+for(let i=0;i<60;i++){
+
+  smoke.push({
+    x:Math.random(),
+    y:Math.random(),
+    r:10+Math.random()*60,
+    p:Math.random()*6
+  });
+
 }
 
 /* =========================================================
    SKY
 ========================================================= */
 
-function drawSky(top,bottom){
+function sky(top,bottom){
 
   const g=ctx.createLinearGradient(
     0,0,0,H
@@ -645,7 +616,32 @@ function drawSky(top,bottom){
   ctx.fillRect(0,0,W,H);
 }
 
-function drawSun(x,y,r,alpha=1){
+function stars(t){
+
+  for(const s of stars){
+
+    const a=
+      s.a+
+      Math.sin(t*.003+s.p)*.2;
+
+    ctx.fillStyle=
+      `rgba(255,255,255,${a})`;
+
+    ctx.beginPath();
+
+    ctx.arc(
+      s.x*W,
+      s.y*H,
+      s.r,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fill();
+  }
+}
+
+function sun(x,y,r,a){
 
   const g=ctx.createRadialGradient(
     x,y,0,
@@ -654,17 +650,17 @@ function drawSun(x,y,r,alpha=1){
 
   g.addColorStop(
     0,
-    `rgba(255,239,181,${.9*alpha})`
+    `rgba(255,239,183,${a})`
   );
 
   g.addColorStop(
     .25,
-    `rgba(255,191,92,${.28*alpha})`
+    `rgba(255,187,83,${a*.4})`
   );
 
   g.addColorStop(
     1,
-    "rgba(255,150,50,0)"
+    "rgba(255,140,40,0)"
   );
 
   ctx.fillStyle=g;
@@ -675,192 +671,195 @@ function drawSun(x,y,r,alpha=1){
 }
 
 /* =========================================================
-   STARS
+   CINEMATIC MAP
 ========================================================= */
 
-function drawStars(t){
+function drawMap(t,phase){
 
-  for(const s of stars){
+  ctx.fillStyle="#10191b";
+  ctx.fillRect(0,0,W,H);
 
-    const twinkle =
-      .55+
-      Math.sin(t*s.s+s.x*30)*.35;
+  /*
+    Egypt
+  */
 
-    ctx.fillStyle=
-      `rgba(255,255,255,${s.a*twinkle})`;
-
-    ctx.beginPath();
-
-    ctx.arc(
-      s.x*W,
-      s.y*H,
-      s.s*.45,
-      0,
-      Math.PI*2
-    );
-
-    ctx.fill();
-  }
-}
-
-/* =========================================================
-   CLOUDS
-========================================================= */
-
-function cloud(x,y,scale,alpha=.3){
-
-  ctx.save();
-
-  ctx.globalAlpha=alpha;
-
-  ctx.fillStyle="#d9d8d1";
-
-  const p=[
-    [-90,15,50],
-    [-45,-5,65],
-    [10,-18,75],
-    [65,0,58],
-    [105,18,42]
-  ];
+  ctx.fillStyle="#75684c";
 
   ctx.beginPath();
 
-  for(const q of p){
-
-    ctx.moveTo(
-      x+q[0]*scale+q[2]*scale,
-      y+q[1]*scale
-    );
-
-    ctx.arc(
-      x+q[0]*scale,
-      y+q[1]*scale,
-      q[2]*scale,
-      0,
-      Math.PI*2
-    );
-  }
-
-  ctx.fill();
-
-  ctx.restore();
-}
-
-function drawClouds(t){
-
-  cloud(
-    W*.18 + Math.sin(t*.015)*35,
-    H*.19,
-    1.1,
-    .11
-  );
-
-  cloud(
-    W*.65 - (t*.7%180),
-    H*.26,
-    .75,
-    .10
-  );
-
-  cloud(
-    W*.82 - (t*.35%240),
-    H*.14,
-    .9,
-    .08
-  );
-}
-
-/* =========================================================
-   MOON
-========================================================= */
-
-function drawMoon(){
-
-  const x=W*.78;
-  const y=H*.2;
-
-  ctx.save();
-
-  ctx.shadowColor="rgba(230,240,255,.5)";
-  ctx.shadowBlur=30;
-
-  ctx.fillStyle="#e7e7d2";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    x,y,
-    Math.min(W,H)*.055,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  ctx.shadowBlur=0;
-
-  ctx.fillStyle="rgba(10,16,25,.8)";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    x+13,
-    y-7,
-    Math.min(W,H)*.052,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  ctx.restore();
-}
-
-/* =========================================================
-   MOUNTAINS / LAND
-========================================================= */
-
-function mountains(y,alpha,offset=0){
-
-  ctx.save();
-
-  ctx.globalAlpha=alpha;
-
-  ctx.fillStyle="#101922";
-
-  ctx.beginPath();
-
-  ctx.moveTo(-50,H);
-
-  for(let x=-50;x<=W+100;x+=70){
-
-    const h =
-      35+
-      Math.sin((x+offset)*.012)*30+
-      Math.sin((x+offset)*.031)*15;
-
-    ctx.lineTo(x,y-h);
-  }
-
-  ctx.lineTo(W+100,H);
+  ctx.moveTo(W*.05,H*.15);
+  ctx.lineTo(W*.46,H*.13);
+  ctx.lineTo(W*.51,H*.34);
+  ctx.lineTo(W*.46,H*.56);
+  ctx.lineTo(W*.25,H*.67);
+  ctx.lineTo(W*.08,H*.55);
   ctx.closePath();
 
   ctx.fill();
 
-  ctx.restore();
+  /*
+    Sinai
+  */
+
+  ctx.fillStyle="#907d55";
+
+  ctx.beginPath();
+
+  ctx.moveTo(W*.51,H*.34);
+  ctx.lineTo(W*.91,H*.17);
+  ctx.lineTo(W*.97,H*.55);
+  ctx.lineTo(W*.52,H*.65);
+  ctx.closePath();
+
+  ctx.fill();
+
+  /*
+    Nile
+  */
+
+  ctx.strokeStyle="#446b72";
+  ctx.lineWidth=14;
+
+  ctx.beginPath();
+
+  ctx.moveTo(W*.18,H*.15);
+  ctx.bezierCurveTo(
+    W*.29,H*.28,
+    W*.36,H*.37,
+    W*.47,H*.48
+  );
+
+  ctx.stroke();
+
+  /*
+    Suez Canal
+  */
+
+  ctx.strokeStyle="#4e777d";
+  ctx.lineWidth=8;
+
+  ctx.beginPath();
+
+  ctx.moveTo(W*.51,H*.34);
+  ctx.lineTo(W*.51,H*.64);
+
+  ctx.stroke();
+
+  /*
+    labels
+  */
+
+  ctx.fillStyle="rgba(255,255,255,.75)";
+  ctx.font="bold 15px Tahoma";
+
+  ctx.fillText(
+    "مصر",
+    W*.25,
+    H*.30
+  );
+
+  ctx.fillText(
+    "سيناء",
+    W*.72,
+    H*.30
+  );
+
+  ctx.fillStyle="#e1c47a";
+
+  ctx.font="bold 13px Tahoma";
+
+  ctx.fillText(
+    "قناة السويس",
+    W*.53,
+    H*.51
+  );
+
+  /*
+    attack arrows
+  */
+
+  const p=smooth(0,.8,phase);
+
+  ctx.strokeStyle=
+    `rgba(190,52,44,${p})`;
+
+  ctx.lineWidth=4;
+
+  for(let i=0;i<5;i++){
+
+    const yy=
+      H*.36+
+      i*H*.045;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      W*.52,
+      yy
+    );
+
+    ctx.lineTo(
+      W*.75,
+      yy+H*.025
+    );
+
+    ctx.stroke();
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      W*.75,
+      yy+H*.025
+    );
+
+    ctx.lineTo(
+      W*.72,
+      yy+H*.005
+    );
+
+    ctx.moveTo(
+      W*.75,
+      yy+H*.025
+    );
+
+    ctx.lineTo(
+      W*.72,
+      yy+H*.045
+    );
+
+    ctx.stroke();
+  }
 }
 
 /* =========================================================
    CANAL
 ========================================================= */
 
-function drawCanal(t){
+function canal(t){
 
-  const horizon=H*.48;
+  const horizon=H*.43;
 
-  /* land */
+  /*
+    sky
+  */
 
-  ctx.fillStyle="#77704e";
+  sky(
+    "#a96847",
+    "#e3b778"
+  );
+
+  sun(
+    W*.72,
+    H*.26,
+    H*.35,
+    .75
+  );
+
+  /*
+    distant desert
+  */
+
+  ctx.fillStyle="#786b4d";
 
   ctx.fillRect(
     0,
@@ -869,126 +868,135 @@ function drawCanal(t){
     H-horizon
   );
 
-  /* distant land */
-
-  mountains(
-    horizon+18,
-    .5,
-    t*5
-  );
-
   /*
-    Canal perspective
+    canal perspective
   */
 
   ctx.beginPath();
 
-  ctx.moveTo(W*.46,horizon);
-  ctx.lineTo(W*.54,horizon);
-  ctx.lineTo(W*.95,H);
-  ctx.lineTo(W*.05,H);
+  ctx.moveTo(
+    W*.47,
+    horizon
+  );
+
+  ctx.lineTo(
+    W*.53,
+    horizon
+  );
+
+  ctx.lineTo(
+    W*.94,
+    H
+  );
+
+  ctx.lineTo(
+    W*.06,
+    H
+  );
 
   ctx.closePath();
 
-  const water=
+  const waterG=
     ctx.createLinearGradient(
       0,horizon,
       0,H
     );
 
-  water.addColorStop(0,"#263c45");
-  water.addColorStop(.45,"#18333d");
-  water.addColorStop(1,"#071820");
+  waterG.addColorStop(
+    0,
+    "#375b61"
+  );
 
-  ctx.fillStyle=water;
+  waterG.addColorStop(
+    .45,
+    "#23464f"
+  );
+
+  waterG.addColorStop(
+    1,
+    "#08191f"
+  );
+
+  ctx.fillStyle=waterG;
   ctx.fill();
 
-  /* shoreline */
+  /*
+    reflections
+  */
 
-  ctx.strokeStyle="rgba(221,196,130,.28)";
-  ctx.lineWidth=2;
+  for(let i=0;i<95;i++){
 
-  ctx.beginPath();
-
-  ctx.moveTo(W*.46,horizon);
-  ctx.lineTo(W*.05,H);
-
-  ctx.moveTo(W*.54,horizon);
-  ctx.lineTo(W*.95,H);
-
-  ctx.stroke();
-
-  /* water reflections */
-
-  ctx.save();
-
-  ctx.globalAlpha=.22;
-
-  for(let i=0;i<80;i++){
-
-    const p=(i/80);
+    const p=i/95;
 
     const y=
       horizon+
-      Math.pow(p,1.7)*(H-horizon);
+      Math.pow(p,1.65)*
+      (H-horizon);
 
     const width=
-      lerp(5,180,p);
-
-    const center=W/2;
+      lerp(8,220,p);
 
     const drift=
-      Math.sin(t*.015+i)*20;
+      Math.sin(t*.003+i)*15;
 
     ctx.strokeStyle=
-      i%2
-      ? "#94a7a0"
-      : "#6d8b86";
+      i%3===0
+      ? "rgba(220,203,151,.18)"
+      : "rgba(130,170,166,.13)";
 
     ctx.lineWidth=1;
 
     ctx.beginPath();
 
     ctx.moveTo(
-      center-width+drift,
+      W/2-width+drift,
       y
     );
 
     ctx.lineTo(
-      center+width+drift,
+      W/2+width+drift,
       y
     );
 
     ctx.stroke();
   }
 
-  ctx.restore();
+  /*
+    shores
+  */
 
-  /* crossing bridge silhouette */
+  ctx.strokeStyle=
+    "rgba(225,196,133,.5)";
 
-  ctx.strokeStyle="rgba(30,31,27,.8)";
-  ctx.lineWidth=5;
+  ctx.lineWidth=2;
 
   ctx.beginPath();
 
-  ctx.moveTo(W*.17,horizon+5);
-  ctx.lineTo(W*.83,horizon+5);
+  ctx.moveTo(
+    W*.47,
+    horizon
+  );
+
+  ctx.lineTo(
+    W*.06,
+    H
+  );
+
+  ctx.moveTo(
+    W*.53,
+    horizon
+  );
+
+  ctx.lineTo(
+    W*.94,
+    H
+  );
 
   ctx.stroke();
-
-  for(let x=.2;x<.85;x+=.12){
-
-    ctx.beginPath();
-
-    ctx.moveTo(W*x,horizon+5);
-    ctx.lineTo(W*x,H*.62);
-
-    ctx.stroke();
-  }
 }
 
 /* =========================================================
-   BOATS / CROSSING SILHOUETTES
+   BOAT SILHOUETTES
 ========================================================= */
 
 function boat(x,y,s,dir=1){
@@ -998,238 +1006,36 @@ function boat(x,y,s,dir=1){
   ctx.translate(x,y);
   ctx.scale(s*dir,s);
 
-  ctx.fillStyle="#101313";
+  ctx.fillStyle="#101617";
 
   ctx.beginPath();
 
-  ctx.moveTo(-50,0);
-  ctx.lineTo(35,0);
-  ctx.lineTo(50,-8);
-  ctx.lineTo(28,10);
-  ctx.lineTo(-42,10);
+  ctx.moveTo(-55,0);
+  ctx.lineTo(42,0);
+  ctx.lineTo(56,-10);
+  ctx.lineTo(33,11);
+  ctx.lineTo(-43,11);
   ctx.closePath();
 
   ctx.fill();
 
-  ctx.fillRect(-18,-18,38,18);
+  ctx.fillRect(
+    -18,-22,
+    38,22
+  );
 
-  ctx.fillRect(-8,-28,15,12);
+  ctx.fillRect(
+    -7,-36,
+    14,15
+  );
 
-  ctx.strokeStyle="#161919";
+  ctx.strokeStyle="#111";
   ctx.lineWidth=3;
 
   ctx.beginPath();
-  ctx.moveTo(0,-28);
-  ctx.lineTo(0,-55);
-  ctx.stroke();
 
-  ctx.restore();
-}
-
-function drawBoats(t){
-
-  const y=H*.61;
-
-  boat(
-    W*.43+Math.sin(t*.002)*18,
-    y,
-    .8,
-    1
-  );
-
-  boat(
-    W*.57-Math.sin(t*.0017)*20,
-    y+H*.06,
-    1.15,
-    -1
-  );
-
-  boat(
-    W*.48+Math.sin(t*.001)*30,
-    y+H*.15,
-    1.5,
-    1
-  );
-}
-
-/* =========================================================
-   PLANES
-========================================================= */
-
-function plane(x,y,s,angle=0,alpha=1){
-
-  ctx.save();
-
-  ctx.translate(x,y);
-  ctx.rotate(angle);
-  ctx.scale(s,s);
-
-  ctx.globalAlpha=alpha;
-
-  /* shadow */
-
-  ctx.shadowColor="rgba(0,0,0,.7)";
-  ctx.shadowBlur=15;
-
-  /* body */
-
-  ctx.fillStyle="#1b2224";
-
-  ctx.beginPath();
-
-  ctx.moveTo(80,0);
-  ctx.lineTo(10,-7);
-  ctx.lineTo(-55,-5);
-  ctx.lineTo(-80,0);
-  ctx.lineTo(-55,5);
-  ctx.lineTo(10,7);
-  ctx.closePath();
-
-  ctx.fill();
-
-  /* wings */
-
-  ctx.beginPath();
-
-  ctx.moveTo(20,-3);
-  ctx.lineTo(-15,-55);
-  ctx.lineTo(-2,-57);
-  ctx.lineTo(45,-5);
-
-  ctx.moveTo(20,3);
-  ctx.lineTo(-15,55);
-  ctx.lineTo(-2,57);
-  ctx.lineTo(45,5);
-
-  ctx.fill();
-
-  /* tail */
-
-  ctx.beginPath();
-
-  ctx.moveTo(-48,-4);
-  ctx.lineTo(-70,-27);
-  ctx.lineTo(-62,-29);
-  ctx.lineTo(-35,-3);
-
-  ctx.moveTo(-48,4);
-  ctx.lineTo(-70,27);
-  ctx.lineTo(-62,29);
-  ctx.lineTo(-35,3);
-
-  ctx.fill();
-
-  /* engine glow */
-
-  ctx.shadowBlur=20;
-  ctx.fillStyle="rgba(255,140,50,.8)";
-
-  ctx.beginPath();
-  ctx.ellipse(
-    -75,0,
-    10,3,
-    0,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  ctx.restore();
-}
-
-/* =========================================================
-   TANK
-========================================================= */
-
-function tank(x,y,s,angle=0,alpha=1){
-
-  ctx.save();
-
-  ctx.translate(x,y);
-  ctx.rotate(angle);
-  ctx.scale(s,s);
-
-  ctx.globalAlpha=alpha;
-
-  /* shadow */
-
-  ctx.fillStyle="rgba(0,0,0,.5)";
-
-  ctx.beginPath();
-
-  ctx.ellipse(
-    0,
-    24,
-    100,
-    18,
-    0,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  /* tracks */
-
-  ctx.fillStyle="#161817";
-
-  ctx.fillRect(-82,4,164,30);
-
-  /* wheels */
-
-  ctx.fillStyle="#2a2b27";
-
-  for(let i=-65;i<=65;i+=25){
-
-    ctx.beginPath();
-
-    ctx.arc(i,19,10,0,Math.PI*2);
-
-    ctx.fill();
-  }
-
-  /* body */
-
-  ctx.fillStyle="#3c4036";
-
-  ctx.beginPath();
-
-  ctx.moveTo(-65,-10);
-  ctx.lineTo(-45,-38);
-  ctx.lineTo(55,-38);
-  ctx.lineTo(72,-10);
-  ctx.lineTo(55,10);
-  ctx.lineTo(-58,10);
-  ctx.closePath();
-
-  ctx.fill();
-
-  /* turret */
-
-  ctx.fillStyle="#4a4c3d";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    0,
-    -38,
-    28,
-    Math.PI,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  /* cannon */
-
-  ctx.strokeStyle="#292b26";
-  ctx.lineWidth=12;
-
-  ctx.beginPath();
-
-  ctx.moveTo(15,-43);
-  ctx.lineTo(105,-54);
+  ctx.moveTo(0,-35);
+  ctx.lineTo(0,-65);
 
   ctx.stroke();
 
@@ -1237,66 +1043,164 @@ function tank(x,y,s,angle=0,alpha=1){
 }
 
 /* =========================================================
-   DUST
+   BRIDGE
 ========================================================= */
 
-function drawDust(t,intensity=1){
+function bridge(){
 
-  ctx.save();
+  const y=H*.44;
 
-  for(let i=0;i<120;i++){
+  ctx.strokeStyle="rgba(25,29,27,.85)";
+  ctx.lineWidth=5;
 
-    const x =
-      (i*73+t*.4)%(
-        W+300
-      )-150;
+  ctx.beginPath();
 
-    const y =
-      H*.65+
-      Math.sin(i*1.7+t*.003)*H*.12+
-      Math.random()*H*.15;
+  ctx.moveTo(0,y);
+  ctx.lineTo(W,y);
 
-    const r =
-      5+
-      ((i*17)%35)*intensity;
+  ctx.stroke();
 
-    ctx.fillStyle=
-      `rgba(181,157,108,${.015+.035*intensity})`;
+  for(let x=0;x<W;x+=W*.12){
 
     ctx.beginPath();
 
-    ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.moveTo(x,y);
+    ctx.lineTo(x,H*.62);
 
-    ctx.fill();
+    ctx.stroke();
+  }
+}
+
+/* =========================================================
+   DESERT
+========================================================= */
+
+function desert(t){
+
+  sky(
+    "#6e4a3c",
+    "#1d211e"
+  );
+
+  sun(
+    W*.55,
+    H*.3,
+    H*.3,
+    .28
+  );
+
+  ctx.fillStyle="#66543c";
+
+  ctx.beginPath();
+
+  ctx.moveTo(0,H*.56);
+
+  for(
+    let x=0;
+    x<=W;
+    x+=50
+  ){
+
+    ctx.lineTo(
+      x,
+      H*.56+
+      Math.sin(x*.009+t*.001)*18
+    );
   }
 
-  ctx.restore();
+  ctx.lineTo(W,H);
+  ctx.lineTo(0,H);
+  ctx.closePath();
+
+  ctx.fill();
+}
+
+/* =========================================================
+   FORTIFICATION
+========================================================= */
+
+function fortification(){
+
+  const y=H*.55;
+
+  ctx.fillStyle="#594936";
+
+  ctx.fillRect(
+    0,y,
+    W,
+    H*.2
+  );
+
+  /*
+    sand berm
+  */
+
+  ctx.beginPath();
+
+  ctx.moveTo(0,y);
+
+  for(let x=0;x<=W;x+=35){
+
+    ctx.lineTo(
+      x,
+      y-
+      25-
+      Math.sin(x*.03)*10
+    );
+  }
+
+  ctx.lineTo(W,y+70);
+  ctx.lineTo(0,y+70);
+
+  ctx.closePath();
+
+  ctx.fill();
+
+  /*
+    distant posts
+  */
+
+  ctx.strokeStyle="#27271f";
+  ctx.lineWidth=4;
+
+  for(
+    let x=50;
+    x<W;
+    x+=100
+  ){
+
+    ctx.beginPath();
+
+    ctx.moveTo(x,y-55);
+    ctx.lineTo(x,y-5);
+
+    ctx.stroke();
+  }
 }
 
 /* =========================================================
    SMOKE
 ========================================================= */
 
-function drawSmoke(t,intensity=1){
+function smokeClouds(t,intensity){
 
-  ctx.save();
+  for(let i=0;i<45;i++){
 
-  for(let i=0;i<30;i++){
-
-    const p=(i/30);
+    const p=i/45;
 
     const x=
-      W*.52+
-      Math.sin(i*2.3+t*.001)*70+
-      p*90;
+      W*.45+
+      Math.sin(i*2.3+t*.001)*90+
+      p*130;
 
     const y=
-      H*.63-
-      p*H*.34+
-      Math.sin(t*.001+i)*10;
+      H*.58-
+      p*H*.35+
+      Math.sin(t*.001+i)*12;
 
     const r=
-      15+p*70;
+      10+
+      p*75;
 
     const g=ctx.createRadialGradient(
       x,y,0,
@@ -1305,12 +1209,12 @@ function drawSmoke(t,intensity=1){
 
     g.addColorStop(
       0,
-      `rgba(65,66,59,${.13*intensity*(1-p)})`
+      `rgba(54,56,51,${.15*intensity*(1-p)})`
     );
 
     g.addColorStop(
       1,
-      "rgba(30,30,28,0)"
+      "rgba(20,20,18,0)"
     );
 
     ctx.fillStyle=g;
@@ -1319,282 +1223,164 @@ function drawSmoke(t,intensity=1){
     ctx.arc(x,y,r,0,Math.PI*2);
     ctx.fill();
   }
-
-  ctx.restore();
 }
 
 /* =========================================================
-   LIGHT TRAILS
+   DUST
 ========================================================= */
 
-function lightTrail(
-  x,
-  y,
-  dx,
-  dy,
-  length,
-  alpha=1
-){
+function dustStorm(t,intensity){
 
-  const g=ctx.createLinearGradient(
-    x,y,
-    x-dx*length,
-    y-dy*length
-  );
+  for(let i=0;i<150;i++){
 
-  g.addColorStop(
-    0,
-    `rgba(255,240,180,${alpha})`
-  );
-
-  g.addColorStop(
-    .35,
-    `rgba(255,180,80,${alpha*.55})`
-  );
-
-  g.addColorStop(
-    1,
-    "rgba(255,100,30,0)"
-  );
-
-  ctx.strokeStyle=g;
-  ctx.lineWidth=2;
-
-  ctx.beginPath();
-
-  ctx.moveTo(x,y);
-
-  ctx.lineTo(
-    x-dx*length,
-    y-dy*length
-  );
-
-  ctx.stroke();
-}
-
-/* =========================================================
-   FLAG — WAVING
-========================================================= */
-
-function drawFlag(t){
-
-  const x=W*.5;
-  const y=H*.29;
-  const width=Math.min(W*.38,360);
-  const height=width*.66;
-
-  ctx.save();
-
-  ctx.translate(x-width/2,y);
-
-  /* pole */
-
-  ctx.strokeStyle="#b6aa91";
-  ctx.lineWidth=4;
-
-  ctx.beginPath();
-
-  ctx.moveTo(-12,-40);
-  ctx.lineTo(-12,height+65);
-
-  ctx.stroke();
-
-  const rows=24;
-
-  for(let i=0;i<rows;i++){
-
-    const yy=i/rows*height;
-
-    const color=
-      i<rows/3
-      ? "#b92b2f"
-      : i<rows*2/3
-      ? "#f0f0e8"
-      : "#111";
-
-    ctx.fillStyle=color;
-
-    ctx.beginPath();
-
-    for(let j=0;j<=40;j++){
-
-      const xx=j/40*width;
-
-      const wave=
-        Math.sin(
-          t*.006+
-          j*.33+
-          i*.1
-        )*8;
-
-      if(j===0){
-        ctx.moveTo(xx,yy+wave);
-      }else{
-        ctx.lineTo(xx,yy+wave);
-      }
-    }
-
-    for(let j=40;j>=0;j--){
-
-      const xx=j/40*width;
-
-      const wave=
-        Math.sin(
-          t*.006+
-          j*.33+
-          (i+1)*.1
-        )*8;
-
-      ctx.lineTo(
-        xx,
-        yy+height/rows+wave
-      );
-    }
-
-    ctx.closePath();
-    ctx.fill();
-  }
-
-  /* eagle */
-
-  ctx.fillStyle="#d5bd63";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    width*.5,
-    height*.5,
-    height*.09,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  ctx.restore();
-}
-
-/* =========================================================
-   BIRDS
-========================================================= */
-
-function drawBirds(t){
-
-  ctx.strokeStyle="rgba(15,20,21,.65)";
-  ctx.lineWidth=2;
-
-  for(const b of birds){
+    const d=dust[i];
 
     const x=
-      ((b.x*W+t*b.speed)%(
-        W+120
-      ))-60;
+      ((d.x*W+t*d.speed*45)%
+      (W+200))-100;
 
     const y=
-      b.y*H+
-      Math.sin(t*.003+b.phase)*8;
+      H*.61+
+      Math.sin(
+        t*.002+d.p
+      )*H*.16+
+      d.y*H*.15;
 
-    const wing=
-      Math.sin(t*.015+b.phase)*7;
+    ctx.fillStyle=
+      `rgba(193,163,111,${.025*intensity})`;
 
     ctx.beginPath();
 
-    ctx.moveTo(x-8,y);
-    ctx.quadraticCurveTo(
-      x-3,
-      y-wing,
+    ctx.arc(
       x,
-      y
+      y,
+      d.r*intensity,
+      0,
+      Math.PI*2
     );
 
-    ctx.quadraticCurveTo(
-      x+4,
-      y-wing,
-      x+9,
-      y
-    );
-
-    ctx.stroke();
+    ctx.fill();
   }
 }
 
 /* =========================================================
-   SCENE SYSTEM
+   LIGHT
 ========================================================= */
 
-const scenes = [
+function flash(a){
+
+  ctx.fillStyle=
+    `rgba(255,216,153,${a})`;
+
+  ctx.fillRect(
+    0,0,W,H
+  );
+}
+
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+const scenes=[
 
   {
-    start:0,
-    end:6,
-    name:"البداية",
-    small:"",
-    big:""
+    a:0,
+    b:8,
+    date:"",
+    title:"",
+    text:""
   },
 
   {
-    start:6,
-    end:16,
-    name:"السماء",
-    small:"ليلة العبور",
-    big:"كانت لحظة مختلفة..."
+    a:8,
+    b:22,
+    date:"قبل العبور",
+    title:"ست سنوات من الانتظار",
+    text:
+      "بعد حرب 1967 أصبحت سيناء تحت الاحتلال. أعادت مصر بناء قواتها، واستعدت لاستعادة الأرض."
   },
 
   {
-    start:16,
-    end:23,
-    name:"التحليق",
-    small:"السادس من أكتوبر",
-    big:"حين بدأت السماء تتحرك"
+    a:22,
+    b:34,
+    date:"٦ أكتوبر ١٩٧٣",
+    title:"بداية المعركة",
+    text:
+      "في السادس من أكتوبر بدأت العمليات المصرية والسورية ضد القوات الإسرائيلية في سيناء والجولان."
   },
 
   {
-    start:23,
-    end:34,
-    name:"القناة",
-    small:"قناة السويس",
-    big:"وعبر الرجال الماء"
+    a:34,
+    b:50,
+    date:"الساعة الأولى",
+    title:"العبور",
+    text:
+      "عبرت القوات المصرية قناة السويس في قطاعات عديدة، وبدأت في إنشاء رؤوس جسور على الضفة الشرقية."
   },
 
   {
-    start:34,
-    end:45,
-    name:"العبور",
-    small:"إرادة لا تتوقف",
-    big:"من هنا بدأ العبور"
+    a:50,
+    b:65,
+    date:"الجبهة الشرقية",
+    title:"خط بارليف",
+    text:
+      "تقدمت القوات المصرية نحو التحصينات الإسرائيلية على الضفة الشرقية للقناة، وبدأ اختراق مواقعها."
   },
 
   {
-    start:45,
-    end:55,
-    name:"اللحظة",
-    small:"أكتوبر ١٩٧٣",
-    big:"وارتفع العلم"
+    a:65,
+    b:80,
+    date:"٦ — ٨ أكتوبر",
+    title:"تثبيت رؤوس الكباري",
+    text:
+      "تواصل تدفق القوات عبر القناة، واستمرت المعارك والهجمات المضادة على الجبهة."
   },
 
   {
-    start:55,
-    end:63,
-    name:"النهاية",
-    small:"",
-    big:""
+    a:80,
+    b:94,
+    date:"الأيام التالية",
+    title:"معركة طويلة",
+    text:
+      "استمرت العمليات العسكرية على الجبهة المصرية والسورية، وتغير ميزان القتال خلال أيام الحرب."
+  },
+
+  {
+    a:94,
+    b:108,
+    date:"النهاية",
+    title:"من الحرب إلى السلام",
+    text:
+      "أدت الحرب إلى مسار سياسي انتهى لاحقًا باتفاقية السلام وانسحاب إسرائيل من سيناء."
+  },
+
+  {
+    a:108,
+    b:116,
+    date:"",
+    title:"",
+    text:""
   }
+
 ];
 
-const TOTAL=63;
+const TOTAL=116;
 
-let started=false;
-let startTime=0;
-let lastTime=0;
-let sceneTriggered={};
+let running=false;
+let startedAt=0;
+let triggered={};
 
-function currentScene(t){
+function getScene(t){
 
-  for(let i=0;i<scenes.length;i++){
+  for(
+    let i=0;
+    i<scenes.length;
+    i++
+  ){
 
     if(
-      t>=scenes[i].start &&
-      t<scenes[i].end
+      t>=scenes[i].a &&
+      t<scenes[i].b
     ){
       return i;
     }
@@ -1604,593 +1390,948 @@ function currentScene(t){
 }
 
 /* =========================================================
-   SPECIAL SCENE SOUNDS
+   SOUND EVENTS
 ========================================================= */
 
-function triggerSceneSound(index){
+function sceneSound(index){
 
-  if(sceneTriggered[index]) return;
+  if(triggered[index])return;
 
-  sceneTriggered[index]=true;
+  triggered[index]=true;
 
   if(index===1){
 
-    soundTone(
-      58,
-      2.8,
-      "sine",
-      .06
+    tone(
+      55,
+      2.5,
+      .035,
+      "sine"
     );
 
   }
 
   if(index===2){
 
-    flybySound();
+    whoosh();
+
+    setTimeout(
+      ()=>boom(),
+      900
+    );
 
   }
 
   if(index===3){
 
-    waterSound();
+    water();
+
+    setTimeout(
+      ()=>tone(
+        95,
+        1,
+        .045,
+        "triangle"
+      ),
+      700
+    );
 
   }
 
   if(index===4){
 
-    engineSound();
+    whoosh();
 
     setTimeout(
-      impactSound,
-      900
+      ()=>boom(),
+      600
     );
 
   }
 
   if(index===5){
 
-    soundTone(
-      72,
-      3,
-      "triangle",
-      .06
+    boom();
+
+    setTimeout(
+      ()=>water(),
+      1000
     );
 
+  }
+
+  if(index===6){
+
+    tone(
+      48,
+      3,
+      .04,
+      "sine"
+    );
+
+  }
+
+  if(index===7){
+
+    tone(
+      70,
+      4,
+      .035,
+      "triangle"
+    );
   }
 }
 
 /* =========================================================
-   SCENE 1 — NIGHT
+   SCENE 0 — INTRO
 ========================================================= */
 
-function sceneNight(t,p){
+function sceneIntro(t,p){
 
-  drawSky(
-    "#03070d",
-    "#0d1720"
-  );
-
-  drawStars(t);
-  drawMoon();
-
-  /* distant haze */
-
-  const haze=
-    ctx.createLinearGradient(
-      0,H*.45,
-      0,H
-    );
-
-  haze.addColorStop(
-    0,
-    "rgba(20,40,45,.1)"
-  );
-
-  haze.addColorStop(
-    1,
-    "rgba(0,0,0,.9)"
-  );
-
-  ctx.fillStyle=haze;
+  ctx.fillStyle="#020304";
   ctx.fillRect(0,0,W,H);
 
-  mountains(
-    H*.64,
-    .8,
-    t*2
+  /*
+    faint film light
+  */
+
+  const a=
+    .04+
+    Math.sin(t*.4)*.015;
+
+  ctx.fillStyle=
+    `rgba(255,220,160,${a})`;
+
+  ctx.fillRect(
+    0,
+    0,
+    W,
+    H
+  );
+}
+
+/* =========================================================
+   SCENE 1 — BEFORE WAR
+========================================================= */
+
+function sceneBefore(t,p){
+
+  sky(
+    "#061018",
+    "#182329"
   );
 
-  /* distant moving lights */
+  stars(t);
 
-  for(let i=0;i<5;i++){
+  /*
+    map gradually emerges
+  */
+
+  ctx.globalAlpha=
+    smooth(0,.35,p);
+
+  drawMap(
+    t,
+    p
+  );
+
+  ctx.globalAlpha=1;
+
+  /*
+    date marker
+  */
+
+  ctx.strokeStyle=
+    "rgba(210,180,100,.45)";
+
+  ctx.lineWidth=1;
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    W*.18,
+    H*.76
+  );
+
+  ctx.lineTo(
+    W*.82,
+    H*.76
+  );
+
+  ctx.stroke();
+
+  /*
+    moving light = passage of time
+  */
+
+  const x=
+    lerp(
+      W*.18,
+      W*.82,
+      p
+    );
+
+  ctx.fillStyle="#e3ca83";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    x,
+    H*.76,
+    4,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+}
+
+/* =========================================================
+   SCENE 2 — BEGINNING
+========================================================= */
+
+function sceneBeginning(t,p){
+
+  sky(
+    "#b76b4b",
+    "#24231e"
+  );
+
+  sun(
+    W*.69,
+    H*.29,
+    H*.33,
+    .65
+  );
+
+  /*
+    aerial abstract formation
+  */
+
+  for(let i=0;i<8;i++){
 
     const x=
-      ((i*W*.3+t*20)%
-      (W+200))-100;
+      W*.15+
+      i*W*.1+
+      Math.sin(t*.004+i)*20;
 
     const y=
-      H*.28+i*H*.025;
+      H*.27+
+      Math.sin(t*.003+i)*20;
+
+    /*
+      distant aircraft represented
+      as small cinematic silhouettes
+    */
 
     ctx.fillStyle=
-      "rgba(255,220,150,.35)";
+      "rgba(20,25,24,.8)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+      x,
+      y,
+      18,
+      4,
+      -.05,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.strokeStyle=
+      "rgba(20,25,24,.55)";
+
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      x-3,
+      y
+    );
+
+    ctx.lineTo(
+      x-22,
+      y-10
+    );
+
+    ctx.moveTo(
+      x-3,
+      y
+    );
+
+    ctx.lineTo(
+      x-22,
+      y+10
+    );
+
+    ctx.stroke();
+  }
+
+  /*
+    horizon
+  */
+
+  ctx.fillStyle="#24251f";
+
+  ctx.fillRect(
+    0,
+    H*.57,
+    W,
+    H*.43
+  );
+
+  /*
+    distant flashes
+  */
+
+  for(let i=0;i<4;i++){
+
+    const x=
+      W*.15+
+      ((t*70+i*190)%(
+        W*.75
+      ));
+
+    const y=
+      H*.5+
+      Math.sin(i+t*.004)*25;
+
+    const a=
+      Math.max(
+        0,
+        Math.sin(
+          t*.02+i
+        )
+      )*.25;
+
+    flash(a);
+  }
+}
+
+/* =========================================================
+   SCENE 3 — CROSSING
+========================================================= */
+
+function sceneCrossing(t,p){
+
+  canal(t);
+
+  bridge();
+
+  /*
+    boats
+  */
+
+  boat(
+    W*.44+
+    Math.sin(t*.002)*15,
+    H*.56,
+    .65,
+    1
+  );
+
+  boat(
+    W*.56-
+    Math.sin(t*.0017)*20,
+    H*.63,
+    .95,
+    -1
+  );
+
+  boat(
+    W*.48+
+    Math.sin(t*.001)*30,
+    H*.73,
+    1.35,
+    1
+  );
+
+  /*
+    far silhouettes
+  */
+
+  for(let i=0;i<12;i++){
+
+    const q=i/11;
+
+    const x=
+      W*.43+
+      q*W*.14;
+
+    const y=
+      H*.48+
+      q*H*.035;
+
+    ctx.fillStyle=
+      "rgba(12,17,16,.75)";
 
     ctx.beginPath();
 
     ctx.arc(
       x,
       y,
-      2,
+      3+q*3,
       0,
       Math.PI*2
     );
 
     ctx.fill();
-  }
-
-  /* planes approaching */
-
-  const approach=
-    smoothstep(0,.85,p);
-
-  plane(
-    W*.15+
-    approach*W*.62,
-    H*.28-
-    approach*H*.08,
-    .32+
-    approach*.7,
-    -.05,
-    .9
-  );
-
-  plane(
-    W*.05+
-    approach*W*.58,
-    H*.34-
-    approach*H*.05,
-    .2+
-    approach*.45,
-    -.03,
-    .65
-  );
-
-  plane(
-    W*.25+
-    approach*W*.55,
-    H*.39,
-    .16+
-    approach*.35,
-    .02,
-    .5
-  );
-}
-
-/* =========================================================
-   SCENE 2 — FLYBY
-========================================================= */
-
-function sceneFlyby(t,p){
-
-  drawSky(
-    "#101b27",
-    "#b06e45"
-  );
-
-  drawClouds(t);
-
-  drawSun(
-    W*.72,
-    H*.32,
-    H*.25,
-    smoothstep(0,.7,p)
-  );
-
-  mountains(
-    H*.68,
-    .45,
-    t*7
-  );
-
-  drawBirds(t);
-
-  /*
-    Plane comes toward camera.
-  */
-
-  const q=smoothstep(0,.82,p);
-
-  const x=
-    lerp(-W*.25,W*.52,q);
-
-  const y=
-    lerp(H*.2,H*.43,q);
-
-  const scale=
-    lerp(.25,5.5,q);
-
-  plane(
-    x,
-    y,
-    scale,
-    -.08,
-    1
-  );
-
-  /*
-    giant flyby wipe
-  */
-
-  if(p>.72){
-
-    const wipe=
-      smoothstep(.72,1,p);
-
-    ctx.fillStyle=
-      `rgba(5,8,9,${wipe*.88})`;
 
     ctx.fillRect(
-      0,0,W,H
+      x-2,
+      y,
+      4,
+      10+q*7
+    );
+  }
+
+  /*
+    camera push
+  */
+
+  const z=
+    1+
+    smooth(.1,1,p)*.055;
+
+  ctx.save();
+
+  ctx.globalAlpha=
+    smooth(.2,.75,p)*.2;
+
+  ctx.strokeStyle="#e2c67f";
+  ctx.lineWidth=2;
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    W*.5,
+    H*.48
+  );
+
+  ctx.lineTo(
+    W*.5,
+    H*.8
+  );
+
+  ctx.stroke();
+
+  ctx.restore();
+
+  if(p>.65){
+
+    flash(
+      (1-p)*.12
     );
   }
 }
 
 /* =========================================================
-   SCENE 3 — CANAL
+   SCENE 4 — BAR LEV
 ========================================================= */
 
-function sceneCanal(t,p){
+function sceneBarLev(t,p){
 
-  drawSky(
-    "#c37d52",
-    "#e2b777"
-  );
+  desert(t);
 
-  drawSun(
-    W*.7,
-    H*.3,
-    H*.3,
+  fortification();
+
+  /*
+    distant fortified positions
+  */
+
+  for(let i=0;i<6;i++){
+
+    const x=
+      W*.12+
+      i*W*.15;
+
+    const y=
+      H*.48+
+      Math.sin(i)*5;
+
+    ctx.fillStyle="#38382d";
+
+    ctx.fillRect(
+      x,
+      y,
+      55,
+      30
+    );
+
+    ctx.fillStyle="#25261f";
+
+    ctx.fillRect(
+      x+10,
+      y-16,
+      35,
+      18
+    );
+  }
+
+  /*
+    advancing silhouettes
+  */
+
+  for(let i=0;i<8;i++){
+
+    const q=i/7;
+
+    const x=
+      W*.1+
+      q*W*.8;
+
+    const y=
+      H*.73+
+      q*H*.1;
+
+    const s=
+      .18+
+      q*.5;
+
+    /*
+      vehicles represented
+      as distant silhouettes
+    */
+
+    ctx.fillStyle=
+      "rgba(22,25,22,.9)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+      x,
+      y,
+      45*s,
+      14*s,
+      0,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.fillRect(
+      x-25*s,
+      y-13*s,
+      50*s,
+      13*s
+    );
+  }
+
+  smokeClouds(
+    t,
     1
   );
 
-  drawClouds(t);
+  dustStorm(
+    t,
+    1.2
+  );
 
-  drawCanal(t);
+  /*
+    cinematic light
+  */
 
-  drawBoats(t);
-
-  /* distant formation */
-
-  for(let i=0;i<7;i++){
-
-    const q=i/6;
-
-    const x=
-      W*.46+
-      (q-.5)*W*.13;
-
-    const y=
-      H*.51+
-      q*H*.03;
-
-    tank(
-      x,
-      y,
-      .06+q*.035,
+  const f=
+    Math.max(
       0,
-      .65
-    );
-  }
+      Math.sin(
+        t*.012
+      )
+    )*.12;
 
-  drawBirds(t);
-
-  /* forward camera feeling */
-
-  const pulse=
-    Math.sin(p*Math.PI)*4;
-
-  camera.x=
-    pulse;
-
-  camera.y=
-    -p*10;
-
-  camera.zoom=
-    1+
-    p*.035;
+  flash(f);
 }
 
 /* =========================================================
-   SCENE 4 — CROSSING
+   SCENE 5 — BRIDGEHEADS
 ========================================================= */
 
-function sceneCrossing(t,p){
+function sceneBridgehead(t,p){
 
-  drawSky(
-    "#5b4034",
-    "#1d201c"
-  );
-
-  drawSun(
-    W*.58,
-    H*.33,
-    H*.25,
-    .35
-  );
-
-  drawCanal(t);
+  desert(t);
 
   /*
-    Low camera
+    canal at horizon
   */
 
-  camera.y=
-    20+
-    p*35;
+  ctx.fillStyle="#36555a";
 
-  camera.zoom=
-    1.04+
-    p*.08;
+  ctx.fillRect(
+    0,
+    H*.43,
+    W,
+    25
+  );
 
   /*
-    crossing vehicles
+    bridges
   */
 
-  for(let i=0;i<9;i++){
-
-    const q=i/8;
-
-    const x=
-      W*.25+
-      q*W*.5+
-      Math.sin(t*.002+i)*15;
+  for(let i=0;i<3;i++){
 
     const y=
-      H*.62+
-      q*H*.22;
+      H*.46+
+      i*H*.1;
+
+    ctx.strokeStyle=
+      "rgba(90,90,78,.8)";
+
+    ctx.lineWidth=8;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      W*.15,
+      y
+    );
+
+    ctx.lineTo(
+      W*.85,
+      y
+    );
+
+    ctx.stroke();
+  }
+
+  /*
+    flow of silhouettes
+  */
+
+  for(let i=0;i<14;i++){
+
+    const q=i/13;
+
+    const x=
+      W*.08+
+      q*W*.84;
+
+    const y=
+      H*.57+
+      q*H*.26;
 
     const s=
-      .15+
-      q*.7;
+      .1+
+      q*.6;
 
-    tank(
+    ctx.fillStyle=
+      "rgba(27,29,24,.9)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
       x,
       y,
-      s,
-      Math.sin(i)*.025,
-      .45+q*.55
+      34*s,
+      11*s,
+      0,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.fillRect(
+      x-20*s,
+      y-10*s,
+      40*s,
+      10*s
     );
   }
 
-  drawDust(
+  dustStorm(
     t,
     1.5
   );
 
-  drawSmoke(
+  smokeClouds(
     t,
-    1.4
+    1.2
   );
+}
 
-  /* cinematic light bursts */
+/* =========================================================
+   SCENE 6 — DAYS
+========================================================= */
 
-  const pulse=
-    Math.max(
-      0,
-      Math.sin(
-        (p*7)*Math.PI
-      )
+function sceneDays(t,p){
+
+  /*
+    documentary montage:
+    map + sky + front
+  */
+
+  const cycle=
+    Math.floor(
+      p*4
     );
 
-  if(p>.15){
+  const local=
+    (p*4)%1;
 
-    ctx.fillStyle=
-      `rgba(255,180,80,${pulse*.12})`;
+  if(cycle%2===0){
+
+    sky(
+      "#53616a",
+      "#1e2729"
+    );
+
+    sun(
+      W*.65,
+      H*.28,
+      H*.28,
+      .25
+    );
+
+    /*
+      moving horizon
+    */
+
+    ctx.fillStyle="#3d4035";
 
     ctx.fillRect(
-      0,0,W,H
+      0,
+      H*.56,
+      W,
+      H*.44
     );
+
+    smokeClouds(
+      t,
+      1.3
+    );
+
+    dustStorm(
+      t,
+      1.2
+    );
+
+  }else{
+
+    drawMap(
+      t,
+      local
+    );
+
   }
 
   /*
-    abstract light trails
-    no graphic violence
+    film scratches / light
   */
 
-  for(let i=0;i<5;i++){
+  ctx.strokeStyle=
+    "rgba(255,255,255,.04)";
 
-    const xx=
-      W*.15+
-      ((t*90+i*180)%W);
-
-    const yy=
-      H*.42+
-      Math.sin(i+t*.002)*H*.08;
-
-    lightTrail(
-      xx,
-      yy,
-      .8,
-      -.2,
-      140,
-      .35
-    );
-  }
-
-  camera.shake=
-    p>.35
-    ? Math.sin(t*.04)*3
-    : 0;
-}
-
-/* =========================================================
-   SCENE 5 — CLIMAX
-========================================================= */
-
-function sceneClimax(t,p){
-
-  drawSky(
-    "#e0a66e",
-    "#38271f"
-  );
-
-  drawSun(
-    W*.5,
-    H*.3,
-    H*.45,
-    .7
-  );
-
-  drawClouds(t);
-
-  drawSmoke(
-    t,
-    1.8
-  );
-
-  drawDust(
-    t,
-    2
-  );
-
-  /*
-    multiple planes
-  */
-
-  const planes=[
-    [.25,.26,.65,-.05],
-    [.42,.20,.42,.03],
-    [.61,.28,.55,-.02],
-    [.77,.23,.32,.05]
-  ];
-
-  planes.forEach((v,i)=>{
-
-    plane(
-      W*v[0]+Math.sin(t*.003+i)*35,
-      H*v[1]+Math.sin(t*.004+i)*18,
-      v[2],
-      v[3],
-      .9
-    );
-
-  });
-
-  /*
-    ground movement
-  */
-
-  for(let i=0;i<7;i++){
-
-    const q=i/6;
-
-    tank(
-      W*.12+q*W*.78,
-      H*.73+q*H*.12,
-      .25+q*.6,
-      -.02,
-      .55+q*.45
-    );
-  }
-
-  /*
-    bright cinematic trails
-  */
-
-  for(let i=0;i<10;i++){
+  for(let i=0;i<8;i++){
 
     const x=
-      W*.15+
-      ((t*130+i*130)%(
-        W*.8
-      ));
+      (i*143+t*.03)%W;
 
-    const y=
-      H*.35+
-      Math.sin(
-        t*.003+i
-      )*H*.18;
+    ctx.beginPath();
 
-    lightTrail(
+    ctx.moveTo(
       x,
-      y,
-      .75,
-      -.25,
-      180,
-      .28
+      0
     );
+
+    ctx.lineTo(
+      x+20,
+      H
+    );
+
+    ctx.stroke();
   }
-
-  /*
-    camera impact
-  */
-
-  camera.shake=
-    2+
-    Math.sin(t*.06)*4;
-
-  camera.zoom=
-    1.06+
-    Math.sin(p*Math.PI)*.06;
 }
 
 /* =========================================================
-   SCENE 6 — FLAG
+   SCENE 7 — AFTERMATH / PEACE
 ========================================================= */
 
-function sceneFlag(t,p){
+function scenePeace(t,p){
 
-  drawSky(
-    "#24343b",
-    "#101617"
+  /*
+    sunset
+  */
+
+  sky(
+    "#b46f4d",
+    "#171b1b"
   );
 
-  drawSun(
+  sun(
     W*.5,
-    H*.4,
-    H*.35,
-    .28
-  );
-
-  drawSmoke(
-    t,
+    H*.43,
+    H*.3,
     .5
   );
 
-  const reveal=
-    smoothstep(0,.35,p);
-
-  ctx.save();
-
-  ctx.globalAlpha=reveal;
-
-  drawFlag(t);
-
-  ctx.restore();
-
   /*
-    falling light
+    quiet water
   */
 
-  for(let i=0;i<25;i++){
+  ctx.fillStyle="#1e3a40";
 
-    const x=
-      (i*83+t*.08)%W;
+  ctx.fillRect(
+    0,
+    H*.56,
+    W,
+    H*.44
+  );
+
+  for(let i=0;i<70;i++){
 
     const y=
-      ((i*47+t*.18)%(
-        H*.7
-      ));
+      H*.58+
+      i*H*.005;
 
-    ctx.fillStyle=
-      `rgba(255,215,130,${.08+.06*Math.sin(i)})`;
+    const width=
+      30+
+      i*4;
 
-    ctx.fillRect(
-      x,
-      y,
-      1,
-      1
+    ctx.strokeStyle=
+      "rgba(210,190,130,.08)";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      W/2-width,
+      y
     );
+
+    ctx.lineTo(
+      W/2+width,
+      y
+    );
+
+    ctx.stroke();
   }
+
+  /*
+    flag begins to appear
+  */
+
+  const a=
+    smooth(0,.65,p);
+
+  ctx.globalAlpha=a;
+
+  const fx=W*.5;
+  const fy=H*.31;
+  const fw=Math.min(W*.42,400);
+  const fh=fw*.66;
+
+  /*
+    pole
+  */
+
+  ctx.strokeStyle="#c8b98e";
+  ctx.lineWidth=4;
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    fx-fw/2-12,
+    fy-45
+  );
+
+  ctx.lineTo(
+    fx-fw/2-12,
+    fy+fh+70
+  );
+
+  ctx.stroke();
+
+  /*
+    waving Egyptian flag
+  */
+
+  const rows=45;
+
+  for(let i=0;i<rows;i++){
+
+    const y=i/rows*fh;
+
+    let c;
+
+    if(i<rows/3){
+      c="#b62e34";
+    }else if(i<rows*2/3){
+      c="#eeeae0";
+    }else{
+      c="#111";
+    }
+
+    ctx.fillStyle=c;
+
+    ctx.beginPath();
+
+    for(let j=0;j<=70;j++){
+
+      const x=j/70*fw;
+
+      const wave=
+        Math.sin(
+          t*.006+
+          j*.25+
+          i*.08
+        )*8;
+
+      if(j===0){
+        ctx.moveTo(
+          fx-fw/2+x,
+          fy+y+wave
+        );
+      }else{
+        ctx.lineTo(
+          fx-fw/2+x,
+          fy+y+wave
+        );
+      }
+    }
+
+    for(let j=70;j>=0;j--){
+
+      const x=j/70*fw;
+
+      const wave=
+        Math.sin(
+          t*.006+
+          j*.25+
+          (i+1)*.08
+        )*8;
+
+      ctx.lineTo(
+        fx-fw/2+x,
+        fy+y+fh/rows+wave
+      );
+    }
+
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  /*
+    eagle
+  */
+
+  ctx.fillStyle="#d5bd65";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    fx,
+    fy+fh/2,
+    fh*.08,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.globalAlpha=1;
 }
 
 /* =========================================================
@@ -2207,128 +2348,111 @@ function render(t){
   );
 
   const index=
-    currentScene(t);
+    getScene(t);
 
-  const scene=
+  const s=
     scenes[index];
 
   const p=
     clamp(
-      (t-scene.start)/
-      (scene.end-scene.start),
+      (t-s.a)/
+      (s.b-s.a),
       0,
       1
     );
 
-  triggerSceneSound(index);
+  sceneSound(index);
 
   /*
     captions
   */
 
   if(
-    index===1 ||
-    index===2 ||
-    index===3 ||
-    index===4
+    s.title &&
+    index!==0 &&
+    index!==8
   ){
 
-    caption.style.opacity=
-      p>.08 && p<.9
-      ? "1"
-      : "0";
+    document
+      .querySelector("#caption")
+      .style.opacity=
+      "1";
 
-    captionSmall.textContent=
-      scene.small;
+    document
+      .querySelector("#caption .date")
+      .textContent=
+      s.date;
 
-    captionBig.textContent=
-      scene.big;
+    document
+      .querySelector("#caption .title")
+      .textContent=
+      s.title;
+
+    document
+      .querySelector("#caption .text")
+      .textContent=
+      s.text;
 
   }else{
 
-    caption.style.opacity="0";
-
+    document
+      .querySelector("#caption")
+      .style.opacity=
+      "0";
   }
-
-  camera.shake=0;
-  camera.x=0;
-  camera.y=0;
-  camera.zoom=1;
-
-  beginCamera();
-
-  if(index===0){
-
-    drawSky(
-      "#020406",
-      "#020406"
-    );
-
-  }
-
-  if(index===1){
-    sceneNight(t,p);
-  }
-
-  if(index===2){
-    sceneFlyby(t,p);
-  }
-
-  if(index===3){
-    sceneCanal(t,p);
-  }
-
-  if(index===4){
-    sceneCrossing(t,p);
-  }
-
-  if(index===5){
-    sceneClimax(t,p);
-  }
-
-  if(index===6){
-    sceneFlag(t,p);
-  }
-
-  endCamera();
 
   /*
-    scene transitions
+    scenes
   */
 
-  const fadeIn=
-    smoothstep(0,.8,
-      Math.min(
-        p*1.5,
-        1
-      )
-    );
+  if(index===0)
+    sceneIntro(t,p);
 
-  if(index!==0){
+  if(index===1)
+    sceneBefore(t,p);
+
+  if(index===2)
+    sceneBeginning(t,p);
+
+  if(index===3)
+    sceneCrossing(t,p);
+
+  if(index===4)
+    sceneBarLev(t,p);
+
+  if(index===5)
+    sceneBridgehead(t,p);
+
+  if(index===6)
+    sceneDays(t,p);
+
+  if(index===7)
+    scenePeace(t,p);
+
+  /*
+    transitions
+  */
+
+  if(p<.12){
+
+    const f=
+      1-p/.12;
 
     ctx.fillStyle=
-      `rgba(0,0,0,${1-fadeIn})`;
+      `rgba(0,0,0,${f})`;
 
     ctx.fillRect(
       0,0,W,H
     );
   }
 
-  /*
-    final darkening
-  */
-
-  if(t>TOTAL-4){
+  if(p>.88){
 
     const f=
-      smoothstep(
-        TOTAL-4,
-        TOTAL,
-        t
-      );
+      (p-.88)/.12;
 
     ctx.fillStyle=
-      `rgba(0,0,0,${f})`;
+      `rgba(0,0,0,${f*.65})`;
 
     ctx.fillRect(
       0,0,W,H
@@ -2339,9 +2463,19 @@ function render(t){
     progress
   */
 
-  progressBar.style.width=
-    `${clamp(t/TOTAL,0,1)*100}%`;
+  document
+    .getElementById("timelineBar")
+    .style.width=
+      `${clamp(t/TOTAL,0,1)*100}%`;
 
+  /*
+    sound status
+  */
+
+  document
+    .getElementById("soundBadge")
+    .style.opacity=
+      audio ? "1" : "0";
 }
 
 /* =========================================================
@@ -2350,18 +2484,20 @@ function render(t){
 
 function loop(now){
 
-  if(!started) return;
+  if(!running)return;
 
   const t=
-    (now-startTime)/1000;
+    (now-startedAt)/1000;
 
   render(t);
 
   if(t>=TOTAL){
 
-    started=false;
+    running=false;
 
-    endScreen.style.opacity="1";
+    document
+      .getElementById("end")
+      .style.opacity="1";
 
     return;
   }
@@ -2373,56 +2509,68 @@ function loop(now){
    START
 ========================================================= */
 
-startBtn.addEventListener("click",async()=>{
+document
+  .getElementById("start")
+  .addEventListener(
+    "click",
+    async()=>{
 
-  createAudio();
+      initAudio();
 
-  if(audio){
+      if(audio){
 
-    try{
-      await audio.ac.resume();
-    }catch(e){}
+        try{
+          await audio.ac.resume();
+        }catch(e){}
+
+      }
+
+      running=true;
+
+      startedAt=
+        performance.now();
+
+      document
+        .getElementById("intro")
+        .style.opacity="0";
+
+      setTimeout(()=>{
+
+        document
+          .getElementById("intro")
+          .style.display="none";
+
+      },1700);
+
+      requestAnimationFrame(loop);
+    }
+  );
+
+/*
+  keep audio unlocked
+*/
+
+document.addEventListener(
+  "pointerdown",
+  ()=>{
+
+    if(
+      audio &&
+      audio.ac.state==="suspended"
+    ){
+      audio.ac.resume();
+    }
 
   }
-
-  started=true;
-
-  startTime=
-    performance.now();
-
-  lastTime=startTime;
-
-  intro.style.opacity="0";
-
-  setTimeout(()=>{
-    intro.style.display="none";
-  },1500);
-
-  requestAnimationFrame(loop);
-});
-
-/* =========================================================
-   TOUCH / CLICK — subtle interaction
-========================================================= */
-
-document.addEventListener("pointerdown",()=>{
-
-  if(audio && audio.ac.state==="suspended"){
-
-    audio.ac.resume();
-
-  }
-
-});
-
-/* initial frame */
-
-drawSky(
-  "#020406",
-  "#020406"
 );
+
+/*
+  first frame
+*/
+
+sceneIntro(0,0);
 
 </script>
 
 </body>
-    </html>
+  </html>
